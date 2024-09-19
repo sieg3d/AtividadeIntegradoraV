@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %}Acompanhar Status{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Acompanhar Status</h1>
+
+        <!-- Formulário para filtrar projetos -->
+        <form method="GET" action="{{ url_for('acompanhar_status') }}">
+            Nome: <input type="text" name="nome" value="{{ request.args.get('nome', '') }}"> <!-- Campo de filtro por nome -->
+            Data: <input type="date" name="data" value="{{ request.args.get('data', '') }}"> <!-- Campo de filtro por data -->
+            
+            <!-- Filtros de checkbox para status dos projetos -->
+            <label>
+                <input type="checkbox" name="atrasado" value="1" {% if request.args.get('atrasado') %}checked{% endif %}>
+                Atrasado
+            </label>
+
+            <label>
+                <input type="checkbox" name="concluido" value="1" {% if request.args.get('concluido') %}checked{% endif %}>
+                Concluído
+            </label>
+
+            <label>
+                <input type="checkbox" name="em_andamento" value="1" {% if request.args.get('em_andamento') %}checked{% endif %}>
+                Em andamento
+            </label>
+
+            <label>
+                <input type="checkbox" name="pendente" value="1" {% if request.args.get('pendente') %}checked{% endif %}>
+                Pendente
+            </label>
+
+            <label>
+                <input type="checkbox" name="cancelado" value="1" {% if request.args.get('cancelado') %}checked{% endif %}>
+                Cancelado
+            </label>
+
+            <!-- Botões de ação: Filtrar e Limpar -->
+            <button type="submit">Filtrar</button> <!-- Botão para aplicar os filtros -->
+            <a href="{{ url_for('acompanhar_status') }}" class="btn-limpar">Limpar</a> <!-- Link para limpar os filtros -->
+        </form>
+
+        <!-- Área onde os projetos serão exibidos -->
+        <div class="projetos">
+            {% for projeto in projetos %} <!-- Itera sobre a lista de projetos -->
+            <a href="{{ url_for('editar_projeto', projeto_id=projeto.id) }}" style="text-decoration: none; color: inherit;"> <!-- Link para editar o projeto -->
+                <div class="card {% if projeto.status == 'Cancelado' %}card-cancelado{% endif %}" style="position: relative;">
+                    
+                    <!-- Verificação para exibir a faixa (ribbon) "Atrasado", "Concluído" ou "Cancelado" -->
+                    {% if projeto.status == 'Atrasado' %}
+                    <div class="ribbon ribbon-atrasado">
+                        <span>Atrasado</span>
+                    </div>
+                    {% elif projeto.status == 'Concluído' %}
+                    <div class="ribbon ribbon-concluido">
+                        <span>Concluído</span>
+                    </div>
+                    {% elif projeto.status == 'Cancelado' %}
+                    <div class="ribbon ribbon-cancelado">
+                        <span>Cancelado</span>
+                    </div>
+                    {% endif %}
+            
+                    <!-- Cabeçalho do card, com estilos definidos pela prioridade e status do projeto -->
+                    <div class="card-header 
+                        {% if projeto.prioridade == 'Baixa' %} baixa
+                        {% elif projeto.prioridade == 'Média' %} media
+                        {% elif projeto.prioridade == 'Alta' %} alta
+                        {% elif projeto.prioridade == 'Crítica' %} critica
+                        {% endif %}
+                        {% if projeto.status == 'Cancelado' %} cancelado{% endif %}">
+                        {{ projeto.nome }} <!-- Exibe o nome do projeto -->
+                    </div>
+            
+                    <!-- Conteúdo do card -->
+                    <div class="card-content">
+                        <div class="descricao">
+                            <p><strong>Descrição:</strong> {{ projeto.descricao }}</p>
+                        </div>
+                        <p><strong>Prioridade:</strong> {{ projeto.prioridade }}</p> 
+                        <p><strong>Responsável:</strong> {{ projeto.responsavel }}</p> 
+                        <p><strong>Status:</strong> {{ projeto.status }}</p> 
+                        <p><strong>Previsão de término:</strong> {{ projeto.previsao_termino.strftime('%d/%m/%Y') }}</p> 
+                        <p><strong>Orçamento:</strong> R$ {{ projeto.orcamento }}</p> 
+                        <p><strong>Data de Criação:</strong> {{ projeto.data_criacao.strftime('%d/%m/%Y') }}</p> 
+                        <p><strong>Hora Criação:</strong> {{ projeto.data_criacao.strftime('%H:%M') }}</p> 
+                    </div>
+                </div>
+            </a>
+            {% endfor %} <!-- Fim do loop de projetos -->
+        </div>
+{% endblock %}

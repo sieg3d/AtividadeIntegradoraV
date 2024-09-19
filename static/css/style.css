@@ -1,0 +1,481 @@
+/* Estilo global do body da página */
+body {
+    font-family: 'Roboto', sans-serif; /* Define a fonte padrão */
+    background-color: #f4f7f6; /* Cor de fundo */
+    margin: 0;
+    padding: 0;
+    color: #333; /* Cor do texto */
+}
+
+/* Estilos do cabeçalho (Header) */
+.site-header {
+    background-color: #444; /* Cor de fundo do cabeçalho */
+    color: white; /* Cor do texto no cabeçalho */
+    padding: 20px 0; /* Espaçamento interno */
+    text-align: center; /* Centraliza o texto */
+    font-family: Arial, sans-serif; /* Fonte do cabeçalho */
+}
+
+.site-header h1 {
+    margin: 0; /* Remove margem do título */
+    font-size: 36px; /* Tamanho da fonte */
+    font-weight: bold; /* Define o peso da fonte */
+}
+
+.site-header p {
+    margin: 5px 0 0; /* Margem do parágrafo no cabeçalho */
+    font-size: 16px; /* Tamanho da fonte */
+}
+
+/* Estilos para títulos */
+h1, h3 {
+    text-align: center; /* Centraliza os títulos */
+    color: #333; /* Cor do texto */
+    margin-top: 0; /* Remove margem superior */
+}
+
+/* Container para centralizar e definir largura máxima */
+.container {
+    max-width: 1200px; /* Largura máxima */
+    margin: 0 auto; /* Centraliza o container */
+    padding: 20px; /* Espaçamento interno */
+}
+
+/* Estilos para links */
+a {
+    text-decoration: none; /* Remove sublinhado dos links */
+    background-color: transparent;
+    color: white; /* Cor do texto */
+    padding: 10px 20px; /* Espaçamento interno */
+    border-radius: 5px; /* Bordas arredondadas */
+    transition: background-color 0.3s ease; /* Animação na mudança de cor */
+}
+
+a:hover {
+    background-color: #ddd; /* Cor de fundo ao passar o mouse */
+    color: black; /* Cor do texto ao passar o mouse */
+}
+
+/* Estilo da área de conteúdo */
+.content {
+    padding: 20px; /* Espaçamento interno */
+}
+
+/* Estilos para formulários */
+form {
+    background-color: white; /* Cor de fundo do formulário */
+    padding: 20px; /* Espaçamento interno */
+    border-radius: 10px; /* Bordas arredondadas */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra para o formulário */
+    margin-bottom: 20px; /* Espaçamento inferior */
+}
+
+/* Estilos para campos de texto, data, textarea, select */
+input[type="text"], input[type="date"], textarea, select {
+    width: 100%; /* Largura total */
+    padding: 10px; /* Espaçamento interno */
+    margin: 10px 0; /* Margem entre os elementos */
+    border: 1px solid #ccc; /* Borda */
+    border-radius: 5px; /* Bordas arredondadas */
+    font-size: 16px; /* Tamanho da fonte */
+    box-sizing: border-box; /* Garante que padding seja incluído na largura */
+}
+
+/* Evita que o textarea seja redimensionado horizontalmente */
+textarea {
+    resize: vertical;
+}
+
+/* Estilos para botões */
+button {
+    padding: 10px 20px; /* Espaçamento interno */
+    background-color: #28a745; /* Cor de fundo */
+    color: white; /* Cor do texto */
+    border: none; /* Remove borda */
+    border-radius: 5px; /* Bordas arredondadas */
+    font-size: 16px; /* Tamanho da fonte */
+    font-weight: bold; /* Peso da fonte */
+    cursor: pointer; /* Cursor de mão ao passar o mouse */
+    transition: background-color 0.3s ease; /* Animação na mudança de cor */
+}
+
+button:hover {
+    background-color: #218838; /* Cor de fundo ao passar o mouse */
+}
+
+/* Estilos para os cards de projetos */
+.projetos {
+    display: flex; /* Alinha os cards em linha */
+    flex-wrap: wrap; /* Permite quebra de linha */
+    justify-content: space-around; /* Espaça os cards igualmente */
+}
+
+.card {
+    background-color: white; /* Cor de fundo do card */
+    width: 300px; /* Largura fixa */
+    margin: 20px; /* Espaçamento externo */
+    padding: 0;
+    border-radius: 10px; /* Bordas arredondadas */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animação ao passar o mouse */
+}
+
+.card:hover {
+    transform: translateY(-10px); /* Move o card para cima ao passar o mouse */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Aumenta a sombra */
+}
+
+/* Estilos para o cabeçalho dos cards */
+.card-header {
+    font-size: 18px; /* Tamanho da fonte */
+    font-weight: bold; /* Peso da fonte */
+    color: white; /* Cor do texto */
+    padding: 10px; /* Espaçamento interno */
+    text-align: center; /* Centraliza o texto */
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px; /* Bordas arredondadas no topo */
+}
+
+/* Conteúdo dos cards */
+.card-content {
+    padding: 20px; /* Espaçamento interno */
+}
+
+/* Estilos para descrição dentro dos cards */
+.descricao {
+    max-height: 100px; /* Altura máxima */
+    overflow: auto; /* Permite rolagem se o conteúdo exceder a altura */
+}
+
+.descricao p {
+    margin: 0;
+    padding: 5px; /* Espaçamento interno dos parágrafos */
+}
+
+/* Cores de prioridade */
+.baixa {
+    background-color: #28a745; /* Verde para baixa prioridade */
+}
+
+.media {
+    background-color: #ffc107; /* Amarelo para média prioridade */
+}
+
+.alta {
+    background-color: #fd7e14; /* Laranja para alta prioridade */
+}
+
+.critica {
+    background-color: #dc3545; /* Vermelho para prioridade crítica */
+}
+
+/* Estilos para os ribbons (fita no canto do card) */
+.ribbon {
+    width: 120px;
+    height: 120px;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    overflow: hidden; /* Esconde parte do ribbon que ultrapassa */
+}
+
+.ribbon span {
+    position: absolute;
+    display: block;
+    width: 160px;
+    padding: 10px 0;
+    background-color: #dc3545; /* Cor de fundo */
+    color: white; /* Cor do texto */
+    text-align: center; /* Centraliza o texto */
+    font-weight: bold; /* Peso da fonte */
+    transform: rotate(45deg); /* Gira o ribbon */
+    top: 27px;
+    right: -35px;
+    font-size: 12px; /* Tamanho da fonte */
+}
+
+/* Cores dos ribbons conforme o status */
+.ribbon-atrasado span {
+    background-color: #dc3545; /* Atrasado: vermelho */
+}
+
+.ribbon-concluido span {
+    background-color: #007bff; /* Concluído: azul */
+}
+
+.ribbon-cancelado span {
+    background-color: #6c757d; /* Cancelado: cinza */
+}
+
+/* Estilo para cabeçalhos de cards cancelados */
+.card-cancelado .card-header {
+    background-color: #6c757d; /* Cor de fundo cinza */
+}
+
+/* Tabela de filtros */
+form input[type="text"], form input[type="date"] {
+    max-width: 200px; /* Largura máxima dos campos */
+    display: inline-block; /* Exibe lado a lado */
+    margin-right: 10px; /* Margem à direita */
+}
+
+/* Botão para a página inicial */
+#home {
+    background-color: blue; /* Cor de fundo azul */
+    color: white; /* Cor do texto branco */
+    font-weight: bold; /* Peso da fonte */
+    padding: 10px 20px; /* Espaçamento interno */
+    border-radius: 5px; /* Bordas arredondadas */
+    transition: background-color 0.3s ease; /* Animação na mudança de cor */
+}
+
+#home:hover {
+    background-color: green; /* Cor de fundo verde ao passar o mouse */
+}
+
+/* Tabela de estoque e movimentações */
+.estoque-table {
+    width: 100%; /* Largura total */
+    border-collapse: collapse; /* Remove espaçamento entre as células */
+    margin-top: 20px; /* Margem superior */
+}
+
+.estoque-table th, .estoque-table td {
+    padding: 10px; /* Espaçamento interno */
+    text-align: left; /* Alinhamento à esquerda */
+    border-bottom: 1px solid #ddd; /* Linha inferior */
+}
+
+.estoque-table th {
+    background-color: #f4f7f6; /* Cor de fundo para o cabeçalho */
+    font-weight: bold; /* Peso da fonte */
+}
+
+.estoque-table tr:hover {
+    background-color: #f1f1f1; /* Cor de fundo ao passar o mouse */
+}
+
+/* Alertas de erro */
+.alert-danger {
+    color: #721c24; /* Cor do texto */
+    background-color: #f8d7da; /* Cor de fundo */
+    border-color: #f5c6cb; /* Cor da borda */
+    padding: 10px; /* Espaçamento interno */
+    margin-bottom: 20px; /* Espaçamento inferior */
+    border-radius: 5px; /* Bordas arredondadas */
+}
+
+/* Estilos para a Navbar */
+.navbar {
+    background-color: #333; /* Cor de fundo */
+    font-family: Arial, sans-serif; /* Fonte da navbar */
+    display: flex; /* Alinha os itens horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    position: relative; /* Posicionamento relativo */
+    z-index: 1000; /* Define a camada superior */
+}
+
+.navbar ul {
+    list-style-type: none; /* Remove marcadores */
+    margin: 0;
+    padding: 0;
+    display: flex; /* Exibe os itens em linha */
+}
+
+.navbar ul li {
+    position: relative; /* Necessário para o dropdown */
+}
+
+/* Menu principal da Navbar */
+.navbar ul.main-menu > li {
+    float: left;
+}
+
+.navbar ul.main-menu > li > a {
+    display: block; /* Exibe os itens como blocos */
+    color: white; /* Cor do texto */
+    text-align: center; /* Centraliza o texto */
+    padding: 14px 20px; /* Espaçamento interno */
+    text-decoration: none; /* Remove sublinhado */
+    font-size: 18px; /* Tamanho da fonte */
+}
+
+.navbar ul.main-menu > li > a:hover {
+    background-color: #575757; /* Cor de fundo ao passar o mouse */
+}
+
+/* Dropdown na Navbar */
+.navbar .dropdown-content {
+    display: none; /* Esconde o dropdown inicialmente */
+    position: absolute;
+    background-color: #f9f9f9; /* Cor de fundo do dropdown */
+    min-width: 160px; /* Largura mínima */
+    z-index: 2000; /* Define a camada do dropdown */
+    top: 100%;
+    left: 0;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+/* Exibe o dropdown ao passar o mouse */
+.navbar ul.main-menu > li:hover .dropdown-content {
+    display: block;
+}
+
+.navbar .dropdown-content li a {
+    color: black; /* Cor do texto no dropdown */
+    padding: 12px 16px; /* Espaçamento interno */
+    text-decoration: none;
+    display: block;
+    text-align: left; /* Alinha o texto à esquerda */
+}
+
+.navbar .dropdown-content li a:hover {
+    background-color: #f1f1f1; /* Cor de fundo ao passar o mouse */
+}
+
+/* Responsividade para telas pequenas */
+@media screen and (max-width: 768px) {
+    .navbar ul {
+        flex-direction: column; /* Muda a direção para coluna */
+    }
+
+    .navbar ul.main-menu > li {
+        width: 100%; /* Largura total */
+    }
+
+    .navbar ul.main-menu > li > a {
+        text-align: left; /* Alinha o texto à esquerda */
+        padding-left: 20px; /* Espaçamento à esquerda */
+    }
+
+    .navbar .dropdown-content {
+        position: relative; /* Posicionamento relativo */
+        width: 100%; /* Largura total */
+        left: 0;
+        top: auto;
+    }
+}
+
+/* Estilo para botões estilizados como botões de rádio */
+.radio-buttons {
+    display: flex;
+    gap: 10px; /* Espaço entre os botões */
+}
+
+/* Botões de rádio ocultos */
+.btn-radio {
+    display: none;
+}
+
+.btn {
+    display: inline-block; /* Exibe os botões como blocos inline */
+    padding: 10px 20px;
+    background-color: #007bff; /* Cor de fundo */
+    color: white; /* Cor do texto */
+    border: 2px solid transparent; /* Borda transparente */
+    border-radius: 5px; /* Bordas arredondadas */
+    cursor: pointer; /* Cursor de mão ao passar o mouse */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Animação */
+}
+
+.btn:hover {
+    background-color: #0056b3; /* Cor de fundo ao passar o mouse */
+}
+
+.btn-radio:checked + .btn {
+    background-color: #28a745; /* Cor de fundo quando selecionado */
+    border-color: #28a745; /* Cor da borda quando selecionado */
+    color: white; /* Cor do texto */
+}
+
+/* Estilo para a barra de pesquisa */
+.search-bar {
+    margin-top: 10px;
+}
+
+.search-bar input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Estilos para mensagens de sucesso ou erro */
+.mensagens {
+    padding: 10px;
+    background-color: #dff0d8;
+    border: 1px solid #d6e9c6;
+    color: #3c763d;
+    border-radius: 4px;
+}
+
+.danger {
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    color: #a94442;
+}
+
+.success {
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+    color: #3c763d;
+}
+
+/* Estilo da tabela */
+.estoque-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.estoque-table th, .estoque-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.estoque-table th {
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+}
+
+.estoque-table td {
+    text-align: center;
+}
+
+.estoque-table td:nth-child(3), /* Coluna da quantidade */
+.estoque-table td:nth-child(4) { /* Coluna do preço */
+    text-align: right;
+}
+
+/* Realce de valores baixos */
+.estoque-table td.alerta {
+    color: red;
+    font-weight: bold;
+}
+
+/* Estilo da barra de pesquisa */
+input[type=text] {
+    width: 100%;
+    padding: 12px;
+    margin-top: 12px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+}
+
+/* Responsividade */
+@media only screen and (max-width: 600px) {
+    .estoque-table th, .estoque-table td {
+        font-size: 12px;
+        padding: 4px;
+    }
+}
+
+/* Estilo para as setas de ordenação */
+.sort-arrow {
+    margin-left: 5px;
+    font-size: 12px;
+    color: rgb(255, 255, 255);
+}

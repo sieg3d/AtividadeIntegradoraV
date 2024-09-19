@@ -1,0 +1,29 @@
+{% extends 'base.html' %} 
+
+{% block title %}Cestas Básicas{% endblock %} 
+
+{% block content %}
+    <h1>Gerar Cestas Básicas</h1>
+
+    <!-- Exibe a quantidade máxima de cestas básicas que podem ser geradas, baseado nos itens disponíveis em estoque -->
+    <p>Você pode gerar até {{ max_cestas }} cestas básicas.</p>
+
+    <!-- Formulário para gerar cestas básicas -->
+    <form method="POST" action="{{ url_for('gerar_cestas') }}"> <!-- Envia o formulário para a rota 'gerar_cestas' via POST -->
+        <label for="quantidade">Quantidade de cestas:</label> <!-- Campo para inserir a quantidade de cestas a serem geradas -->
+        <input type="number" name="quantidade" id="quantidade" required> <!-- Campo numérico obrigatório para a quantidade -->
+        
+        <button type="submit">Gerar Cestas</button> <!-- Botão para submeter o formulário -->
+    </form>
+    
+    <!-- Exibe mensagens de sucesso ou erro, se houver -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul> <!-- Lista de mensagens -->
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li> <!-- Aplica a categoria como classe (ex: sucesso, erro) e exibe a mensagem -->
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+{% endblock %}

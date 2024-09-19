@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Entrada de Itens{% endblock %} 
+
+{% block content %}
+    <h1>Registrar Entrada de Itens</h1> 
+    
+    <!-- Formulário para registrar a entrada de itens -->
+    <form id="entradaForm"> <!-- O formulário tem um ID para manipulação via JavaScript -->
+        <label for="item">Selecione o Item:</label> <!-- Campo para selecionar o item -->
+        <select name="item_id" id="item" required> <!-- Lista suspensa com os itens disponíveis -->
+            {% for item in itens %} <!-- Itera sobre a lista de itens -->
+            <option value="{{ item.id }}">{{ item.nome }}</option> <!-- Exibe o nome do item e define seu ID como valor -->
+            {% endfor %}
+        </select>   
+
+        <!-- Campo para inserir a quantidade de itens -->
+        <label for="quantidade">Quantidade:</label>
+        <input type="number" name="quantidade" id="quantidade" min="1" required> <!-- Campo numérico com valor mínimo de 1 -->
+
+        <!-- Botão para submeter o formulário -->
+        <button type="submit">Registrar Entrada</button>
+    </form>
+
+    <!-- Div para exibir as mensagens de sucesso após o registro das entradas -->
+    <div id="mensagens" style="margin-top: 20px;">
+        <ul>
+            {% for entrada in entradas %} <!-- Itera sobre as entradas registradas -->
+                <li class="alert alert-success success">
+                    Entrada de {{ entrada.quantidade }} unidade(s) de {{ entrada.item }} realizada com sucesso! <!-- Exibe a quantidade e o nome do item da entrada -->
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Script JavaScript para enviar os dados via AJAX sem recarregar a página -->
+    <script>
+        document.getElementById('entradaForm').addEventListener('submit', function(event) {
+            event.preventDefault();  // Impede o envio normal do formulário
+
+            // Coleta os dados do formulário
+            const formData = new FormData(this); 
+
+            // Envia a requisição AJAX para o servidor
+            fetch('{{ url_for("entrada_item") }}', {
+                method: 'POST',  // Método POST para enviar os dados
+                body: formData  // Os dados do formulário são enviados
+            })
+            .then(response => response.json())  // Converte a resposta para JSON
+            .then(data => {
+                if (data.success) {
+                    // Atualiza a lista de mensagens de sucesso
+                    const mensagens = document.getElementById('mensagens');  // Seleciona a div de mensagens
+                    const novaMensagem = document.createElement('li');  // Cria um novo elemento de lista
+                    novaMensagem.classList.add('alert', 'alert-success', 'success');  // Adiciona classes CSS de sucesso
+                    novaMensagem.textContent = `Entrada de ${data.quantidade} unidade(s) de ${data.item} realizada com sucesso!`;  // Define o texto da nova mensagem
+                    mensagens.querySelector('ul').appendChild(novaMensagem);  // Adiciona a nova mensagem à lista
+
+                    // Limpa o campo de quantidade para novas entradas
+                    document.getElementById('quantidade').value = '';
+                } else {
+                    // Exibe uma mensagem de erro se houver falha
+                    alert('Erro ao registrar entrada: ' + data.error);
+                }
+            })
+            .catch(error => console.error('Erro:', error));  // Exibe o erro no console, caso ocorra
+        });
+    </script>
+{% endblock %}

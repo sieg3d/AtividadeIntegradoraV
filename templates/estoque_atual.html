@@ -1,0 +1,47 @@
+{% extends 'base.html' %} 
+
+{% block title %}Estoque Atual{% endblock %} 
+
+{% block content %}
+<h1>Estoque Atual</h1>
+
+<form id="search-form" method="GET" action="/estoque">
+    <input type="text" name="busca" id="search" placeholder="Buscar item no estoque...">
+    
+    <!-- Dropdown para selecionar categoria -->
+    <select name="categoria" id="categoria">
+        <option value="todas">Todas as Categorias</option>
+        {% for categoria in categorias %}
+        <option value="{{ categoria }}" {% if request.args.get('categoria') == categoria %}selected{% endif %}>{{ categoria }}</option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">Filtrar</button>
+</form>
+
+<table class="estoque-table" id="estoqueTable" data-sort-direction="asc">
+    <thead>
+        <tr>
+            <th>Nome <span class="sort-arrow"></span></th>
+            <th>Categoria <span class="sort-arrow"></span></th>
+            <th>Quantidade <span class="sort-arrow"></span></th>
+            <th>Preço <span class="sort-arrow"></span></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in itens %}
+        <tr>
+            <td>{{ item.nome }}</td>
+            <td>{{ item.categoria }}</td>
+            <td class="{{ 'alerta' if item.quantidade <= 0 else '' }}">{{ item.quantidade }}</td>
+            <td>R$ {{ item.preco }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+
+
+{% endblock %}

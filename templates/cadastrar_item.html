@@ -1,0 +1,45 @@
+{% extends 'base.html' %} 
+
+{% block title %}Cadastrar Itens{% endblock %} 
+
+{% block content %}
+<div class="container">
+    <h1>Cadastrar Novo Item</h1> 
+
+    <!-- Exibe as mensagens de sucesso ou erro, se houver, utilizando o sistema de mensagens flash do Flask -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="alert-container">
+        {% for category, message in messages %} <!-- Loop para exibir todas as mensagens -->
+        <div class="alert alert-{{ category }}">{{ message }}</div> <!-- Exibe a mensagem com a categoria (ex: sucesso, erro) -->
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <!-- Exibe a mensagem de erro específica, se houver -->
+    {% if error %}
+    <div class="alert alert-danger">{{ error }}</div> <!-- Exibe a mensagem de erro -->
+    {% endif %}
+
+    <!-- Formulário para cadastrar um novo item no estoque -->
+    <form method="POST">
+        Nome do Item: <input type="text" name="nome" value="{{ nome }}" required><br> 
+        Descrição: <textarea name="descricao" required>{{ descricao }}</textarea><br> 
+    
+        Categoria:
+        <select name="categoria" required>
+            <option value="Alimento" {% if categoria == 'Alimento' %}selected{% endif %}>Alimento</option>
+            <option value="Higiene" {% if categoria == 'Higiene' %}selected{% endif %}>Higiene</option>
+            <option value="Limpeza" {% if categoria == 'Limpeza' %}selected{% endif %}>Limpeza</option>
+            <option value="Escritorio" {% if categoria == 'Escritorio' %}selected{% endif %}>Escritório</option>
+            <option value="Manutencao" {% if categoria == 'Manutencao' %}selected{% endif %}>Manutenção</option>
+            <option value="Outros" {% if categoria == 'Outros' %}selected{% endif %}>Outros</option>
+        </select><br> 
+    
+        Quantidade Inicial: <input type="number" name="quantidade" value="{{ quantidade }}" min="0" required><br> 
+        Preço: <input type="number" name="preco" value="{{ preco }}" step="0.01" min="0" required><br> 
+        <button type="submit">Cadastrar</button>
+    </form>
+</div>
+{% endblock %}
