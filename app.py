@@ -505,6 +505,23 @@ def gerar_cestas():
     return redirect(url_for('cestas'))
 
 
+@app.route('/home', methods=['GET'])
+def home_dashboard():
+    # Contagens de status
+    total_projetos = Projeto.query.count()
+    pendentes = Projeto.query.filter_by(status='Pendente').count()
+    em_andamento = Projeto.query.filter_by(status='Em andamento').count()
+    concluidos = Projeto.query.filter_by(status='Concluído').count()
+    cancelados = Projeto.query.filter_by(status='Cancelado').count()
+
+    return render_template('home.html', 
+                           total_projetos=total_projetos, 
+                           pendentes=pendentes, 
+                           em_andamento=em_andamento, 
+                           concluidos=concluidos, 
+                           cancelados=cancelados)
+
+
 
 # Inicializa o banco de dados e roda o aplicativo Flask
 if __name__ == '__main__':

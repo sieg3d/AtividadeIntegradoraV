@@ -1,9 +1,29 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} 
 
-{% block title %}Home{% endblock %}
+{% block title %}Home{% endblock %} 
 
 {% block content %}
-        <!-- <h1>Bem-vindo à Gestão de Projetos</h1>
-        <a id="home" href="{{ url_for('cadastrar_projeto') }}">Cadastrar Projeto</a>
-        <a id="home" href="{{ url_for('acompanhar_status') }}">Acompanhar Status</a> -->
-        {% endblock %}
+    <div id="home-page">
+        <!-- Conteúdo da home -->
+        <div class="container">
+            <div class="column">
+                <div class="status-container">
+                    <h3>Quantidade de Projetos</h3>
+                    
+                </div>
+
+                <div class="status-container">
+                    <h3>Reclamações</h3>
+                    
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="status-container">
+                    <h3>Agenda de Compromissos</h3>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
