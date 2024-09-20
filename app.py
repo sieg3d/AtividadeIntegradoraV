@@ -7,6 +7,8 @@ import pytz
 import unicodedata  # Importa módulo para remover acentos
 from flask import jsonify  # Importa jsonify para retornar respostas em JSON
 
+
+
 # Função para remover acentos de um texto
 def remover_acentos(texto):
     return ''.join(c for c in unicodedata.normalize('NFD', texto) if unicodedata.category(c) != 'Mn')
@@ -73,11 +75,6 @@ def cadastrar_item():
 
 
 # Rota para registrar a entrada de itens
-
-
-from datetime import datetime
-import pytz
-
 @app.route('/entrada', methods=['GET', 'POST']) 
 def entrada_item():
     if request.method == 'POST':  # Se a requisição for POST, processa a entrada de itens

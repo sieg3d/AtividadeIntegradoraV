@@ -49,6 +49,7 @@ a {
 a:hover {
     background-color: #ddd; /* Cor de fundo ao passar o mouse */
     color: black; /* Cor do texto ao passar o mouse */
+    border-radius: 10px;
 }
 
 /* Estilo da área de conteúdo */
@@ -576,4 +577,75 @@ button.btn-cadastrar:hover {
     color: red;
     font-weight: bold;
     margin-bottom: 15px;
+}
+
+
+/* Estilos para o formulário de busca */
+.search-form {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centraliza os elementos horizontalmente */
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.search-form .form-group {
+    margin-right: 10px;
+}
+
+.search-form .form-group:last-child {
+    margin-right: 0;
+}
+
+.search-form input[type="text"] {
+    width: 1500px;
+    max-width: 100%; /* Garante que não ultrapasse a largura da tela */
+    padding: 10px;
+    font-size: 16px;
+}
+
+.search-form select {
+    width: 200px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.search-form button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #28a745; /* Cor do botão */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-form button:hover {
+    background-color: #218838; /* Cor do botão ao passar o mouse */
+}
+
+/* Responsividade para telas menores que 1600px */
+@media (max-width: 1600px) {
+    .search-form {
+        flex-direction: column; /* Empilha os elementos verticalmente */
+        align-items: center; /* Centraliza os elementos */
+    }
+
+    .search-form .form-group {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .search-form .form-group:last-child {
+        margin-bottom: 0;
+    }
+
+    .search-form input[type="text"] {
+        width: 100%; /* Ocupa toda a largura disponível */
+    }
+
+    .search-form select,
+    .search-form button {
+        width: auto; /* Ajusta a largura ao conteúdo */
+    }
 }
