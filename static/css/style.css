@@ -13,7 +13,6 @@ body {
     color: white; /* Cor do texto no cabeçalho */
     padding: 20px 0; /* Espaçamento interno */
     text-align: center; /* Centraliza o texto */
-    font-family: Arial, sans-serif; /* Fonte do cabeçalho */
 }
 
 .site-header h1 {
@@ -30,7 +29,6 @@ body {
 /* Estilos para títulos */
 h1, h3 {
     text-align: center; /* Centraliza os títulos */
-    color: #333; /* Cor do texto */
     margin-top: 0; /* Remove margem superior */
 }
 
@@ -44,10 +42,7 @@ h1, h3 {
 /* Estilos para links */
 a {
     text-decoration: none; /* Remove sublinhado dos links */
-    background-color: transparent;
     color: white; /* Cor do texto */
-    padding: 10px 20px; /* Espaçamento interno */
-    border-radius: 5px; /* Bordas arredondadas */
     transition: background-color 0.3s ease; /* Animação na mudança de cor */
 }
 
@@ -81,7 +76,12 @@ input[type="text"], input[type="date"], textarea, select {
     box-sizing: border-box; /* Garante que padding seja incluído na largura */
 }
 
-/* Evita que o textarea seja redimensionado horizontalmente */
+form input[type="text"], form input[type="date"] {
+    max-width: 200px; /* Largura máxima dos campos */
+    display: inline-block; /* Exibe lado a lado */
+    margin-right: 10px; /* Margem à direita */
+}
+
 textarea {
     resize: vertical;
 }
@@ -103,6 +103,16 @@ button:hover {
     background-color: #218838; /* Cor de fundo ao passar o mouse */
 }
 
+button.btn-cadastrar {
+    display: block;
+    font-size: 18px;
+    margin: 20px auto 0;
+}
+
+button.btn-cadastrar:hover {
+    background-color: #218838;
+}
+
 /* Estilos para os cards de projetos */
 .projetos {
     display: flex; /* Alinha os cards em linha */
@@ -114,7 +124,6 @@ button:hover {
     background-color: white; /* Cor de fundo do card */
     width: 300px; /* Largura fixa */
     margin: 20px; /* Espaçamento externo */
-    padding: 0;
     border-radius: 10px; /* Bordas arredondadas */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra */
     transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animação ao passar o mouse */
@@ -212,13 +221,6 @@ button:hover {
     background-color: #6c757d; /* Cor de fundo cinza */
 }
 
-/* Tabela de filtros */
-form input[type="text"], form input[type="date"] {
-    max-width: 200px; /* Largura máxima dos campos */
-    display: inline-block; /* Exibe lado a lado */
-    margin-right: 10px; /* Margem à direita */
-}
-
 /* Botão para a página inicial */
 #home {
     background-color: blue; /* Cor de fundo azul */
@@ -238,31 +240,66 @@ form input[type="text"], form input[type="date"] {
     width: 100%; /* Largura total */
     border-collapse: collapse; /* Remove espaçamento entre as células */
     margin-top: 20px; /* Margem superior */
+    font-family: Arial, sans-serif;
 }
 
 .estoque-table th, .estoque-table td {
-    padding: 10px; /* Espaçamento interno */
-    text-align: left; /* Alinhamento à esquerda */
-    border-bottom: 1px solid #ddd; /* Linha inferior */
+    border: 1px solid #ddd;
+    padding: 8px;
 }
 
 .estoque-table th {
-    background-color: #f4f7f6; /* Cor de fundo para o cabeçalho */
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
     font-weight: bold; /* Peso da fonte */
+}
+
+.estoque-table td {
+    text-align: center;
+}
+
+.estoque-table td:nth-child(3),
+.estoque-table td:nth-child(4) {
+    text-align: right;
+}
+
+.estoque-table td.alerta {
+    color: red;
+    font-weight: bold;
 }
 
 .estoque-table tr:hover {
     background-color: #f1f1f1; /* Cor de fundo ao passar o mouse */
 }
 
-/* Alertas de erro */
-.alert-danger {
-    color: #721c24; /* Cor do texto */
-    background-color: #f8d7da; /* Cor de fundo */
-    border-color: #f5c6cb; /* Cor da borda */
-    padding: 10px; /* Espaçamento interno */
-    margin-bottom: 20px; /* Espaçamento inferior */
-    border-radius: 5px; /* Bordas arredondadas */
+/* Estilo da barra de pesquisa */
+.search-bar input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Estilos para mensagens de sucesso ou erro */
+.mensagens {
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 4px;
+}
+
+.mensagens.success {
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+    color: #3c763d;
+}
+
+.mensagens.danger {
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    color: #a94442;
 }
 
 /* Estilos para a Navbar */
@@ -280,15 +317,11 @@ form input[type="text"], form input[type="date"] {
     margin: 0;
     padding: 0;
     display: flex; /* Exibe os itens em linha */
+    flex-wrap: wrap;
 }
 
 .navbar ul li {
     position: relative; /* Necessário para o dropdown */
-}
-
-/* Menu principal da Navbar */
-.navbar ul.main-menu > li {
-    float: left;
 }
 
 .navbar ul.main-menu > li > a {
@@ -354,6 +387,19 @@ form input[type="text"], form input[type="date"] {
         left: 0;
         top: auto;
     }
+
+    .form-row {
+        flex-direction: column;
+    }
+
+    .form-group {
+        margin-right: 0;
+    }
+
+    .estoque-table th, .estoque-table td {
+        font-size: 12px;
+        padding: 4px;
+    }
 }
 
 /* Estilo para botões estilizados como botões de rádio */
@@ -388,101 +434,6 @@ form input[type="text"], form input[type="date"] {
     color: white; /* Cor do texto */
 }
 
-/* Estilo para a barra de pesquisa */
-.search-bar {
-    margin-top: 10px;
-}
-
-.search-bar input {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-/* Estilos para mensagens de sucesso ou erro */
-.mensagens {
-    padding: 10px;
-    background-color: #dff0d8;
-    border: 1px solid #d6e9c6;
-    color: #3c763d;
-    border-radius: 4px;
-}
-
-.danger {
-    background-color: #f2dede;
-    border-color: #ebccd1;
-    color: #a94442;
-}
-
-.success {
-    background-color: #dff0d8;
-    border-color: #d6e9c6;
-    color: #3c763d;
-}
-
-/* Estilo da tabela */
-.estoque-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    font-family: Arial, sans-serif;
-}
-
-.estoque-table th, .estoque-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-}
-
-.estoque-table th {
-    background-color: #4CAF50;
-    color: white;
-    text-align: center;
-}
-
-.estoque-table td {
-    text-align: center;
-}
-
-.estoque-table td:nth-child(3), /* Coluna da quantidade */
-.estoque-table td:nth-child(4) { /* Coluna do preço */
-    text-align: right;
-}
-
-/* Realce de valores baixos */
-.estoque-table td.alerta {
-    color: red;
-    font-weight: bold;
-}
-
-/* Estilo da barra de pesquisa */
-input[type=text] {
-    width: 100%;
-    padding: 12px;
-    margin-top: 12px;
-    font-size: 16px;
-    border: 1px solid #ddd;
-}
-
-/* Responsividade */
-@media only screen and (max-width: 600px) {
-    .estoque-table th, .estoque-table td {
-        font-size: 12px;
-        padding: 4px;
-    }
-}
-
-/* Estilo para as setas de ordenação */
-.sort-arrow {
-    margin-left: 5px;
-    font-size: 12px;
-    color: rgb(255, 255, 255);
-}
-
-
-/*-------------------------------------------------------------------------------------------------------------
-
 /* Estilos específicos para a home */
 #home-page .container {
     display: grid;
@@ -493,7 +444,6 @@ input[type=text] {
     margin: 0 auto;
 }
 
-
 #home-page .status-container {
     background-color: white;
     padding: 20px;
@@ -502,7 +452,6 @@ input[type=text] {
     text-align: center;
     margin-bottom: 30px; /* Espaçamento entre os cards verticalmente */
 }
-
 
 #home-page footer {
     background-color: blue;
@@ -514,4 +463,117 @@ input[type=text] {
     bottom: 0;
 }
 
+/* Estilos do formulário */
+.form-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 900px;
+    margin: 50px auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
 
+.form-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.form-group:last-child {
+    margin-right: 0;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 900px;
+    margin: 50px auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.form-group:last-child {
+    margin-right: 0;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input[type="text"], input[type="date"], textarea, select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+button.btn-cadastrar {
+    display: block;
+    background-color: #28a745;
+    color: white;
+    font-size: 18px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 20px auto 0;
+}
+
+button.btn-cadastrar:hover {
+    background-color: #218838;
+}
+
+/* Ajuste responsivo */
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+    }
+
+    .form-group {
+        margin-right: 0;
+    }
+}
+
+.error-message {
+    color: red;
+    font-weight: bold;
+    margin-bottom: 15px;
+}

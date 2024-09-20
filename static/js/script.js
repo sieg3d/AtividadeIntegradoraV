@@ -139,3 +139,21 @@ document.addEventListener('DOMContentLoaded', function () {
         arrowElement.textContent = isAscending ? '↓' : '↑';  // Seta descendente ou ascendente
     }
 });
+
+
+// Função para validar o orçamento no formulário
+function validarFormulario() {
+    var orcamento = document.getElementById('orcamento').value;
+    if (orcamento) {
+        // Substitui a vírgula por ponto e remove espaços em branco
+        orcamento = parseFloat(orcamento.replace(',', '.').trim());
+        if (isNaN(orcamento)) {
+            alert('O orçamento deve ser um número válido.');
+            return false;
+        } else if (orcamento < 0) {
+            alert('O orçamento não pode ser negativo.');
+            return false;
+        }
+    }
+    return true;
+}

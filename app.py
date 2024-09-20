@@ -251,18 +251,55 @@ def movimentacoes_estoque():
 # Rota para cadastrar um novo projeto
 @app.route('/cadastrar', methods=['GET', 'POST'])
 def cadastrar_projeto():
-    if request.method == 'POST':  # Se a requisição for POST, processa o formulário de cadastro de projeto
-        nome = request.form['nome']
-        descricao = request.form['descricao']
-        prioridade = request.form['prioridade']
-        previsao_termino = datetime.strptime(request.form['previsao_termino'], '%Y-%m-%d').date()
-        responsavel = request.form['responsavel']
-        status = request.form['status']
-        orcamento = float(request.form['orcamento']) if request.form['orcamento'] else None
+    if request.method == 'POST':
+        nome = request.form.get('nome')
+        descricao = request.form.get('descricao')
+        prioridade = request.form.get('prioridade')
+        previsao_termino_str = request.form.get('previsao_termino')
+        responsavel = request.form.get('responsavel')
+        status = request.form.get('status')
+        orcamento_str = request.form.get('orcamento')
+
+        # Converte a previsão de término para datetime.date
+        if previsao_termino_str:
+            previsao_termino = datetime.strptime(previsao_termino_str, '%Y-%m-%d').date()
+        else:
+            previsao_termino = None
+
+        # Converte o orçamento para float
+        if orcamento_str:
+            try:
+                orcamento = float(orcamento_str)
+            except ValueError:
+                error = "O orçamento deve ser um número válido."
+                return render_template(
+                    'cadastrar_projeto.html',
+                    error=error,
+                    nome=nome,
+                    descricao=descricao,
+                    prioridade=prioridade,
+                    previsao_termino=previsao_termino_str,
+                    responsavel=responsavel,
+                    status=status,
+                    orcamento=orcamento_str
+                )
+        else:
+            orcamento = None
 
         # Verifica se o orçamento é negativo
         if orcamento is not None and orcamento < 0:
-            return render_template('cadastrar_projeto.html', error="O orçamento não pode ser negativo!", nome=nome, descricao=descricao, prioridade=prioridade, previsao_termino=previsao_termino, responsavel=responsavel, status=status, orcamento=orcamento)
+            error = "O orçamento não pode ser negativo!"
+            return render_template(
+                'cadastrar_projeto.html',
+                error=error,
+                nome=nome,
+                descricao=descricao,
+                prioridade=prioridade,
+                previsao_termino=previsao_termino_str,
+                responsavel=responsavel,
+                status=status,
+                orcamento=orcamento_str
+            )
 
         # Cria um novo projeto
         novo_projeto = Projeto(
@@ -274,12 +311,15 @@ def cadastrar_projeto():
             status=status,
             orcamento=orcamento
         )
-        db.session.add(novo_projeto)  # Adiciona o projeto ao banco de dados
-        db.session.commit()  # Confirma a transação
+        db.session.add(novo_projeto)
+        db.session.commit()
 
-        return redirect(url_for('acompanhar_status'))  # Redireciona para a página de acompanhamento de status
+        flash("Projeto cadastrado com sucesso!", "success")
+        return redirect(url_for('acompanhar_status'))
 
-    return render_template('cadastrar_projeto.html')  # Renderiza o formulário de cadastro de projeto
+    # Se a requisição for GET, ou se o formulário for inválido
+    return render_template('cadastrar_projeto.html')
+
 
 
 # Rota para acompanhar o status dos projetos

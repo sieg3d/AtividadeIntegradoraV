@@ -1,46 +1,60 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 
-{% block title %}Cadastrar Projetos{% endblock %} 
+{% block title %}Cadastrar Projetos{% endblock %}
 
 {% block content %}
-    <div class="container">
-        <h1>Cadastrar Novo Projeto</h1>
-
-        <!-- Formulário para cadastrar um novo projeto -->
-        <form method="POST">
-            Nome: <input type="text" name="nome" required><br> <!-- Campo para o nome do projeto (obrigatório) -->
-
-            Descrição: <textarea name="descricao" required></textarea><br> <!-- Campo para a descrição do projeto (obrigatório) -->
-
-            <!-- Campo de seleção para a prioridade do projeto (obrigatório) -->
-            Prioridade:
-            <select name="prioridade" required>
-                <option value="Baixa">Baixa</option> 
-                <option value="Média">Média</option> 
-                <option value="Alta">Alta</option> 
-                <option value="Crítica">Crítica</option> 
-            </select><br>
-
-            <!-- Campo para inserir a data de previsão de término do projeto (obrigatório) -->
-            Previsão de término: <input type="date" name="previsao_termino" required><br>
-
-            <!-- Campo para inserir o nome do responsável pelo projeto (obrigatório) -->
-            Responsável: <input type="text" name="responsavel" required><br>
-
-            <!-- Campo de seleção para o status do projeto (obrigatório) -->
-            Status:
-            <select name="status" required>
-                <option value="Em andamento">Em andamento</option> 
-                <option value="Concluído">Concluído</option> 
-                <option value="Pendente">Pendente</option> 
-                <option value="Cancelado">Cancelado</option> 
-            </select><br>
-
-            <!-- Campo para inserir o orçamento do projeto (opcional), com dois dígitos decimais -->
-            Orçamento: <input type="number" name="orcamento" step="0.01" min="0"><br>
-
-            <!-- Botão para submeter o formulário -->
-            <button type="submit">Cadastrar</button>
-        </form>
-    </div>
+<div class="form-container">
+    <h1>Cadastrar Projeto</h1>
+    <form method="POST" onsubmit="return validarFormulario()">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome" required>
+            </div>
+            <div class="form-group">
+                <label for="responsavel">Responsável:</label>
+                <input type="text" id="responsavel" name="responsavel" required>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="descricao">Descrição:</label>
+            <textarea id="descricao" name="descricao" rows="3"></textarea>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="prioridade">Prioridade:</label>
+                <select id="prioridade" name="prioridade">
+                    <option value="Baixa">Baixa</option>
+                    <option value="Média">Média</option>
+                    <option value="Alta">Alta</option>
+                    <option value="Crítica">Crítica</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="previsao_termino">Previsão de término:</label>
+                <input type="date" id="previsao_termino" name="previsao_termino" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="status">Status:</label>
+                <select id="status" name="status">
+                    <option value="Em andamento">Em andamento</option>
+                    <option value="Concluído">Concluído</option>
+                    <option value="Pendente">Pendente</option>
+                    <option value="Cancelado">Cancelado</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="orcamento">Orçamento:</label>
+                <input type="text" id="orcamento" name="orcamento"  step="0.01" min="0">
+            </div>
+        </div>
+        
+        <button type="submit" class="btn-cadastrar">Cadastrar</button>
+    </form>
+</div>
 {% endblock %}
