@@ -1,84 +1,83 @@
 // Função para exibir ou ocultar o campo de período personalizado
 function togglePeriodoPersonalizado(value) {
-    var periodoPersonalizado = document.getElementById('periodo-personalizado'); // Seleciona o elemento do período personalizado
+    var periodoPersonalizado = document.getElementById('periodo-personalizado');
     if (value === 'personalizado') {
-        periodoPersonalizado.style.display = 'block'; // Exibe o campo se a opção 'personalizado' for selecionada
+        periodoPersonalizado.style.display = 'block';
     } else {
-        periodoPersonalizado.style.display = 'none'; // Oculta o campo caso contrário
+        periodoPersonalizado.style.display = 'none';
     }
 }
 
-// Inicializa o estado do filtro personalizado baseado na seleção quando a página é carregada
-document.addEventListener('DOMContentLoaded', function () {
-    var periodoDropdown = document.getElementById('periodo'); // Seleciona o dropdown de período
-    if (periodoDropdown) {
-        var periodoSelecionado = periodoDropdown.value; // Obtém o valor selecionado no dropdown
-        togglePeriodoPersonalizado(periodoSelecionado); // Chama a função para exibir/ocultar o período personalizado
+// Função para validar o formulário de cadastro de projetos
+function validarFormulario() {
+    var orcamento = document.getElementById('orcamento').value;
+    if (orcamento) {
+        orcamento = parseFloat(orcamento.replace(',', '.').trim());
+        if (isNaN(orcamento)) {
+            alert('O orçamento deve ser um número válido.');
+            return false;
+        } else if (orcamento < 0) {
+            alert('O orçamento não pode ser negativo.');
+            return false;
+        }
+    }
+    return true;
+}
 
-        // Atualiza a exibição sempre que a seleção do dropdown mudar
+// Evento DOMContentLoaded para garantir que o DOM esteja carregado
+document.addEventListener('DOMContentLoaded', function () {
+    // Código relacionado ao período personalizado
+    var periodoDropdown = document.getElementById('periodo');
+    if (periodoDropdown) {
+        var periodoSelecionado = periodoDropdown.value;
+        togglePeriodoPersonalizado(periodoSelecionado);
+
         periodoDropdown.addEventListener('change', function () {
-            togglePeriodoPersonalizado(this.value); // Chama a função ao alterar a seleção
+            togglePeriodoPersonalizado(this.value);
         });
     }
-});
 
-//------------------------------------------------------------------------------------------------------------------------------------------
-
-// Código para controlar o comportamento dos dropdowns no menu de navegação
-document.addEventListener('DOMContentLoaded', function () {
-    var mainMenuItems = document.querySelectorAll('.navbar ul.main-menu > li'); // Seleciona todos os itens do menu principal
-
+    // Código para controlar o comportamento dos dropdowns no menu de navegação
+    var mainMenuItems = document.querySelectorAll('.navbar ul.main-menu > li');
     mainMenuItems.forEach(function (menuItem) {
         menuItem.addEventListener('click', function (event) {
-            var dropdownContent = menuItem.querySelector('.dropdown-content'); // Seleciona o conteúdo do dropdown
-
-            // Se o menu clicado tiver um dropdown, alterna a visibilidade dele
+            var dropdownContent = menuItem.querySelector('.dropdown-content');
             if (dropdownContent) {
-                event.preventDefault(); // Impede a navegação para itens que têm dropdown
+                event.preventDefault();
 
-                // Fecha outros dropdowns abertos
                 mainMenuItems.forEach(function (item) {
                     var dropdown = item.querySelector('.dropdown-content');
                     if (dropdown && dropdown !== dropdownContent) {
-                        dropdown.style.display = 'none'; // Fecha dropdowns que não foram clicados
+                        dropdown.style.display = 'none';
                     }
                 });
 
-                // Alterna a exibição do dropdown clicado
                 dropdownContent.style.display = (dropdownContent.style.display === 'block') ? 'none' : 'block';
             }
         });
     });
 
-    // Fecha dropdowns ao clicar fora deles
     window.addEventListener('click', function (event) {
-        if (!event.target.matches('.main-menu > li > a')) { // Verifica se o clique foi fora dos links do menu principal
+        if (!event.target.matches('.main-menu > li > a')) {
             mainMenuItems.forEach(function (menuItem) {
                 var dropdown = menuItem.querySelector('.dropdown-content');
-                if (dropdown) dropdown.style.display = 'none'; // Fecha o dropdown se clicado fora
+                if (dropdown) dropdown.style.display = 'none';
             });
         }
     });
 
-    // Permite que os links dentro do dropdown sejam clicados normalmente
-    var dropdownLinks = document.querySelectorAll('.dropdown-content a'); // Seleciona os links dentro dos dropdowns
-
+    var dropdownLinks = document.querySelectorAll('.dropdown-content a');
     dropdownLinks.forEach(function (link) {
         link.addEventListener('click', function (event) {
-            // Deixa os links do dropdown funcionar normalmente
             var targetHref = this.getAttribute('href');
             if (targetHref) {
-                window.location.href = targetHref; // Redireciona para o link clicado
+                window.location.href = targetHref;
             }
         });
     });
-});
 
-
-document.addEventListener('DOMContentLoaded', function () {
+    // Código para ordenação da tabela em estoque.html
     let table = document.querySelector(".estoque-table");
-    
-    // Verifica se a tabela foi encontrada antes de continuar
     if (table) {
         let headers = table.querySelectorAll("th");
 
@@ -92,23 +91,19 @@ document.addEventListener('DOMContentLoaded', function () {
             let rows = Array.from(table.querySelectorAll("tbody > tr"));
             let isAscending = headerElement.getAttribute('data-sort-direction') === 'asc';
 
-            // Definir quais colunas são numéricas
-            let numericColumns = [2, 3]; // Índices das colunas "Quantidade" e "Preço"
+            let numericColumns = [2, 3];
             let isNumericColumn = numericColumns.includes(columnIndex);
 
-            // Realizar a ordenação
             rows.sort(function(rowA, rowB) {
                 let cellA = rowA.querySelectorAll("td")[columnIndex].textContent.trim();
                 let cellB = rowB.querySelectorAll("td")[columnIndex].textContent.trim();
 
                 if (isNumericColumn) {
-                    // Para a coluna "Preço", remover "R$" e formatar corretamente
                     cellA = parseFloat(cellA.replace('R$', '').replace(',', '.').trim());
                     cellB = parseFloat(cellB.replace('R$', '').replace(',', '.').trim());
 
                     return isAscending ? cellA - cellB : cellB - cellA;
                 } else {
-                    // Ordenar como texto (alfabética), ignorando case e acentos
                     cellA = cellA.toLowerCase();
                     cellB = cellB.toLowerCase();
 
@@ -116,60 +111,73 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
 
-            // Remover todas as linhas do tbody e reinserir as ordenadas
             let tbody = table.querySelector("tbody");
             tbody.innerHTML = "";
             rows.forEach(function(row) {
                 tbody.appendChild(row);
             });
 
-            // Alternar a direção de ordenação
             isAscending = !isAscending;
             headerElement.setAttribute('data-sort-direction', isAscending ? 'asc' : 'desc');
 
-            // Atualizar a seta no cabeçalho
             updateSortArrow(headers, headerElement, isAscending);
         }
 
         function updateSortArrow(headers, headerElement, isAscending) {
-            // Remove as setas de todos os cabeçalhos
             headers.forEach(function(th) {
                 let arrow = th.querySelector(".sort-arrow");
-                if (arrow) arrow.textContent = '';  // Limpa a seta
+                if (arrow) arrow.textContent = '';
             });
 
-            // Adiciona a seta de acordo com a direção de ordenação no cabeçalho atual
             let arrowElement = headerElement.querySelector(".sort-arrow");
             if (!arrowElement) {
-                // Se o span da seta não existir, cria um
                 arrowElement = document.createElement('span');
                 arrowElement.classList.add('sort-arrow');
                 headerElement.appendChild(arrowElement);
             }
 
-            // Define a seta dependendo da direção de ordenação
-            arrowElement.textContent = isAscending ? '↑' : '↓';  // Seta ascendente ou descendente
+            arrowElement.textContent = isAscending ? '↑' : '↓';
         }
-    } else {
-        console.error("Tabela com a classe '.estoque-table' não encontrada.");
+    }
+
+    // Código para o formulário de entrada de itens
+    var entradaForm = document.getElementById('entradaForm');
+    if (entradaForm) {
+        entradaForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+            const url = this.getAttribute('data-url');
+
+            fetch(url, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const mensagens = document.getElementById('mensagens');
+                    const novaMensagem = document.createElement('li');
+                    novaMensagem.classList.add('alert', 'alert-success', 'success');
+                    novaMensagem.textContent = `Entrada de ${data.quantidade} unidade(s) de ${data.item} realizada com sucesso!`;
+                    mensagens.querySelector('ul').appendChild(novaMensagem);
+
+                    document.getElementById('quantidade').value = '';
+                } else {
+                    alert('Erro ao registrar entrada: ' + data.error);
+                }
+            })
+            .catch(error => console.error('Erro:', error));
+        });
+    }
+
+    // Código para validar o formulário de cadastro de projetos
+    var cadastrarProjetoForm = document.getElementById('cadastrarProjetoForm');
+    if (cadastrarProjetoForm) {
+        cadastrarProjetoForm.addEventListener('submit', function(event) {
+            if (!validarFormulario()) {
+                event.preventDefault();
+            }
+        });
     }
 });
-
-
-// Função para validar o orçamento no formulário
-function validarFormulario() {
-    var orcamento = document.getElementById('orcamento').value;
-    if (orcamento) {
-        // Substitui a vírgula por ponto e remove espaços em branco
-        orcamento = parseFloat(orcamento.replace(',', '.').trim());
-        if (isNaN(orcamento)) {
-            alert('O orçamento deve ser um número válido.');
-            return false;
-        } else if (orcamento < 0) {
-            alert('O orçamento não pode ser negativo.');
-            return false;
-        }
-    }
-    return true;
-}
-
