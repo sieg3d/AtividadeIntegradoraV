@@ -541,6 +541,65 @@ def gerar_cestas():
     flash(f'{qtd_cestas} cesta(s) básica(s) gerada(s) com sucesso!', 'success')  # Exibe mensagem de sucesso
     return redirect(url_for('cestas'))
 
+@app.route('/cestas_personalizadas')
+def cestas_personalizadas():
+    # Obtém todos os itens do estoque
+    itens = Item.query.all()
+    return render_template('cestas_personalizadas.html', itens=itens)
+
+
+@app.route('/gerar_cestas_personalizadas', methods=['POST'])
+def gerar_cestas_personalizadas():
+    qtd_cestas = int(request.form['quantidade'])
+    itens_selecionados_ids = request.form.getlist('itens_selecionados')
+
+    if qtd_cestas <= 0:
+        flash("A quantidade de cestas deve ser maior que zero.", 'danger')
+        return redirect(url_for('cestas_personalizadas'))
+
+    if not itens_selecionados_ids:
+        flash("Selecione pelo menos um item para incluir na cesta básica.", 'danger')
+        return redirect(url_for('cestas_personalizadas'))
+
+    # Obter os itens selecionados
+    itens_selecionados = Item.query.filter(Item.id.in_(itens_selecionados_ids)).all()
+
+    # Verificar a quantidade disponível de cada item e calcular o número máximo de cestas possíveis
+    itens_faltantes = []
+    max_cestas_possiveis = qtd_cestas
+    for item in itens_selecionados:
+        if item.quantidade < qtd_cestas:
+            itens_faltantes.append(f"{item.nome} (disponível: {item.quantidade})")
+            if item.quantidade < max_cestas_possiveis:
+                max_cestas_possiveis = item.quantidade
+
+    if itens_faltantes:
+        flash(f"Quantidade insuficiente dos seguintes itens: {', '.join(itens_faltantes)}", 'danger')
+        if max_cestas_possiveis and max_cestas_possiveis > 0:
+            flash(f"Você pode gerar até {max_cestas_possiveis} cesta(s) com os itens selecionados.", 'info')
+        return redirect(url_for('cestas_personalizadas'))
+
+    # Atualizar o estoque e registrar as movimentações
+    tz = pytz.timezone('America/Sao_Paulo')
+    data_hora_atual = datetime.now(tz)
+
+    for item in itens_selecionados:
+        item.quantidade -= qtd_cestas
+        movimentacao = MovimentacaoEstoque(
+            item_id=item.id,
+            tipo_movimentacao='saida',
+            quantidade=qtd_cestas,
+            saldo_atual=item.quantidade,
+            justificativa='Geração de cestas básicas personalizadas',
+            data_hora=data_hora_atual
+        )
+        db.session.add(movimentacao)
+
+    db.session.commit()
+
+    flash(f'{qtd_cestas} cesta(s) básica(s) personalizada(s) gerada(s) com sucesso!', 'success')
+    return redirect(url_for('cestas_personalizadas'))
+
 
 @app.route('/home', methods=['GET'])
 def home_dashboard():

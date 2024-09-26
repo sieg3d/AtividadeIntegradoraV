@@ -32,12 +32,13 @@
                 <a href="javascript:void(0)" class="dropbtn">Estoque</a>
                 <!-- Itens do dropdown para Estoque -->
                 <ul class="dropdown-content">
-                    <li><a href="{{ url_for('cadastrar_item') }}">Cadastrar Item</a></li> <!-- Link para cadastrar item no estoque -->
-                    <li><a href="{{ url_for('entrada_item') }}">Entrada de Itens</a></li> <!-- Link para registrar entrada de itens -->
-                    <li><a href="{{ url_for('saida_item') }}">Saída de Itens</a></li> <!-- Link para registrar saída de itens -->
-                    <li><a href="{{ url_for('estoque_atual') }}">Estoque Atual</a></li> <!-- Link para ver o estoque atual -->
-                    <li><a href="{{ url_for('movimentacoes_estoque') }}">Movimentações</a></li> <!-- Link para ver movimentações de estoque -->
-                    <li><a href="{{ url_for('cestas') }}">Gerar Cesta Básica</a></li> <!-- Link para gerar cestas básicas -->
+                    <li><a href="{{ url_for('cadastrar_item') }}">Cadastrar Item</a></li>
+                    <li><a href="{{ url_for('entrada_item') }}">Entrada de Itens</a></li>
+                    <li><a href="{{ url_for('saida_item') }}">Saída de Itens</a></li>
+                    <li><a href="{{ url_for('estoque_atual') }}">Estoque Atual</a></li>
+                    <li><a href="{{ url_for('movimentacoes_estoque') }}">Movimentações</a></li>
+                    <li><a href="{{ url_for('cestas') }}">Gerar Cesta Básica</a></li>
+                    <li><a href="{{ url_for('cestas_personalizadas') }}">Gerar Cesta Básica Personalizada</a></li> <!-- Novo link -->
                 </ul>
             </li>
         </ul>

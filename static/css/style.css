@@ -651,3 +651,19 @@ button.btn-cadastrar:hover {
 }
 
 
+/* Estilos para a tabela em cestas.html */
+form table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+form table th, form table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+form table th {
+    background-color: #f2f2f2;
+}
