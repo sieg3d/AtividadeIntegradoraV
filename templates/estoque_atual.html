@@ -1,13 +1,18 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 
-{% block title %}Estoque Atual{% endblock %} 
+{% block title %}Estoque Atual{% endblock %}
+
+{% block head %}
+    <!-- Link para o arquivo CSS externo -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+{% endblock %}
 
 {% block content %}
 <h1>Estoque Atual</h1>
 
 <form id="search-form" method="GET" action="/estoque" class="search-form">
     <div class="form-group">
-        <input type="text" name="busca" id="search" placeholder="Buscar item no estoque..." value="{{ request.args.get('busca', '') }}">
+        <input type="text" name="busca" id="search" placeholder="🔍 Buscar item no estoque..." value="{{ request.args.get('busca', '') }}">
     </div>
     <div class="form-group">
         <select name="categoria" id="categoria">
@@ -18,10 +23,9 @@
         </select>
     </div>
     <div class="form-group">
-        <button type="submit">Filtrar</button>
+        <button type="submit"><i class="fas fa-filter"></i> Filtrar</button>
     </div>
 </form>
-
 
 {% if itens %}
 <table class="estoque-table" id="estoqueTable" data-sort-direction="asc">
@@ -40,21 +44,16 @@
             <td>{{ item.categoria }}</td>
             <td class="{{ 'alerta' if item.quantidade <= 0 else '' }}">{{ item.quantidade }}</td>
             <td>R$ {{ '%.2f' | format(item.preco) }}</td>
-
         </tr>
         {% endfor %}
     </tbody>
 </table>
 {% else %}
-    <p>Nenhum item encontrado.</p>
+    <p class="mensagens danger">Nenhum item encontrado.</p>
 {% endif %}
-
-
-<script>
-    document.getElementById('categoria').addEventListener('change', function() {
-        document.getElementById('search-form').submit();
-    });
-</script>
-
 {% endblock %}
 
+{% block scripts %}
+    <!-- Link para o arquivo JS externo -->
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+{% endblock %}

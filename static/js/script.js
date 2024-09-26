@@ -77,75 +77,81 @@ document.addEventListener('DOMContentLoaded', function () {
 
 document.addEventListener('DOMContentLoaded', function () {
     let table = document.querySelector(".estoque-table");
-    let headers = table.querySelectorAll("th");
+    
+    // Verifica se a tabela foi encontrada antes de continuar
+    if (table) {
+        let headers = table.querySelectorAll("th");
 
-    headers.forEach(function(header, index) {
-        header.addEventListener('click', function() {
-            sortTableByColumn(table, index, header);
-        });
-    });
-
-    function sortTableByColumn(table, columnIndex, headerElement) {
-        let rows = Array.from(table.querySelectorAll("tbody > tr"));
-        let isAscending = headerElement.getAttribute('data-sort-direction') === 'asc';
-
-        // Definir quais colunas são numéricas
-        let numericColumns = [2, 3]; // Índices das colunas "Quantidade" e "Preço"
-        let isNumericColumn = numericColumns.includes(columnIndex);
-
-        // Realizar a ordenação
-        rows.sort(function(rowA, rowB) {
-            let cellA = rowA.querySelectorAll("td")[columnIndex].textContent.trim();
-            let cellB = rowB.querySelectorAll("td")[columnIndex].textContent.trim();
-
-            if (isNumericColumn) {
-                // Para a coluna "Preço", remover "R$" e formatar corretamente
-                cellA = parseFloat(cellA.replace('R$', '').replace(',', '.').trim());
-                cellB = parseFloat(cellB.replace('R$', '').replace(',', '.').trim());
-
-                return isAscending ? cellA - cellB : cellB - cellA;
-            } else {
-                // Ordenar como texto (alfabética), ignorando case e acentos
-                cellA = cellA.toLowerCase();
-                cellB = cellB.toLowerCase();
-
-                return isAscending ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
-            }
+        headers.forEach(function(header, index) {
+            header.addEventListener('click', function() {
+                sortTableByColumn(table, index, header);
+            });
         });
 
-        // Remover todas as linhas do tbody e reinserir as ordenadas
-        let tbody = table.querySelector("tbody");
-        tbody.innerHTML = "";
-        rows.forEach(function(row) {
-            tbody.appendChild(row);
-        });
+        function sortTableByColumn(table, columnIndex, headerElement) {
+            let rows = Array.from(table.querySelectorAll("tbody > tr"));
+            let isAscending = headerElement.getAttribute('data-sort-direction') === 'asc';
 
-        // Alternar a direção de ordenação
-        isAscending = !isAscending;
-        headerElement.setAttribute('data-sort-direction', isAscending ? 'asc' : 'desc');
+            // Definir quais colunas são numéricas
+            let numericColumns = [2, 3]; // Índices das colunas "Quantidade" e "Preço"
+            let isNumericColumn = numericColumns.includes(columnIndex);
 
-        // Atualizar a seta no cabeçalho
-        updateSortArrow(headers, headerElement, isAscending);
-    }
+            // Realizar a ordenação
+            rows.sort(function(rowA, rowB) {
+                let cellA = rowA.querySelectorAll("td")[columnIndex].textContent.trim();
+                let cellB = rowB.querySelectorAll("td")[columnIndex].textContent.trim();
 
-    function updateSortArrow(headers, headerElement, isAscending) {
-        // Remove as setas de todos os cabeçalhos
-        headers.forEach(function(th) {
-            let arrow = th.querySelector(".sort-arrow");
-            if (arrow) arrow.textContent = '';  // Limpa a seta
-        });
+                if (isNumericColumn) {
+                    // Para a coluna "Preço", remover "R$" e formatar corretamente
+                    cellA = parseFloat(cellA.replace('R$', '').replace(',', '.').trim());
+                    cellB = parseFloat(cellB.replace('R$', '').replace(',', '.').trim());
 
-        // Adiciona a seta de acordo com a direção de ordenação no cabeçalho atual
-        let arrowElement = headerElement.querySelector(".sort-arrow");
-        if (!arrowElement) {
-            // Se o span da seta não existir, cria um
-            arrowElement = document.createElement('span');
-            arrowElement.classList.add('sort-arrow');
-            headerElement.appendChild(arrowElement);
+                    return isAscending ? cellA - cellB : cellB - cellA;
+                } else {
+                    // Ordenar como texto (alfabética), ignorando case e acentos
+                    cellA = cellA.toLowerCase();
+                    cellB = cellB.toLowerCase();
+
+                    return isAscending ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
+                }
+            });
+
+            // Remover todas as linhas do tbody e reinserir as ordenadas
+            let tbody = table.querySelector("tbody");
+            tbody.innerHTML = "";
+            rows.forEach(function(row) {
+                tbody.appendChild(row);
+            });
+
+            // Alternar a direção de ordenação
+            isAscending = !isAscending;
+            headerElement.setAttribute('data-sort-direction', isAscending ? 'asc' : 'desc');
+
+            // Atualizar a seta no cabeçalho
+            updateSortArrow(headers, headerElement, isAscending);
         }
 
-        // Define a seta dependendo da direção de ordenação
-        arrowElement.textContent = isAscending ? '↑' : '↓';  // Seta ascendente ou descendente
+        function updateSortArrow(headers, headerElement, isAscending) {
+            // Remove as setas de todos os cabeçalhos
+            headers.forEach(function(th) {
+                let arrow = th.querySelector(".sort-arrow");
+                if (arrow) arrow.textContent = '';  // Limpa a seta
+            });
+
+            // Adiciona a seta de acordo com a direção de ordenação no cabeçalho atual
+            let arrowElement = headerElement.querySelector(".sort-arrow");
+            if (!arrowElement) {
+                // Se o span da seta não existir, cria um
+                arrowElement = document.createElement('span');
+                arrowElement.classList.add('sort-arrow');
+                headerElement.appendChild(arrowElement);
+            }
+
+            // Define a seta dependendo da direção de ordenação
+            arrowElement.textContent = isAscending ? '↑' : '↓';  // Seta ascendente ou descendente
+        }
+    } else {
+        console.error("Tabela com a classe '.estoque-table' não encontrada.");
     }
 });
 
@@ -166,3 +172,4 @@ function validarFormulario() {
     }
     return true;
 }
+

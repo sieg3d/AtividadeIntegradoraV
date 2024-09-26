@@ -560,6 +560,7 @@ def home_dashboard():
 
 
 
+
 # Inicializa o banco de dados e roda o aplicativo Flask
 if __name__ == '__main__':
     with app.app_context():
