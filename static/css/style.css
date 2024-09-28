@@ -652,18 +652,44 @@ button.btn-cadastrar:hover {
 
 
 /* Estilos para a tabela em cestas.html */
+/* Estilos para a tabela em cestas_personalizadas.html */
 form table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
+    table-layout: fixed; /* Adicionado */
 }
 
 form table th, form table td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
+    overflow: hidden; /* Adicionado */
+    text-overflow: ellipsis; /* Adicionado */
+    white-space: nowrap; /* Adicionado */
 }
 
 form table th {
     background-color: #f2f2f2;
+}
+
+form table th:nth-child(1),
+form table td:nth-child(1) {
+    width: 5%; /* Largura para a coluna 'Selecionar Todos' */
+}
+
+form table th:nth-child(2),
+form table td:nth-child(2) {
+    width: 50%; /* Largura para a coluna 'Item' */
+}
+
+form table th:nth-child(3),
+form table td:nth-child(3) {
+    width: 25%; /* Largura para a coluna 'Categoria' */
+}
+
+form table th:nth-child(4),
+form table td:nth-child(4) {
+    width: 15%; /* Largura para a coluna 'Quantidade Disponível' */
+    text-align: center; /* Centraliza o conteúdo */
 }

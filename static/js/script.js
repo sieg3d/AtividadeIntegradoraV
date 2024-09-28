@@ -180,4 +180,31 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
+    // Código para o "Selecionar Todos" em cestas_personalizadas.html
+    var selectAllCheckbox = document.getElementById('select-all');
+    if (selectAllCheckbox) {
+        var itemCheckboxes = document.querySelectorAll('.item-checkbox');
+
+        selectAllCheckbox.addEventListener('change', function () {
+            var isChecked = this.checked;
+            itemCheckboxes.forEach(function (checkbox) {
+                checkbox.checked = isChecked;
+            });
+        });
+
+        // Atualiza o estado do "Selecionar Todos" baseado nos checkboxes individuais
+        itemCheckboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', function () {
+                if (!this.checked) {
+                    selectAllCheckbox.checked = false;
+                } else {
+                    var allChecked = Array.from(itemCheckboxes).every(function (cb) {
+                        return cb.checked;
+                    });
+                    selectAllCheckbox.checked = allChecked;
+                }
+            });
+        });
+    }
 });
