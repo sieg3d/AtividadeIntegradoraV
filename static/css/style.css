@@ -483,6 +483,7 @@ button.btn-cadastrar:hover {
     display: flex;
     justify-content: space-between;
     margin-bottom: 15px;
+    flex-wrap: wrap; /* Adicionado para melhor responsividade */
 }
 
 .form-group {
@@ -499,67 +500,10 @@ button.btn-cadastrar:hover {
     margin-bottom: 5px;
 }
 
-.form-container {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    max-width: 900px;
-    margin: 50px auto;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.form-container h1 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.form-row {
-    display: flex;
-    justify-content: space-between;
+.error-message {
+    color: red;
+    font-weight: bold;
     margin-bottom: 15px;
-}
-
-.form-group {
-    flex: 1;
-    margin-right: 20px;
-}
-
-.form-group:last-child {
-    margin-right: 0;
-}
-
-.form-group label {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-input[type="text"], input[type="date"], textarea, select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-}
-
-textarea {
-    resize: vertical;
-}
-
-button.btn-cadastrar {
-    display: block;
-    background-color: #28a745;
-    color: white;
-    font-size: 18px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin: 20px auto 0;
-}
-
-button.btn-cadastrar:hover {
-    background-color: #218838;
 }
 
 /* Ajuste responsivo */
@@ -572,13 +516,6 @@ button.btn-cadastrar:hover {
         margin-right: 0;
     }
 }
-
-.error-message {
-    color: red;
-    font-weight: bold;
-    margin-bottom: 15px;
-}
-
 
 /* Estilos para o formulário de busca */
 .search-form {
@@ -650,9 +587,7 @@ button.btn-cadastrar:hover {
     }
 }
 
-
-/* Estilos para a tabela em cestas.html */
-/* Estilos para a tabela em cestas_personalizadas.html */
+/* Estilos para a tabela em cestas.html e cestas_personalizadas.html */
 form table {
     width: 100%;
     border-collapse: collapse;
@@ -727,7 +662,8 @@ form table td:nth-child(4) {
 }
 
 /* Estilos específicos para entrada_item.html */
-#entrada-page .entrada-form-container {
+#entrada-page .entrada-form-container,
+#saida-page .saida-form-container {
     background-color: #fff;
     padding: 30px;
     border-radius: 10px;
@@ -736,22 +672,27 @@ form table td:nth-child(4) {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-#entrada-page h1 {
+#entrada-page h1,
+#saida-page h1 {
     text-align: center;
     margin-bottom: 20px;
 }
 
-#entrada-page .entrada-form-group {
+#entrada-page .entrada-form-group,
+#saida-page .saida-form-group {
     margin-bottom: 15px;
 }
 
-#entrada-page .entrada-form-group label {
+#entrada-page .entrada-form-group label,
+#saida-page .saida-form-group label {
     font-weight: bold;
     margin-bottom: 5px;
 }
 
 #entrada-page .entrada-form-group input,
-#entrada-page .entrada-form-group select {
+#saida-page .saida-form-group input,
+#entrada-page .entrada-form-group select,
+#saida-page .saida-form-group select {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -759,9 +700,9 @@ form table td:nth-child(4) {
     font-size: 16px;
 }
 
-#entrada-page .entrada-btn-cadastrar {
+#entrada-page .entrada-btn-cadastrar,
+#saida-page .saida-btn-cadastrar {
     display: block;
-    background-color: #28a745;
     color: white;
     font-size: 18px;
     padding: 10px;
@@ -770,176 +711,43 @@ form table td:nth-child(4) {
     cursor: pointer;
     margin: 20px auto 0;
     width: 100%;
+}
+
+#entrada-page .entrada-btn-cadastrar {
+    background-color: #28a745;
+}
+
+#saida-page .saida-btn-cadastrar {
+    background-color: #dc3545; /* Vermelho para saída */
 }
 
 #entrada-page .entrada-btn-cadastrar:hover {
     background-color: #218838;
 }
 
-#entrada-page #mensagens {
-    margin-top: 20px;
-}
-
-#entrada-page #mensagens ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-#entrada-page #mensagens li {
-    margin-bottom: 10px;
-    padding: 15px;
-    border-radius: 5px;
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-}
-
-#entrada-page #mensagens li.alert-success {
-    background-color: #d4edda;
-    border-color: #c3e6cb;
-    color: #155724;
-}
-
-@media (max-width: 600px) {
-    #entrada-page .entrada-form-container {
-        padding: 20px;
-        margin: 20px;
-    }
-
-    #entrada-page .entrada-btn-cadastrar {
-        font-size: 16px;
-        padding: 10px;
-    }
-}
-
-
-/* Estilos específicos para saida_item.html */
-#saida-page .saida-form-container {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    max-width: 500px;
-    margin: 50px auto;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-#saida-page h1 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-#saida-page .saida-form-group {
-    margin-bottom: 15px;
-}
-
-#saida-page .saida-form-group label {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-#saida-page .saida-form-group input,
-#saida-page .saida-form-group select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-}
-
-#saida-page .saida-btn-cadastrar {
-    display: block;
-    background-color: #dc3545; /* Vermelho para saída */
-    color: white;
-    font-size: 18px;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin: 20px auto 0;
-    width: 100%;
-}
-
 #saida-page .saida-btn-cadastrar:hover {
     background-color: #c82333;
 }
 
-@media (max-width: 600px) {
-    #saida-page .saida-form-container {
-        padding: 20px;
-        margin: 20px;
-    }
-
-    #saida-page .saida-btn-cadastrar {
-        font-size: 16px;
-        padding: 10px;
-    }
-}
-
-/* Estilos específicos para saida_item.html */
-#saida-page .saida-form-container {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    max-width: 500px;
-    margin: 50px auto;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-#saida-page h1 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-#saida-page .saida-form-group {
-    margin-bottom: 15px;
-}
-
-#saida-page .saida-form-group label {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-#saida-page .saida-form-group input,
-#saida-page .saida-form-group select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-}
-
-#saida-page .saida-btn-cadastrar {
-    display: block;
-    background-color: #dc3545; /* Vermelho para saída */
-    color: white;
-    font-size: 18px;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin: 20px auto 0;
-    width: 100%;
-}
-
-#saida-page .saida-btn-cadastrar:hover {
-    background-color: #c82333;
-}
-
+#entrada-page #mensagens,
 #saida-page #mensagens {
     margin-top: 20px;
 }
 
+#entrada-page #mensagens ul,
 #saida-page #mensagens ul {
     list-style-type: none;
     padding: 0;
 }
 
+#entrada-page #mensagens li,
 #saida-page #mensagens li {
     margin-bottom: 10px;
     padding: 15px;
     border-radius: 5px;
 }
 
+#entrada-page #mensagens li.alert-success,
 #saida-page #mensagens li.alert-success {
     background-color: #d4edda;
     border: 1px solid #c3e6cb;
@@ -952,14 +760,74 @@ form table td:nth-child(4) {
     color: #721c24;
 }
 
+/* Ajuste responsivo */
 @media (max-width: 600px) {
+    #entrada-page .entrada-form-container,
     #saida-page .saida-form-container {
         padding: 20px;
         margin: 20px;
     }
 
+    #entrada-page .entrada-btn-cadastrar,
     #saida-page .saida-btn-cadastrar {
         font-size: 16px;
         padding: 10px;
     }
+}
+
+#cestas-page .cestas-form-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 500px;
+    margin: 50px auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#cestas-page h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#cestas-page .form-group {
+    margin-bottom: 15px;
+}
+
+#cestas-page .form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+#cestas-page .btn-cadastrar {
+    display: block;
+    color: white;
+    font-size: 18px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 20px auto 0;
+    width: 100%;
+    background-color: #28a745;
+}
+
+#cestas-page .btn-cadastrar:hover {
+    background-color: #218838;
+}
+
+#mensagens ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#mensagens li {
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
 }

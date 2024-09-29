@@ -500,9 +500,14 @@ def gerar_cestas():
         quantidade_faltante = 0 if cafe is None else qtd_cestas - cafe.quantidade
         itens_faltantes.append(f'Café (faltam {quantidade_faltante} unidades)')
 
+    
     # Se algum item estiver faltando, exibe uma mensagem de erro
+    
     if itens_faltantes:
-        flash(f"Os seguintes itens estão faltando ou não possuem quantidade suficiente: {', '.join(itens_faltantes)}", 'danger')
+        itens_formatados = [f"• {item}" for item in itens_faltantes]
+        flash(f"Os seguintes itens estão faltando ou não possuem quantidade suficiente:<br>{'<br>'.join(itens_formatados)}", 'danger')
+
+
         return redirect(url_for('cestas'))
 
     # Captura a data e hora atuais com o fuso horário correto
