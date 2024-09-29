@@ -121,20 +121,20 @@ def entrada_item():
 
 @app.route('/saida', methods=['GET', 'POST'])
 def saida_item():
-    if request.method == 'POST':  # Se a requisição for POST, processa a saída de itens
+    if request.method == 'POST':
         item_id = request.form['item_id']
         quantidade_saida = int(request.form['quantidade'])
-        justificativa = request.form['justificativa']  # Coleta a justificativa do formulário
+        justificativa = request.form['justificativa']
 
         # Verifica se a quantidade de saída é um número positivo
         if quantidade_saida <= 0:
-            return "A quantidade de saída deve ser maior que zero.", 400  # Retorna um erro se a quantidade for inválida
+            return jsonify({'success': False, 'error': 'A quantidade de saída deve ser maior que zero.'})
 
         # Atualiza a quantidade do item no estoque
         item = Item.query.get(item_id)
-        if item.quantidade >= quantidade_saida:  # Verifica se há quantidade suficiente no estoque
+        if item.quantidade >= quantidade_saida:
             item.quantidade -= quantidade_saida
-            db.session.commit()  # Confirma a transação
+            db.session.commit()
 
             # Captura a data e hora atuais com o fuso horário correto
             tz = pytz.timezone('America/Sao_Paulo')
@@ -145,21 +145,22 @@ def saida_item():
                 item_id=item_id,
                 tipo_movimentacao='saida',
                 quantidade=quantidade_saida,
-                saldo_atual=item.quantidade,  # Armazena o saldo atualizado após a saída
-                justificativa=justificativa,  # Armazena a justificativa fornecida
-                data_hora=data_hora_atual  # Armazena a data e hora corretas
+                saldo_atual=item.quantidade,
+                justificativa=justificativa,
+                data_hora=data_hora_atual
             )
             db.session.add(movimentacao)
             db.session.commit()
 
+            # Retorna a resposta de sucesso como JSON
+            return jsonify({'success': True, 'item': item.nome, 'quantidade': quantidade_saida, 'justificativa': justificativa})
         else:
-            return "Quantidade insuficiente em estoque.", 400  # Retorna mensagem de erro se o estoque for insuficiente
+            return jsonify({'success': False, 'error': 'Quantidade insuficiente em estoque.'})
 
-        return redirect(url_for('estoque_atual'))  # Redireciona para a página de estoque
-
-    # Exibe o formulário com os itens disponíveis
+    # Para requisições GET, exibe o formulário normalmente
     itens = Item.query.all()
-    return render_template('saida_item.html', itens=itens)  # Renderiza o template com os itens
+    return render_template('saida_item.html', itens=itens)
+
 
 
 # Rota para exibir o estoque atual

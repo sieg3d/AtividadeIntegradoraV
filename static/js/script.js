@@ -171,6 +171,39 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // Código para o formulário de saída de itens
+    var saidaForm = document.getElementById('saidaForm');
+    if (saidaForm) {
+        saidaForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+            const url = this.getAttribute('data-url');
+
+            fetch(url, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const mensagens = document.getElementById('mensagens');
+                    const novaMensagem = document.createElement('li');
+                    novaMensagem.classList.add('alert', 'alert-success', 'success');
+                    novaMensagem.textContent = `Saída de ${data.quantidade} unidade(s) de ${data.item} registrada com sucesso! Justificativa: ${data.justificativa}`;
+                    mensagens.querySelector('ul').appendChild(novaMensagem);
+
+                    // Limpar os campos do formulário
+                    document.getElementById('quantidade').value = '';
+                    document.getElementById('justificativa').value = '';
+                } else {
+                    alert('Erro ao registrar saída: ' + data.error);
+                }
+            })
+            .catch(error => console.error('Erro:', error));
+        });
+    }
+
     // Código para validar o formulário de cadastro de projetos
     var cadastrarProjetoForm = document.getElementById('cadastrarProjetoForm');
     if (cadastrarProjetoForm) {

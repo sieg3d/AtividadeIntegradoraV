@@ -693,3 +693,273 @@ form table td:nth-child(4) {
     width: 15%; /* Largura para a coluna 'Quantidade Disponível' */
     text-align: center; /* Centraliza o conteúdo */
 }
+
+/* Estilos para alertas */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-container {
+    margin-bottom: 20px;
+}
+
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+/* Ajustes para o botão cadastrar */
+.btn-cadastrar {
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+/* Estilos específicos para entrada_item.html */
+#entrada-page .entrada-form-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 500px;
+    margin: 50px auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#entrada-page h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#entrada-page .entrada-form-group {
+    margin-bottom: 15px;
+}
+
+#entrada-page .entrada-form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+#entrada-page .entrada-form-group input,
+#entrada-page .entrada-form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#entrada-page .entrada-btn-cadastrar {
+    display: block;
+    background-color: #28a745;
+    color: white;
+    font-size: 18px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 20px auto 0;
+    width: 100%;
+}
+
+#entrada-page .entrada-btn-cadastrar:hover {
+    background-color: #218838;
+}
+
+#entrada-page #mensagens {
+    margin-top: 20px;
+}
+
+#entrada-page #mensagens ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#entrada-page #mensagens li {
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 5px;
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+#entrada-page #mensagens li.alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+@media (max-width: 600px) {
+    #entrada-page .entrada-form-container {
+        padding: 20px;
+        margin: 20px;
+    }
+
+    #entrada-page .entrada-btn-cadastrar {
+        font-size: 16px;
+        padding: 10px;
+    }
+}
+
+
+/* Estilos específicos para saida_item.html */
+#saida-page .saida-form-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 500px;
+    margin: 50px auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#saida-page h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#saida-page .saida-form-group {
+    margin-bottom: 15px;
+}
+
+#saida-page .saida-form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+#saida-page .saida-form-group input,
+#saida-page .saida-form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#saida-page .saida-btn-cadastrar {
+    display: block;
+    background-color: #dc3545; /* Vermelho para saída */
+    color: white;
+    font-size: 18px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 20px auto 0;
+    width: 100%;
+}
+
+#saida-page .saida-btn-cadastrar:hover {
+    background-color: #c82333;
+}
+
+@media (max-width: 600px) {
+    #saida-page .saida-form-container {
+        padding: 20px;
+        margin: 20px;
+    }
+
+    #saida-page .saida-btn-cadastrar {
+        font-size: 16px;
+        padding: 10px;
+    }
+}
+
+/* Estilos específicos para saida_item.html */
+#saida-page .saida-form-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 500px;
+    margin: 50px auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#saida-page h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#saida-page .saida-form-group {
+    margin-bottom: 15px;
+}
+
+#saida-page .saida-form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+#saida-page .saida-form-group input,
+#saida-page .saida-form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#saida-page .saida-btn-cadastrar {
+    display: block;
+    background-color: #dc3545; /* Vermelho para saída */
+    color: white;
+    font-size: 18px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 20px auto 0;
+    width: 100%;
+}
+
+#saida-page .saida-btn-cadastrar:hover {
+    background-color: #c82333;
+}
+
+#saida-page #mensagens {
+    margin-top: 20px;
+}
+
+#saida-page #mensagens ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#saida-page #mensagens li {
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+#saida-page #mensagens li.alert-success {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+}
+
+#saida-page #mensagens li.alert-danger {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+}
+
+@media (max-width: 600px) {
+    #saida-page .saida-form-container {
+        padding: 20px;
+        margin: 20px;
+    }
+
+    #saida-page .saida-btn-cadastrar {
+        font-size: 16px;
+        padding: 10px;
+    }
+}
