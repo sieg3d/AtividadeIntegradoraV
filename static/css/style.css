@@ -831,3 +831,102 @@ form table td:nth-child(4) {
     border: 1px solid #c3e6cb;
     color: #155724;
 }
+
+/* Estilos para o container e os cartões apenas na página home */
+.home-page .container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.home-page .column {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 20px;
+}
+
+.home-page .status-container {
+    background-color: #f8f8f8;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.home-page .status-container h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.home-page .status-container ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.home-page .status-container li {
+    font-size: 18px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+
+/* Estilos de cores das letras aplicados somente na home */
+
+.home-page .status-container .nao-iniciado {
+    color: #258b05d7; 
+}
+
+.home-page .status-container .em-andamento {
+    color: #ffc107; 
+}
+
+.home-page .status-container .pendente {
+    color: #ff9100; 
+}
+
+.home-page .status-container .concluido {
+    color: #0b0fe0; 
+}
+
+.home-page .status-container .cancelado {
+    color: #dc3545; 
+}
+
+.home-page .status-container .total_projetos {
+    font-size: 25px;
+    
+}
+
+/* Estilo para o conteúdo da status-container */
+.status-container .status-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 13%; /* Espaçamento entre a imagem e o texto */
+    
+}
+
+/* Estilo para o conteúdo da status-container */
+.status-container .status-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px; /* Reduz o espaço entre a imagem e o texto */
+}
+
+.status-container ul {
+    padding-left: 10px; /* Mova os textos mais para a esquerda */
+}
+
+.status-container li {
+    font-size: 16px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    text-align: center; /* Garante que o texto fique alinhado à esquerda */
+}
+
+.status-container img {
+    margin: 10px;
+}

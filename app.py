@@ -38,7 +38,38 @@ migrate = Migrate(app, db)  # Inicializa o sistema de migração do banco de dad
 # Rota para a página inicial
 @app.route('/')
 def home():
-    return render_template('index.html')  # Renderiza o template 'index.html'
+    # Contagens de status
+    total_projetos = Projeto.query.count()  # Conta o número total de projetos
+    nao_iniciados = Projeto.query.filter_by(status='Não iniciado').count()
+    pendentes = Projeto.query.filter_by(status='Pendente').count()
+    em_andamento = Projeto.query.filter_by(status='Em andamento').count()
+    concluidos = Projeto.query.filter_by(status='Concluído').count()
+    cancelados = Projeto.query.filter_by(status='Cancelado').count()
+
+    return render_template('index.html', 
+                           nao_iniciados=nao_iniciados,
+                           total_projetos=total_projetos,  # Passa o número de projetos para o template
+                           pendentes=pendentes, 
+                           em_andamento=em_andamento, 
+                           concluidos=concluidos, 
+                           cancelados=cancelados)
+
+
+# @app.route('/home', methods=['GET'])
+# def home_dashboard():
+#     # Contagens de status
+#     total_projetos = Projeto.query.count()  # Conta o número total de projetos
+#     pendentes = Projeto.query.filter_by(status='Pendente').count()
+#     em_andamento = Projeto.query.filter_by(status='Em andamento').count()
+#     concluidos = Projeto.query.filter_by(status='Concluído').count()
+#     cancelados = Projeto.query.filter_by(status='Cancelado').count()
+
+#     return render_template('home.html', 
+#                            total_projetos=total_projetos,  # Passa o número de projetos para o template
+#                            pendentes=pendentes, 
+#                            em_andamento=em_andamento, 
+#                            concluidos=concluidos, 
+#                            cancelados=cancelados)
 
 # Rota para cadastrar um novo item no estoque
 @app.route('/cadastrar_item', methods=['GET', 'POST'])
@@ -327,6 +358,7 @@ def acompanhar_status():
     data_filtro = request.args.get('data', '')  # Filtro por data
 
     # Filtros de checkbox de status
+    filtro_nao_iniciado = request.args.get('Não iniciado')
     filtro_atrasado = request.args.get('atrasado')
     filtro_concluido = request.args.get('concluido')
     filtro_em_andamento = request.args.get('em_andamento')
@@ -351,7 +383,9 @@ def acompanhar_status():
     if filtro_atrasado:
         query = query.filter(Projeto.previsao_termino < date.today(), Projeto.status != 'Concluído')
 
-    # Filtros para outros status (Concluído, Em andamento, Pendente, Cancelado)
+    # Filtros para outros status (Não iniciado, Concluído, Em andamento, Pendente, Cancelado)
+    if filtro_nao_iniciado:
+        status_filtros.append('Não iniciado')
     if filtro_concluido:
         status_filtros.append('Concluído')
     if filtro_em_andamento:
@@ -607,21 +641,8 @@ def gerar_cestas_personalizadas():
     return redirect(url_for('cestas_personalizadas'))
 
 
-@app.route('/home', methods=['GET'])
-def home_dashboard():
-    # Contagens de status
-    total_projetos = Projeto.query.count()
-    pendentes = Projeto.query.filter_by(status='Pendente').count()
-    em_andamento = Projeto.query.filter_by(status='Em andamento').count()
-    concluidos = Projeto.query.filter_by(status='Concluído').count()
-    cancelados = Projeto.query.filter_by(status='Cancelado').count()
 
-    return render_template('home.html', 
-                           total_projetos=total_projetos, 
-                           pendentes=pendentes, 
-                           em_andamento=em_andamento, 
-                           concluidos=concluidos, 
-                           cancelados=cancelados)
+
 
 
 

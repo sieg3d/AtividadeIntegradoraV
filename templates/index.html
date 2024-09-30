@@ -3,40 +3,49 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<div id="home-page">
-        <!-- Conteúdo da home -->
-        <div class="container">
-                <div class="column">
-                        <div class="status-container">
-                                <h3>Quantidade de Projetos</h3>
-
-                        </div>
-
-                        <div class="status-container">
-                                <h3>Reclamações</h3>
-
-                        </div>
+<div id="home-page" class="home-page">
+    <!-- Conteúdo da home -->
+    <div class="container">
+        <div class="column">
+            <div class="status-container">
+                <h3>Quantidade de Projetos</h3>
+                <div class="status-content">
+                    <img src="{{ url_for('static', filename='img/projeto.png') }}" alt="Ícone de projetos" width="100" height="100">
+                    <ul>
+                        <li class="nao-iniciado">Não Iniciado: {{ nao_iniciados }}</li>
+                        <li class="em-andamento">Em Andamento: {{ em_andamento }}</li>
+                        <li class="pendente">Pendentes: {{ pendentes }}</li>
+                        <li class="concluido">Concluídos: {{ concluidos }}</li>
+                        <li class="cancelado">Cancelados: {{ cancelados }}</li>
+                        <li class="total_projetos">Total de Projetos: {{ total_projetos }}</li>
+                    </ul>
                 </div>
+            </div>
 
-                <div class="column">
-                        <div class="status-container">
-                                <h3>Agenda de Compromissos</h3>
-
-                        </div>
-
-                        <div class="status-container">
-                                <h3>Moradores e Beneficiados</h3>
-
-                        </div>
-                </div>
-
-                <div class="column">
-                        <div class="status-container">
-                                <h3>Eventos</h3>
-
-                        </div>
-
-                </div>
+            <div class="status-container">
+                <h3>Reclamações</h3>
+                <!-- Adicione aqui os dados de Reclamações -->
+            </div>
         </div>
+
+        <div class="column">
+            <div class="status-container">
+                <h3>Agenda de Compromissos</h3>
+                <!-- Adicione aqui os dados da Agenda -->
+            </div>
+
+            <div class="status-container">
+                <h3>Moradores e Beneficiados</h3>
+                <!-- Adicione aqui os dados de Moradores e Beneficiados -->
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="status-container">
+                <h3>Eventos</h3>
+                <!-- Adicione aqui os dados de Eventos -->
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
