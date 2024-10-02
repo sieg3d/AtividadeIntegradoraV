@@ -1,0 +1,45 @@
+{% extends 'base.html' %} 
+
+{% block title %}Saída de Itens{% endblock %}
+
+{% block content %}
+<div id="saida-page">
+    <div class="saida-form-container">
+        <h1>Registrar Saída de Itens</h1>
+
+        <!-- Formulário para registrar a saída de itens -->
+        <form id="saidaForm" data-url="{{ url_for('saida_item') }}">
+            <!-- Campo de seleção para escolher o item -->
+            <div class="saida-form-group">
+                <label for="item">Selecione o Item:</label>
+                <select name="item_id" id="item" required>
+                    {% for item in itens %}
+                    <option value="{{ item.id }}">{{ item.nome }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Campo para inserir a quantidade de itens a serem retirados -->
+            <div class="saida-form-group">
+                <label for="quantidade">Quantidade:</label>
+                <input type="number" name="quantidade" id="quantidade" min="1" required>
+            </div>
+
+            <!-- Campo para inserir a justificativa da saída de itens -->
+            <div class="saida-form-group">
+                <label for="justificativa">Justificativa:</label>
+                <input type="text" name="justificativa" id="justificativa" placeholder="Informe o motivo da saída" required>
+            </div>
+
+            <!-- Botão para submeter o formulário -->
+            <button type="submit" class="saida-btn-cadastrar">Registrar Saída</button>
+        </form>
+
+        <div id="mensagens">
+            <ul>
+                <!-- As mensagens de saída serão inseridas aqui via JavaScript -->
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
