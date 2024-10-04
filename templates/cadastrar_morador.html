@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Cadastrar Morador</h1>
+<form method="POST" action="{{ url_for('cadastrar_morador') }}">
+    <div>
+        <label for="nome">Nome:</label>
+        <input type="text" name="nome" required>
+    </div>
+    <div>
+        <label for="cpf">CPF:</label>
+        <input type="text" name="cpf" id="cpf" required>
+    </div>
+    <div>
+        <label for="apelido">Apelido (Opcional):</label>
+        <input type="text" name="apelido">
+    </div>
+    <div>
+        <label for="endereco">Endereço:</label>
+        <input type="text" name="endereco" required>
+    </div>
+    <div class="radio-group">
+        <label>Benefício:</label>
+        <input type="radio" id="sim" name="beneficio" value="sim" checked>
+        <label for="sim" class="btn-filter">Sim</label>
+        <input type="radio" id="nao" name="beneficio" value="nao">
+        <label for="nao" class="btn-filter">Não</label>
+    </div>
+    <button type="submit" class="filter-button">Cadastrar</button>
+</form>
+
+
+<script>
+    function formatCPF(cpf) {
+        cpf = cpf.replace(/\D/g, ""); // Remove tudo que não é dígito
+        cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2"); // Coloca o primeiro ponto
+        cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2"); // Coloca o segundo ponto
+        cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2"); // Coloca o traço
+        return cpf;
+    }
+
+    document.getElementById('cpf').addEventListener('input', function(e) {
+        e.target.value = formatCPF(e.target.value);
+    });
+</script>
+{% endblock %}

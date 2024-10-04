@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Morador{% endblock %}
+
+{% block content %}
+    <h1>Editar Morador</h1>
+
+    <form method="POST" action="{{ url_for('editar_morador', morador_id=morador.id) }}">
+        <div>
+            <label for="nome">Nome:</label>
+            <input type="text" name="nome" value="{{ morador.nome }}" required>
+        </div>
+        <div>
+            <label for="cpf">CPF:</label>
+            <input type="text" name="cpf" value="{{ morador.cpf }}" required>
+        </div>
+        <div>
+            <label for="apelido">Apelido (Opcional):</label>
+            <input type="text" name="apelido" value="{{ morador.apelido }}">
+        </div>
+        <div>
+            <label for="endereco">Endereço:</label>
+            <input type="text" name="endereco" value="{{ morador.endereco }}" required>
+        </div>
+        <div class="radio-group">
+            <label>Benefício:</label>
+            <input type="radio" id="sim" name="beneficio" value="sim" {% if morador.beneficio %}checked{% endif %}>
+            <label for="sim" class="btn-filter">Sim</label>
+            <input type="radio" id="nao" name="beneficio" value="nao" {% if not morador.beneficio %}checked{% endif %}>
+            <label for="nao" class="btn-filter">Não</label>
+        </div>
+        <button type="submit" class="filter-button">Atualizar</button>
+    </form>
+    
+{% endblock %}

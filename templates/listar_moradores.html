@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Moradores{% endblock %}
+
+{% block content %}
+    <h1>Lista de Moradores</h1>
+
+    <form method="GET" action="{{ url_for('listar_moradores') }}">
+        <label>Filtrar por Benefício:</label>
+    
+        <div class="filter-buttons">
+            <input type="radio" id="todos" name="beneficio" value="todos" {% if request.args.get('beneficio') == 'todos' or request.args.get('beneficio') == None %}checked{% endif %}>
+            <label for="todos" class="btn-filter">Todos</label>
+    
+            <input type="radio" id="sim" name="beneficio" value="sim" {% if request.args.get('beneficio') == 'sim' %}checked{% endif %}>
+            <label for="sim" class="btn-filter">Sim</label>
+    
+            <input type="radio" id="nao" name="beneficio" value="nao" {% if request.args.get('beneficio') == 'nao' %}checked{% endif %}>
+            <label for="nao" class="btn-filter">Não</label>
+        </div>
+    
+        <!-- Campo de busca -->
+        <div class="search-bar">
+            <input type="text" name="busca" placeholder="Pesquisar por Nome, Apelido ou CPF" value="{{ request.args.get('busca', '') }}">
+        </div>
+    
+        <button type="submit" class="filter-button">Filtrar</button>
+    </form>
+    
+    
+    
+    
+    <!-- Tabela de Moradores -->
+    <table class="moradores-table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Apelido</th>
+                <th>CPF</th>
+                <th>Endereço</th>
+                <th>Recebe Benefício</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for morador in moradores %}
+            <tr>
+                <td>{{ morador.nome }}</td>
+                <td>{{ morador.apelido or '' }}</td>
+                <td>{{ morador.cpf }}</td>
+                <td>{{ morador.endereco }}</td>
+                <td>{{ 'Sim' if morador.beneficio else 'Não' }}</td>
+                <td>
+                    <a href="{{ url_for('editar_morador', morador_id=morador.id) }}" class="btn-editar">Editar</a>
+                    <button class="btn-remover" data-morador-nome="{{ morador.nome }}" data-morador-apelido="{{ morador.apelido }}" data-url="{{ url_for('remover_morador', morador_id=morador.id) }}">Remover</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    
+{% endblock %}

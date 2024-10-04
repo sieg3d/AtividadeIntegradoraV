@@ -64,3 +64,12 @@ class MovimentacaoEstoque(db.Model):
     justificativa = db.Column(db.String(255), nullable=True, default='')  # Define string vazia como padrão
     saldo_atual = db.Column(db.Integer, nullable=False)  # Adiciona o campo saldo atual
     item = db.relationship('Item', backref=db.backref('movimentacoes', lazy=True))
+
+
+class Morador(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100), nullable=False)
+    cpf = db.Column(db.String(14), nullable=False, unique=True)  # CPF com formato XXX.XXX.XXX-XX
+    apelido = db.Column(db.String(50), nullable=True)
+    endereco = db.Column(db.String(200), nullable=False)
+    beneficio = db.Column(db.Boolean, default=False)  # True para 'Sim', False para 'Não'

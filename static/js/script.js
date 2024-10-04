@@ -8,6 +8,15 @@ function togglePeriodoPersonalizado(value) {
     }
 }
 
+// Função para formatar o CPF no formato xxx.xxx.xxx-xx
+function formatCPF(cpf) {
+    cpf = cpf.replace(/\D/g, ""); // Remove tudo que não é dígito
+    cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2"); // Coloca o primeiro ponto
+    cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2"); // Coloca o segundo ponto
+    cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2"); // Coloca o traço
+    return cpf;
+}
+
 // Função para validar o formulário de cadastro de projetos
 function validarFormulario() {
     var orcamento = document.getElementById('orcamento').value;
@@ -26,6 +35,14 @@ function validarFormulario() {
 
 // Evento DOMContentLoaded para garantir que o DOM esteja carregado
 document.addEventListener('DOMContentLoaded', function () {
+    // Código para formatar o CPF no formulário
+    var cpfInput = document.getElementById('cpf');
+    if (cpfInput) {
+        cpfInput.addEventListener('input', function() {
+            this.value = formatCPF(this.value);
+        });
+    }
+
     // Código relacionado ao período personalizado
     var periodoDropdown = document.getElementById('periodo');
     if (periodoDropdown) {
@@ -240,4 +257,28 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }
+
+    // Código para confirmar a remoção do morador
+    var removeButtons = document.querySelectorAll('.btn-remover');
+
+    removeButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            var nomeMorador = this.getAttribute('data-morador-nome');
+            var apelidoMorador = this.getAttribute('data-morador-apelido');
+            var url = this.getAttribute('data-url');
+            var apelidoTexto = apelidoMorador ? ` (${apelidoMorador})` : '';
+            var confirmation = confirm(`Tem certeza que deseja remover o registro do morador: ${nomeMorador}${apelidoTexto}?`);
+
+            if (confirmation) {
+                // Enviar a requisição POST para remover o morador
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = url;
+
+                // Adiciona o form ao body e submete o formulário para a URL de remoção
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+    });
 });

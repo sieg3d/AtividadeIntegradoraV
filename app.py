@@ -1,80 +1,72 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+import unicodedata  # Importa módulo para remover acentos
+from datetime import datetime, date, timedelta
+
+import pytz
+from flask import (
+    Flask, render_template, request, redirect, url_for, flash, session, jsonify
+)
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from models import db, Item, MovimentacaoEstoque, Projeto, Comentario  # Importe os modelos necessários
-from datetime import datetime, date, timedelta
-import pytz
-import unicodedata  # Importa módulo para remover acentos
-from flask import jsonify  # Importa jsonify para retornar respostas em JSON
 
+from models import db, Item, MovimentacaoEstoque, Projeto, Comentario, Morador  # Importe os modelos necessários
 
-
-# Função para remover acentos de um texto
-def remover_acentos(texto):
-    return ''.join(c for c in unicodedata.normalize('NFD', texto) if unicodedata.category(c) != 'Mn')
-
-
-
-# Definir o fuso horário correto
-tz = pytz.timezone('America/Sao_Paulo')
-data_atual = datetime.now(tz).date()  # Obtém a data e hora atuais com o fuso horário definido
-
+# Configurações globais
 app = Flask(__name__)
-
-app.config['SECRET_KEY'] = 'xablau' 
+app.config['SECRET_KEY'] = 'xablau'
 
 # Configurações do banco de dados
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///projetos.db'  # Define o banco de dados SQLite
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Desativa rastreamento de modificações (melhora a performance)
 
+# Inicialização do banco de dados e migrações
 db.init_app(app)  # Inicializa o banco de dados com o Flask app
 migrate = Migrate(app, db)  # Inicializa o sistema de migração do banco de dados
 
+# Configuração do fuso horário
+tz = pytz.timezone('America/Sao_Paulo')
+data_atual = datetime.now(tz).date()  # Obtém a data e hora atuais com o fuso horário definido
 
-#-------------------------------------------------------------------------ROTAS----------------------------------------------------------------------------------------------------
+# Funções utilitárias
+def remover_acentos(texto):
+    """Remove acentos de um texto."""
+    return ''.join(
+        c for c in unicodedata.normalize('NFD', texto)
+        if unicodedata.category(c) != 'Mn'
+    )
 
-#-------------------------------------------------------------------------ESTOQUE----------------------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------
+# Rotas do aplicativo
+# ---------------------------------------------------------------------
 
-# Rota para a página inicial
+# --------------------------- Rota Inicial ----------------------------
+
 @app.route('/')
 def home():
+    """Rota para a página inicial."""
     # Contagens de status
-    total_projetos = Projeto.query.count()  # Conta o número total de projetos
+    total_projetos = Projeto.query.count()
     nao_iniciados = Projeto.query.filter_by(status='Não iniciado').count()
     pendentes = Projeto.query.filter_by(status='Pendente').count()
     em_andamento = Projeto.query.filter_by(status='Em andamento').count()
     concluidos = Projeto.query.filter_by(status='Concluído').count()
     cancelados = Projeto.query.filter_by(status='Cancelado').count()
 
-    return render_template('index.html', 
-                           nao_iniciados=nao_iniciados,
-                           total_projetos=total_projetos,  # Passa o número de projetos para o template
-                           pendentes=pendentes, 
-                           em_andamento=em_andamento, 
-                           concluidos=concluidos, 
-                           cancelados=cancelados)
+    return render_template(
+        'index.html',
+        nao_iniciados=nao_iniciados,
+        total_projetos=total_projetos,
+        pendentes=pendentes,
+        em_andamento=em_andamento,
+        concluidos=concluidos,
+        cancelados=cancelados
+    )
 
+# --------------------------- Estoque ---------------------------------
 
-# @app.route('/home', methods=['GET'])
-# def home_dashboard():
-#     # Contagens de status
-#     total_projetos = Projeto.query.count()  # Conta o número total de projetos
-#     pendentes = Projeto.query.filter_by(status='Pendente').count()
-#     em_andamento = Projeto.query.filter_by(status='Em andamento').count()
-#     concluidos = Projeto.query.filter_by(status='Concluído').count()
-#     cancelados = Projeto.query.filter_by(status='Cancelado').count()
-
-#     return render_template('home.html', 
-#                            total_projetos=total_projetos,  # Passa o número de projetos para o template
-#                            pendentes=pendentes, 
-#                            em_andamento=em_andamento, 
-#                            concluidos=concluidos, 
-#                            cancelados=cancelados)
-
-# Rota para cadastrar um novo item no estoque
 @app.route('/cadastrar_item', methods=['GET', 'POST'])
 def cadastrar_item():
-    if request.method == 'POST':  # Se a requisição for POST, processa o formulário
+    """Rota para cadastrar um novo item no estoque."""
+    if request.method == 'POST':
         nome = request.form['nome']
         descricao = request.form['descricao']
         categoria = request.form['categoria']
@@ -83,18 +75,42 @@ def cadastrar_item():
 
         # Verifica se a quantidade ou preço são negativos
         if quantidade < 0 or preco < 0:
-            return render_template('cadastrar_item.html', error="Quantidade e preço não podem ser negativos!", nome=nome, descricao=descricao, categoria=categoria, quantidade=quantidade, preco=preco)
+            error = "Quantidade e preço não podem ser negativos!"
+            return render_template(
+                'cadastrar_item.html',
+                error=error,
+                nome=nome,
+                descricao=descricao,
+                categoria=categoria,
+                quantidade=quantidade,
+                preco=preco
+            )
 
         # Verifica se já existe um item com o mesmo nome no banco de dados
         item_existente = Item.query.filter_by(nome=nome).first()
         if item_existente:
             # Retorna uma mensagem de erro se o item já existir
-            return render_template('cadastrar_item.html', error="Item já cadastrado!", nome=nome, descricao=descricao, categoria=categoria, quantidade=quantidade, preco=preco)
+            error = "Item já cadastrado!"
+            return render_template(
+                'cadastrar_item.html',
+                error=error,
+                nome=nome,
+                descricao=descricao,
+                categoria=categoria,
+                quantidade=quantidade,
+                preco=preco
+            )
 
         # Caso não exista, cria um novo item
-        novo_item = Item(nome=nome, descricao=descricao, categoria=categoria, quantidade=quantidade, preco=preco)
-        db.session.add(novo_item)  # Adiciona o item ao banco de dados
-        db.session.commit()  # Confirma a transação
+        novo_item = Item(
+            nome=nome,
+            descricao=descricao,
+            categoria=categoria,
+            quantidade=quantidade,
+            preco=preco
+        )
+        db.session.add(novo_item)
+        db.session.commit()
 
         # Exibe uma mensagem de sucesso
         flash("Item cadastrado com sucesso!", "success")
@@ -102,13 +118,12 @@ def cadastrar_item():
         # Retorna para a página de cadastro com os campos limpos
         return render_template('cadastrar_item.html')
 
-    return render_template('cadastrar_item.html')  # Se for GET, exibe o formulário de cadastro
+    return render_template('cadastrar_item.html')
 
-
-# Rota para registrar a entrada de itens
 @app.route('/entrada', methods=['GET', 'POST']) 
 def entrada_item():
-    if request.method == 'POST':  # Se a requisição for POST, processa a entrada de itens
+    """Rota para registrar a entrada de itens."""
+    if request.method == 'POST':
         item_id = request.form['item_id']
         quantidade_entrada = int(request.form['quantidade'])
 
@@ -119,19 +134,18 @@ def entrada_item():
         # Atualiza a quantidade do item no estoque
         item = Item.query.get(item_id)
         item.quantidade += quantidade_entrada
-        db.session.commit()  # Confirma a transação
+        db.session.commit()
 
         # Captura a data e hora atuais com o fuso horário correto
-        tz = pytz.timezone('America/Sao_Paulo')
         data_hora_atual = datetime.now(tz)
 
-        # Registra a movimentação de entrada com o saldo atual e a data/hora correta
+        # Registra a movimentação de entrada
         movimentacao = MovimentacaoEstoque(
             item_id=item_id,
             tipo_movimentacao='entrada',
             quantidade=quantidade_entrada,
-            saldo_atual=item.quantidade,  # Armazena o saldo atualizado após a entrada
-            data_hora=data_hora_atual  # Armazena a data e hora corretas
+            saldo_atual=item.quantidade,
+            data_hora=data_hora_atual
         )
         db.session.add(movimentacao)
         db.session.commit()
@@ -140,18 +154,16 @@ def entrada_item():
         return jsonify({'success': True, 'item': item.nome, 'quantidade': quantidade_entrada})
 
     # Se for GET, exibe o formulário normalmente
-    itens = Item.query.all()  # Obtém todos os itens do banco de dados
-    entradas = session.get('entradas', [])  # Obtém as entradas armazenadas na sessão
-
+    itens = Item.query.all()
+    entradas = session.get('entradas', [])
     # Remove as entradas da sessão após exibi-las
     session.pop('entradas', None)
 
-    return render_template('entrada_item.html', itens=itens, entradas=entradas)  # Renderiza o template com os itens
-
-
+    return render_template('entrada_item.html', itens=itens, entradas=entradas)
 
 @app.route('/saida', methods=['GET', 'POST'])
 def saida_item():
+    """Rota para registrar a saída de itens."""
     if request.method == 'POST':
         item_id = request.form['item_id']
         quantidade_saida = int(request.form['quantidade'])
@@ -168,10 +180,9 @@ def saida_item():
             db.session.commit()
 
             # Captura a data e hora atuais com o fuso horário correto
-            tz = pytz.timezone('America/Sao_Paulo')
             data_hora_atual = datetime.now(tz)
 
-            # Registra a movimentação de saída com o saldo atual, a justificativa e o horário correto
+            # Registra a movimentação de saída
             movimentacao = MovimentacaoEstoque(
                 item_id=item_id,
                 tipo_movimentacao='saida',
@@ -184,7 +195,12 @@ def saida_item():
             db.session.commit()
 
             # Retorna a resposta de sucesso como JSON
-            return jsonify({'success': True, 'item': item.nome, 'quantidade': quantidade_saida, 'justificativa': justificativa})
+            return jsonify({
+                'success': True,
+                'item': item.nome,
+                'quantidade': quantidade_saida,
+                'justificativa': justificativa
+            })
         else:
             return jsonify({'success': False, 'error': 'Quantidade insuficiente em estoque.'})
 
@@ -192,40 +208,38 @@ def saida_item():
     itens = Item.query.all()
     return render_template('saida_item.html', itens=itens)
 
-
-
-# Rota para exibir o estoque atual
 @app.route('/estoque')
 def estoque_atual():
+    """Rota para exibir o estoque atual."""
     busca = request.args.get('busca', '')  # Termo de busca, se houver
     categoria = request.args.get('categoria', '')  # Categoria selecionada, se houver
-    
+
     # Busca inicial de todos os itens
     itens = Item.query.all()
-    
+
     # Aplicar filtro de busca por nome, insensível a acentos
     if busca:
         busca_sem_acentos = remover_acentos(busca).lower()
-        itens = [item for item in itens if busca_sem_acentos in remover_acentos(item.nome).lower()]
-    
+        itens = [
+            item for item in itens
+            if busca_sem_acentos in remover_acentos(item.nome).lower()
+        ]
+
     # Aplicar filtro por categoria, se uma categoria foi selecionada
     if categoria and categoria != 'todas':
         itens = [item for item in itens if item.categoria == categoria]
-    
+
     # Obter todas as categorias únicas para o filtro de categoria no frontend
     categorias = list(set([item.categoria for item in Item.query.all()]))
 
     return render_template('estoque_atual.html', itens=itens, categorias=categorias)
 
-
-# Rota para exibir as movimentações de estoque com filtros
 @app.route('/movimentacoes', methods=['GET'])
-
-
 def movimentacoes_estoque():
-    periodo = request.args.get('periodo')  # Obtém o filtro de período
-    tipo_movimentacao = request.args.get('tipo_movimentacao', 'todos')  # Filtro para o tipo de movimentação
-    nome_item = request.args.get('nome_item', '').strip()  # Filtro para o nome do item
+    """Rota para exibir as movimentações de estoque com filtros."""
+    periodo = request.args.get('periodo')  # Filtro de período
+    tipo_movimentacao = request.args.get('tipo_movimentacao', 'todos')
+    nome_item = request.args.get('nome_item', '').strip()
 
     # Query básica para obter todas as movimentações
     query = MovimentacaoEstoque.query.join(Item)
@@ -239,7 +253,10 @@ def movimentacoes_estoque():
         inicio_semana = hoje - timedelta(days=hoje.weekday())
         query = query.filter(MovimentacaoEstoque.data_hora >= inicio_semana)
     elif periodo == 'mes':
-        query = query.filter(db.extract('month', MovimentacaoEstoque.data_hora) == hoje.month, db.extract('year', MovimentacaoEstoque.data_hora) == hoje.year)
+        query = query.filter(
+            db.extract('month', MovimentacaoEstoque.data_hora) == hoje.month,
+            db.extract('year', MovimentacaoEstoque.data_hora) == hoje.year
+        )
     elif periodo == 'ano':
         query = query.filter(db.extract('year', MovimentacaoEstoque.data_hora) == hoje.year)
     elif periodo == 'ultimos_30_dias':
@@ -255,11 +272,14 @@ def movimentacoes_estoque():
             try:
                 data_inicio_dt = datetime.strptime(data_inicio, '%Y-%m-%d')
                 data_fim_dt = datetime.strptime(data_fim, '%Y-%m-%d')
-                query = query.filter(MovimentacaoEstoque.data_hora >= data_inicio_dt, MovimentacaoEstoque.data_hora <= data_fim_dt)
+                query = query.filter(
+                    MovimentacaoEstoque.data_hora >= data_inicio_dt,
+                    MovimentacaoEstoque.data_hora <= data_fim_dt
+                )
             except ValueError:
                 return "Formato de data inválido, use o formato AAAA-MM-DD.", 400
 
-    # Filtro por tipo de movimentação (entrada ou saída)
+    # Filtro por tipo de movimentação
     if tipo_movimentacao in ['entrada', 'saida']:
         query = query.filter(MovimentacaoEstoque.tipo_movimentacao == tipo_movimentacao)
 
@@ -269,17 +289,18 @@ def movimentacoes_estoque():
     # Filtro adicional por nome do item
     if nome_item:
         nome_item_normalizado = remover_acentos(nome_item).lower()
-        movimentacoes = [m for m in movimentacoes if remover_acentos(m.item.nome).lower().find(nome_item_normalizado) != -1]
+        movimentacoes = [
+            m for m in movimentacoes
+            if remover_acentos(m.item.nome).lower().find(nome_item_normalizado) != -1
+        ]
 
-    return render_template('movimentacoes.html', movimentacoes=movimentacoes, tz=tz)  # Renderiza o template com as movimentações
+    return render_template('movimentacoes.html', movimentacoes=movimentacoes, tz=tz)
 
+# --------------------------- Projetos ---------------------------------
 
-
-#-------------------------------------------------------------------------PROJETOS----------------------------------------------------------------------------------------------------
-
-# Rota para cadastrar um novo projeto
 @app.route('/cadastrar', methods=['GET', 'POST'])
 def cadastrar_projeto():
+    """Rota para cadastrar um novo projeto."""
     if request.method == 'POST':
         nome = request.form.get('nome')
         descricao = request.form.get('descricao')
@@ -346,16 +367,13 @@ def cadastrar_projeto():
         flash("Projeto cadastrado com sucesso!", "success")
         return redirect(url_for('acompanhar_status'))
 
-    # Se a requisição for GET, ou se o formulário for inválido
     return render_template('cadastrar_projeto.html')
 
-
-
-# Rota para acompanhar o status dos projetos
 @app.route('/status', methods=['GET'])
 def acompanhar_status():
-    nome_filtro = request.args.get('nome', '')  # Filtro por nome de projeto
-    data_filtro = request.args.get('data', '')  # Filtro por data
+    """Rota para acompanhar o status dos projetos."""
+    nome_filtro = request.args.get('nome', '')
+    data_filtro = request.args.get('data', '')
 
     # Filtros de checkbox de status
     filtro_nao_iniciado = request.args.get('Não iniciado')
@@ -381,9 +399,12 @@ def acompanhar_status():
 
     # Filtro para projetos atrasados
     if filtro_atrasado:
-        query = query.filter(Projeto.previsao_termino < date.today(), Projeto.status != 'Concluído')
+        query = query.filter(
+            Projeto.previsao_termino < date.today(),
+            Projeto.status != 'Concluído'
+        )
 
-    # Filtros para outros status (Não iniciado, Concluído, Em andamento, Pendente, Cancelado)
+    # Filtros para outros status
     if filtro_nao_iniciado:
         status_filtros.append('Não iniciado')
     if filtro_concluido:
@@ -407,46 +428,57 @@ def acompanhar_status():
         if projeto.previsao_termino < date.today() and projeto.status != 'Concluído':
             projeto.status = 'Atrasado'
 
-    return render_template('acompanhar_status.html', projetos=projetos)  # Renderiza o template com os projetos
+    return render_template('acompanhar_status.html', projetos=projetos)
 
-# Rota para editar um projeto
 @app.route('/editar/<int:projeto_id>', methods=['GET', 'POST'])
 def editar_projeto(projeto_id):
-    projeto = Projeto.query.get_or_404(projeto_id)  # Obtém o projeto pelo ID ou retorna 404 se não encontrado
+    """Rota para editar um projeto."""
+    projeto = Projeto.query.get_or_404(projeto_id)
 
     # Consulta os comentários relacionados ao projeto
     comentarios = Comentario.query.filter_by(projeto_id=projeto_id).all()
 
-    if request.method == 'POST':  # Se a requisição for POST, processa a edição do projeto
+    if request.method == 'POST':
         comentario_conteudo = request.form['comentario']
 
         # Verifica se o comentário tem pelo menos 10 caracteres
         if len(comentario_conteudo) < 10:
-            return render_template('editar_projeto.html', projeto=projeto, comentarios=comentarios, error="O comentário deve ter no mínimo 10 caracteres.")
+            error = "O comentário deve ter no mínimo 10 caracteres."
+            return render_template(
+                'editar_projeto.html',
+                projeto=projeto,
+                comentarios=comentarios,
+                error=error
+            )
 
         # Atualiza os dados do projeto
         projeto.prioridade = request.form['prioridade']
         projeto.status = request.form['status']
 
         # Cria um novo comentário
-        novo_comentario = Comentario(conteudo=comentario_conteudo, projeto_id=projeto.id)
-        db.session.add(novo_comentario)  # Adiciona o comentário ao banco de dados
-        db.session.commit()  # Confirma a transação
+        novo_comentario = Comentario(
+            conteudo=comentario_conteudo,
+            projeto_id=projeto.id
+        )
+        db.session.add(novo_comentario)
+        db.session.commit()
 
-        return redirect(url_for('acompanhar_status'))  # Redireciona para a página de acompanhamento de status
+        return redirect(url_for('acompanhar_status'))
 
-    return render_template('editar_projeto.html', projeto=projeto, comentarios=comentarios)  # Renderiza o template de edição de projeto
+    return render_template('editar_projeto.html', projeto=projeto, comentarios=comentarios)
 
-# Rota para visualizar os comentários de um projeto
 @app.route('/comentarios/<int:projeto_id>')
 def ver_comentarios(projeto_id):
-    projeto = Projeto.query.get_or_404(projeto_id)  # Obtém o projeto pelo ID ou retorna 404 se não encontrado
-    comentarios = Comentario.query.filter_by(projeto_id=projeto_id).all()  # Obtém os comentários do projeto
-    return render_template('comentarios.html', projeto=projeto, comentarios=comentarios)  # Renderiza o template com os comentários
+    """Rota para visualizar os comentários de um projeto."""
+    projeto = Projeto.query.get_or_404(projeto_id)
+    comentarios = Comentario.query.filter_by(projeto_id=projeto_id).all()
+    return render_template('comentarios.html', projeto=projeto, comentarios=comentarios)
 
-# Página inicial mostrando quantas cestas podem ser geradas com base nos itens em estoque
+# --------------------------- Cestas Básicas ----------------------------
+
 @app.route('/cestas')
 def cestas():
+    """Página inicial mostrando quantas cestas podem ser geradas com base nos itens em estoque."""
     # Obtém os itens do banco de dados
     arroz = Item.query.filter_by(nome='Arroz Branco - 1 Kg').first()
     feijao = Item.query.filter_by(nome='Feijão - 1 Kg').first()
@@ -461,7 +493,10 @@ def cestas():
     cafe = Item.query.filter_by(nome='Pó de café - 500g').first()
 
     # Calcula o número máximo de cestas com base nos itens em estoque
-    if all([arroz, feijao, acucar, macarrao, sal, oleo, molho, farinha, sardinha, fuba, cafe]):
+    if all([
+        arroz, feijao, acucar, macarrao, sal, oleo, molho,
+        farinha, sardinha, fuba, cafe
+    ]):
         max_cestas = min(
             arroz.quantidade, feijao.quantidade, acucar.quantidade,
             macarrao.quantidade, sal.quantidade, oleo.quantidade,
@@ -471,13 +506,12 @@ def cestas():
     else:
         max_cestas = 0
 
-    return render_template('cestas.html', max_cestas=max_cestas)  # Renderiza o template com o número de cestas possíveis
+    return render_template('cestas.html', max_cestas=max_cestas)
 
-
-# Rota para gerar cestas básicas
 @app.route('/gerar_cestas', methods=['POST'])
 def gerar_cestas():
-    qtd_cestas = int(request.form['quantidade'])  # Obtém a quantidade de cestas a serem geradas
+    """Rota para gerar cestas básicas."""
+    qtd_cestas = int(request.form['quantidade'])
 
     # Verifica se a quantidade de cestas é maior que zero
     if qtd_cestas <= 0:
@@ -497,99 +531,73 @@ def gerar_cestas():
     fuba = Item.query.filter_by(nome='Fubá - 1 Kg').first()
     cafe = Item.query.filter_by(nome='Pó de café - 500g').first()
 
-    itens_faltantes = []  # Lista para armazenar itens faltantes
+    itens_faltantes = []
 
     # Verifica se há quantidade suficiente de cada item para gerar as cestas
-    if arroz is None or arroz.quantidade < qtd_cestas:
-        quantidade_faltante = 0 if arroz is None else qtd_cestas - arroz.quantidade
-        itens_faltantes.append(f'Arroz (faltam {quantidade_faltante} unidades)')
-    if feijao is None or feijao.quantidade < qtd_cestas:
-        quantidade_faltante = 0 if feijao is None else qtd_cestas - feijao.quantidade
-        itens_faltantes.append(f'Feijão (faltam {quantidade_faltante} unidades)')
-    if acucar is None or acucar.quantidade < qtd_cestas:
-        quantidade_faltante = 0 if acucar is None else qtd_cestas - acucar.quantidade
-        itens_faltantes.append(f'Açúcar (faltam {quantidade_faltante} unidades)')
-    if macarrao is None or macarrao.quantidade < qtd_cestas:
-        quantidade_faltante = 0 if macarrao is None else qtd_cestas - macarrao.quantidade
-        itens_faltantes.append(f'Macarrão (faltam {quantidade_faltante} unidades)')
-    if sal is None or sal.quantidade < qtd_cestas:
-        quantidade_faltante = 0 if sal is None else qtd_cestas - sal.quantidade
-        itens_faltantes.append(f'Sal (faltam {quantidade_faltante} unidades)')
-    if oleo is None or oleo.quantidade < qtd_cestas:
-        quantidade_faltante = 0 if oleo is None else qtd_cestas - oleo.quantidade
-        itens_faltantes.append(f'Óleo de soja (faltam {quantidade_faltante} unidades)')
-    if molho is None or molho.quantidade < qtd_cestas:
-        quantidade_faltante = 0 if molho is None else qtd_cestas - molho.quantidade
-        itens_faltantes.append(f'Molho de Tomate (faltam {quantidade_faltante} unidades)')
-    if farinha is None or farinha.quantidade < qtd_cestas:
-        quantidade_faltante = 0 if farinha is None else qtd_cestas - farinha.quantidade
-        itens_faltantes.append(f'Farinha (faltam {quantidade_faltante} unidades)')
-    if sardinha is None or sardinha.quantidade < qtd_cestas:
-        quantidade_faltante = 0 if sardinha is None else qtd_cestas - sardinha.quantidade
-        itens_faltantes.append(f'Sardinha (faltam {quantidade_faltante} unidades)')
-    if fuba is None or fuba.quantidade < qtd_cestas:
-        quantidade_faltante = 0 if fuba is None else qtd_cestas - fuba.quantidade
-        itens_faltantes.append(f'Fubá (faltam {quantidade_faltante} unidades)')
-    if cafe is None or cafe.quantidade < qtd_cestas:
-        quantidade_faltante = 0 if cafe is None else qtd_cestas - cafe.quantidade
-        itens_faltantes.append(f'Café (faltam {quantidade_faltante} unidades)')
+    for item, nome in [
+        (arroz, 'Arroz'), (feijao, 'Feijão'), (acucar, 'Açúcar'),
+        (macarrao, 'Macarrão'), (sal, 'Sal'), (oleo, 'Óleo de soja'),
+        (molho, 'Molho de Tomate'), (farinha, 'Farinha'),
+        (sardinha, 'Sardinha'), (fuba, 'Fubá'), (cafe, 'Café')
+    ]:
+        if item is None or item.quantidade < qtd_cestas:
+            quantidade_faltante = 0 if item is None else qtd_cestas - item.quantidade
+            itens_faltantes.append(f'{nome} (faltam {quantidade_faltante} unidades)')
 
-    
     # Se algum item estiver faltando, exibe uma mensagem de erro
-    
     if itens_faltantes:
         itens_formatados = [f"• {item}" for item in itens_faltantes]
-        flash(f"Os seguintes itens estão faltando ou não possuem quantidade suficiente:<br>{'<br>'.join(itens_formatados)}", 'danger')
-
-
+        flash(
+            "Os seguintes itens estão faltando ou não possuem quantidade suficiente:<br>"
+            f"{'<br>'.join(itens_formatados)}", 'danger'
+        )
         return redirect(url_for('cestas'))
 
     # Captura a data e hora atuais com o fuso horário correto
-    tz = pytz.timezone('America/Sao_Paulo')
     data_hora_atual = datetime.now(tz)
 
-    # Atualiza o estoque e registra a movimentação de saída com justificativa e data/hora correta
-    arroz.quantidade -= qtd_cestas
-    feijao.quantidade -= qtd_cestas
-    acucar.quantidade -= qtd_cestas
-    macarrao.quantidade -= qtd_cestas
-    sal.quantidade -= qtd_cestas
-    oleo.quantidade -= qtd_cestas
-    molho.quantidade -= qtd_cestas
-    farinha.quantidade -= qtd_cestas
-    sardinha.quantidade -= qtd_cestas
-    fuba.quantidade -= qtd_cestas
-    cafe.quantidade -= qtd_cestas
-    db.session.commit()  # Confirma as alterações no estoque
+    # Atualiza o estoque e registra a movimentação de saída
+    itens = [
+        (arroz, 'Arroz Branco - 1 Kg'),
+        (feijao, 'Feijão - 1 Kg'),
+        (acucar, 'Açucar - 1 Kg'),
+        (macarrao, 'Macarrão espaguete - 500 g'),
+        (sal, 'Sal - 1 Kg'),
+        (oleo, 'Óleo de soja - 900 ml'),
+        (molho, 'Molho de Tomate - 340 g'),
+        (farinha, 'Farinha de trigo - 1 Kg'),
+        (sardinha, 'Sardinha em lata'),
+        (fuba, 'Fubá - 1 Kg'),
+        (cafe, 'Pó de café - 500g')
+    ]
 
-    # Registrar movimentações de saída com saldo atualizado e data/hora
-    movimentacao_arroz = MovimentacaoEstoque(item_id=arroz.id, tipo_movimentacao='saida', quantidade=qtd_cestas, saldo_atual=arroz.quantidade, justificativa='Geração de cestas básicas', data_hora=data_hora_atual)
-    movimentacao_feijao = MovimentacaoEstoque(item_id=feijao.id, tipo_movimentacao='saida', quantidade=qtd_cestas, saldo_atual=feijao.quantidade, justificativa='Geração de cestas básicas', data_hora=data_hora_atual)
-    movimentacao_acucar = MovimentacaoEstoque(item_id=acucar.id, tipo_movimentacao='saida', quantidade=qtd_cestas, saldo_atual=acucar.quantidade, justificativa='Geração de cestas básicas', data_hora=data_hora_atual)
-    movimentacao_macarrao = MovimentacaoEstoque(item_id=macarrao.id, tipo_movimentacao='saida', quantidade=qtd_cestas, saldo_atual=macarrao.quantidade, justificativa='Geração de cestas básicas', data_hora=data_hora_atual)
-    movimentacao_sal = MovimentacaoEstoque(item_id=sal.id, tipo_movimentacao='saida', quantidade=qtd_cestas, saldo_atual=sal.quantidade, justificativa='Geração de cestas básicas', data_hora=data_hora_atual)
-    movimentacao_oleo = MovimentacaoEstoque(item_id=oleo.id, tipo_movimentacao='saida', quantidade=qtd_cestas, saldo_atual=oleo.quantidade, justificativa='Geração de cestas básicas', data_hora=data_hora_atual)
-    movimentacao_molho = MovimentacaoEstoque(item_id=molho.id, tipo_movimentacao='saida', quantidade=qtd_cestas, saldo_atual=molho.quantidade, justificativa='Geração de cestas básicas', data_hora=data_hora_atual)
-    movimentacao_farinha = MovimentacaoEstoque(item_id=farinha.id, tipo_movimentacao='saida', quantidade=qtd_cestas, saldo_atual=farinha.quantidade, justificativa='Geração de cestas básicas', data_hora=data_hora_atual)
-    movimentacao_sardinha = MovimentacaoEstoque(item_id=sardinha.id, tipo_movimentacao='saida', quantidade=qtd_cestas, saldo_atual=sardinha.quantidade, justificativa='Geração de cestas básicas', data_hora=data_hora_atual)
-    movimentacao_fuba = MovimentacaoEstoque(item_id=fuba.id, tipo_movimentacao='saida', quantidade=qtd_cestas, saldo_atual=fuba.quantidade, justificativa='Geração de cestas básicas', data_hora=data_hora_atual)
-    movimentacao_cafe = MovimentacaoEstoque(item_id=cafe.id, tipo_movimentacao='saida', quantidade=qtd_cestas, saldo_atual=cafe.quantidade, justificativa='Geração de cestas básicas', data_hora=data_hora_atual)
+    for item, nome in itens:
+        item.quantidade -= qtd_cestas
+        movimentacao = MovimentacaoEstoque(
+            item_id=item.id,
+            tipo_movimentacao='saida',
+            quantidade=qtd_cestas,
+            saldo_atual=item.quantidade,
+            justificativa='Geração de cestas básicas',
+            data_hora=data_hora_atual
+        )
+        db.session.add(movimentacao)
 
-    db.session.add_all([movimentacao_arroz, movimentacao_feijao, movimentacao_acucar, movimentacao_macarrao, movimentacao_sal, movimentacao_oleo, movimentacao_molho, movimentacao_farinha, movimentacao_sardinha, movimentacao_fuba, movimentacao_cafe])  # Adiciona todas as movimentações de uma vez
-    db.session.commit()  # Confirma as transações
+    db.session.commit()
 
-    flash(f'{qtd_cestas} cesta(s) básica(s) gerada(s) com sucesso!', 'success')  # Exibe mensagem de sucesso
+    flash(f'{qtd_cestas} cesta(s) básica(s) gerada(s) com sucesso!', 'success')
     return redirect(url_for('cestas'))
 
 @app.route('/cestas_personalizadas')
 def cestas_personalizadas():
+    """Rota para cestas básicas personalizadas."""
     # Obtém todos os itens do estoque
     itens = Item.query.all()
     return render_template('cestas_personalizadas.html', itens=itens)
 
-
 @app.route('/gerar_cestas_personalizadas', methods=['POST'])
 def gerar_cestas_personalizadas():
+    """Rota para gerar cestas básicas personalizadas."""
     qtd_cestas = int(request.form['quantidade'])
     itens_selecionados_ids = request.form.getlist('itens_selecionados')
 
@@ -604,7 +612,7 @@ def gerar_cestas_personalizadas():
     # Obter os itens selecionados
     itens_selecionados = Item.query.filter(Item.id.in_(itens_selecionados_ids)).all()
 
-    # Verificar a quantidade disponível de cada item e calcular o número máximo de cestas possíveis
+    # Verificar a quantidade disponível de cada item
     itens_faltantes = []
     max_cestas_possiveis = qtd_cestas
     for item in itens_selecionados:
@@ -616,11 +624,13 @@ def gerar_cestas_personalizadas():
     if itens_faltantes:
         flash(f"Quantidade insuficiente dos seguintes itens: {', '.join(itens_faltantes)}", 'danger')
         if max_cestas_possiveis and max_cestas_possiveis > 0:
-            flash(f"Você pode gerar até {max_cestas_possiveis} cesta(s) com os itens selecionados.", 'info')
+            flash(
+                f"Você pode gerar até {max_cestas_possiveis} cesta(s) com os itens selecionados.",
+                'info'
+            )
         return redirect(url_for('cestas_personalizadas'))
 
     # Atualizar o estoque e registrar as movimentações
-    tz = pytz.timezone('America/Sao_Paulo')
     data_hora_atual = datetime.now(tz)
 
     for item in itens_selecionados:
@@ -641,13 +651,115 @@ def gerar_cestas_personalizadas():
     return redirect(url_for('cestas_personalizadas'))
 
 
+@app.route('/cadastrar_morador', methods=['GET', 'POST'])
+def cadastrar_morador():
+    if request.method == 'POST':
+        nome = request.form['nome']
+        cpf = request.form['cpf']
+        apelido = request.form.get('apelido')
+        endereco = request.form['endereco']
+        beneficio = request.form['beneficio'] == 'sim'
+
+        # Função para formatar o CPF
+        def formatar_cpf(cpf):
+            cpf = ''.join(filter(str.isdigit, cpf))  # Remove tudo que não for número
+            return f'{cpf[:3]}.{cpf[3:6]}.{cpf[6:9]}-{cpf[9:]}'
+
+        cpf = formatar_cpf(cpf)
+
+        # Verifica se já existe um morador com o mesmo CPF
+        morador_existente = Morador.query.filter_by(cpf=cpf).first()
+        if morador_existente:
+            error = "CPF já cadastrado!"
+            return render_template(
+                'cadastrar_morador.html',
+                error=error,
+                nome=nome,
+                cpf=cpf,
+                apelido=apelido,
+                endereco=endereco,
+                beneficio=beneficio
+            )
+
+        # Cria um novo morador
+        novo_morador = Morador(
+            nome=nome,
+            cpf=cpf,
+            apelido=apelido,
+            endereco=endereco,
+            beneficio=beneficio
+        )
+        db.session.add(novo_morador)
+        db.session.commit()
+
+        flash("Morador cadastrado com sucesso!", "success")
+        return redirect(url_for('listar_moradores'))
+
+    return render_template('cadastrar_morador.html')
+
+
+
+@app.route('/listar_moradores', methods=['GET'])
+def listar_moradores():
+    beneficio_filtro = request.args.get('beneficio')
+    busca = request.args.get('busca', '').strip()
+
+    query = Morador.query
+
+    # Aplicando o filtro de benefício
+    if beneficio_filtro == 'sim':
+        query = query.filter_by(beneficio=True)
+    elif beneficio_filtro == 'nao':
+        query = query.filter_by(beneficio=False)
+
+    # Aplicando a busca por nome, apelido ou CPF
+    if busca:
+        query = query.filter(
+            Morador.nome.ilike(f'%{busca}%') | 
+            Morador.apelido.ilike(f'%{busca}%') |
+            Morador.cpf.ilike(f'%{busca}%')
+        )
+
+    moradores = query.all()
+
+    return render_template('listar_moradores.html', moradores=moradores)
 
 
 
 
 
+@app.route('/editar_morador/<int:morador_id>', methods=['GET', 'POST'])
+def editar_morador(morador_id):
+    morador = Morador.query.get_or_404(morador_id)
 
-# Inicializa o banco de dados e roda o aplicativo Flask
+    if request.method == 'POST':
+        morador.nome = request.form['nome']
+        morador.cpf = request.form['cpf']
+        morador.apelido = request.form.get('apelido')
+        morador.endereco = request.form['endereco']
+        morador.beneficio = request.form['beneficio'] == 'sim'
+
+        db.session.commit()
+        flash("Morador atualizado com sucesso!", "success")
+        return redirect(url_for('listar_moradores'))
+
+    return render_template('editar_morador.html', morador=morador)
+
+
+@app.route('/remover_morador/<int:morador_id>', methods=['POST'])
+def remover_morador(morador_id):
+    morador = Morador.query.get_or_404(morador_id)
+    db.session.delete(morador)
+    db.session.commit()
+    flash("Morador removido com sucesso!", "success")
+    return redirect(url_for('listar_moradores'))
+
+
+
+# ---------------------------------------------------------------------
+# Inicialização da aplicação
+# ---------------------------------------------------------------------
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()  # Cria as tabelas no banco de dados se elas não existirem

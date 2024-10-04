@@ -930,3 +930,140 @@ form table td:nth-child(4) {
 .status-container img {
     margin: 10px;
 }
+
+/* Estilo exclusivo para a tabela de moradores */
+.moradores-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.moradores-table th, .moradores-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.moradores-table th {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+}
+
+.moradores-table td {
+    background-color: #f9f9f9;
+}
+
+.moradores-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.moradores-table tr:hover {
+    background-color: #ddd;
+}
+
+/* Estilo da barra de pesquisa específica para moradores */
+.search-bar input {
+    width: 100%; /* Ajusta a largura para ocupar 100% do espaço disponível */
+    max-width: 600px; /* Limite máximo aumentado para garantir que o placeholder caiba */
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.search-bar button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.search-bar button:hover {
+    background-color: #45a049;
+}
+
+/* Estilos para os botões de editar e remover */
+.btn-editar {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    text-decoration: none;
+    margin-right: 5px;
+}
+
+.btn-editar:hover {
+    background-color: #0056b3;
+}
+
+.btn-remover {
+    padding: 5px 10px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.btn-remover:hover {
+    background-color: #c82333;
+}
+
+/* Estilos para os botões de filtro */
+.filter-buttons {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.btn-filter {
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 5px;
+    text-align: center;
+}
+
+input[type="radio"] {
+    display: none; /* Oculta os inputs de rádio */
+}
+
+input[type="radio"]:checked + .btn-filter {
+    background-color: #28a745;
+    color: white;
+    border-color: #28a745;
+}
+
+.filter-button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.filter-button:hover {
+    background-color: #45a049;
+}
+
+.radio-group {
+    display: inline-flex;
+    gap: 10px; /* Espaçamento entre os botões de rádio */
+    align-items: center;
+    margin-top: 5px;
+}
+
+.radio-group input[type="radio"] {
+    margin-right: 5px;
+}

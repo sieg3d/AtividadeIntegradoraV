@@ -38,9 +38,20 @@
                     <li><a href="{{ url_for('estoque_atual') }}">Estoque Atual</a></li>
                     <li><a href="{{ url_for('movimentacoes_estoque') }}">Movimentações</a></li>
                     <li><a href="{{ url_for('cestas') }}">Gerar Cesta Básica</a></li>
-                    <li><a href="{{ url_for('cestas_personalizadas') }}">Gerar Cesta Básica Personalizada</a></li> <!-- Novo link -->
+                    <li><a href="{{ url_for('cestas_personalizadas') }}">Gerar Cesta Básica Personalizada</a></li> 
                 </ul>
             </li>
+
+            <li class="dropdown">
+                <!-- Botão para abrir o dropdown de Moradores -->
+                <a href="javascript:void(0)" class="dropbtn">Moradores</a>
+                <!-- Itens do dropdown para Moradores -->
+                <ul class="dropdown-content">
+                    <li><a href="{{ url_for('cadastrar_morador') }}">Cadastrar Morador</a></li> <!-- Link para cadastrar morador -->
+                    <li><a href="{{ url_for('listar_moradores') }}">Listar Moradores</a></li> <!-- Link para listar moradores -->
+                </ul>
+            </li>
+            
         </ul>
     </nav>
 
