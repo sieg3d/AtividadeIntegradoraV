@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Entrada de Itens{% endblock %} 
+
+{% block content %}
+<div id="entrada-page">
+    <div class="entrada-form-container">
+        <h1>Registrar Entrada de Itens</h1> 
+
+        <!-- Formulário para registrar a entrada de itens -->
+        <form id="entradaForm" data-url="{{ url_for('entrada_item') }}">
+            <div class="entrada-form-group">
+                <label for="item">Selecione o Item:</label>
+                <select name="item_id" id="item" required>
+                    {% for item in itens %}
+                    <option value="{{ item.id }}">{{ item.nome }}</option>
+                    {% endfor %}
+                </select>   
+            </div>
+
+            <div class="entrada-form-group">
+                <label for="quantidade">Quantidade:</label>
+                <input type="number" name="quantidade" id="quantidade" min="1" required>
+            </div>
+
+            <button type="submit" class="entrada-btn-cadastrar">Registrar Entrada</button>
+        </form>
+
+        <div id="mensagens">
+            <ul>
+                {% for entrada in entradas %}
+                    <li class="alert alert-success success">
+                        Entrada de {{ entrada.quantidade }} unidade(s) de {{ entrada.item }} realizada com sucesso!
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

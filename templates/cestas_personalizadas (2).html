@@ -1,0 +1,54 @@
+{% extends 'base.html' %} 
+
+{% block title %}Cestas Básicas Personalizadas{% endblock %} 
+
+{% block content %}
+    <h1>Gerar Cestas Básicas Personalizadas</h1>
+
+    <!-- Exibe as mensagens de sucesso ou erro, se houver -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Formulário para selecionar itens e gerar cestas básicas -->
+    <form method="POST" action="{{ url_for('gerar_cestas_personalizadas') }}">
+        <h3>Selecione os itens para a cesta básica:</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 5%;">
+                        <input type="checkbox" id="select-all" checked>
+                    </th>
+                    <th style="width: 50%;">Item</th>
+                    <th style="width: 25%;">Categoria</th>
+                    <th style="width: 15%;">Quantidade Disponível</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in itens %}
+                <tr>
+                    <td>
+                        <input type="checkbox" name="itens_selecionados" value="{{ item.id }}" class="item-checkbox" checked>
+                    </td>
+                    <td>{{ item.nome }}</td>
+                    <td>{{ item.categoria }}</td>
+                    <td>{{ item.quantidade }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div id="centralizar">
+        <label for="quantidade">Quantidade de cestas:</label>
+        <input type="number" name="quantidade" id="quantidade" min="1" required>
+
+        <button type="submit">Gerar Cestas Personalizadas</button>
+        </div>
+    </form>
+{% endblock %}
