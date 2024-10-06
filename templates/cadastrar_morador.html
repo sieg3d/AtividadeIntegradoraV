@@ -1,34 +1,43 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Cadastrar Morador</h1>
-<form method="POST" action="{{ url_for('cadastrar_morador') }}">
-    <div>
-        <label for="nome">Nome:</label>
-        <input type="text" name="nome" required>
-    </div>
-    <div>
-        <label for="cpf">CPF:</label>
-        <input type="text" name="cpf" id="cpf" required>
-    </div>
-    <div>
-        <label for="apelido">Apelido (Opcional):</label>
-        <input type="text" name="apelido">
-    </div>
-    <div>
-        <label for="endereco">Endereço:</label>
-        <input type="text" name="endereco" required>
-    </div>
-    <div class="radio-group">
-        <label>Benefício:</label>
-        <input type="radio" id="sim" name="beneficio" value="sim" checked>
-        <label for="sim" class="btn-filter">Sim</label>
-        <input type="radio" id="nao" name="beneficio" value="nao">
-        <label for="nao" class="btn-filter">Não</label>
-    </div>
-    <button type="submit" class="filter-button">Cadastrar</button>
-</form>
+<h1 class="text-center">Cadastrar Morador</h1>
 
+<form method="POST" action="{{ url_for('cadastrar_morador') }}" class="form-container">
+    <div class="form-row">
+        <div class="form-group">
+            <label for="nome">Nome:</label>
+            <input type="text" name="nome" required class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="cpf">CPF:</label>
+            <input type="text" name="cpf" id="cpf" required class="form-control">
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group">
+            <label for="apelido">Apelido (Opcional):</label>
+            <input type="text" name="apelido" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="endereco">Endereço:</label>
+            <input type="text" name="endereco" required class="form-control">
+        </div>
+    </div>
+    <div class="form-group radio-group">
+        <label>Benefício:</label>
+        <div>
+            <input type="radio" id="sim" name="beneficio" value="sim" checked>
+            <label for="sim" class="btn-filter">Sim</label>
+
+            <input type="radio" id="nao" name="beneficio" value="nao">
+            <label for="nao" class="btn-filter">Não</label>
+        </div>
+    </div>
+    <div class="form-group text-center">
+        <button type="submit" class="filter-button btn-lg">Cadastrar</button>
+    </div>
+</form>
 
 <script>
     function formatCPF(cpf) {
