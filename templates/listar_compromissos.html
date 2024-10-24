@@ -3,32 +3,33 @@
 {% block title %}Lista de Compromissos{% endblock %}
 
 {% block content %}
-<div class="pagina-formulario">
-<h1 class="text-center">Compromissos Agendados</h1>
+<div class="pagina-compromissos">
+    <h1 class="text-center">Compromissos Agendados</h1>
 
-<table class="compromissos-table">
-    <thead>
-        <tr>
-            <th>Nome do Compromisso</th>
-            <th>Data</th>
-            <th>Hora</th>
-            <th>Observações</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for compromisso in compromissos %}
-        <tr>
-            <td>{{ compromisso.nome_compromisso }}</td>
-            <td>{{ compromisso.data.strftime('%d/%m/%Y') }}</td>
-            <td>{{ compromisso.hora.strftime('%H:%M') }}</td>
-            <td>{{ compromisso.observacoes or 'Nenhuma observação' }}</td>
-        </tr>
-        {% else %}
-        <tr>
-            <td colspan="4" class="text-center">Nenhum compromisso agendado.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <!-- Tabela para exibir os compromissos agendados -->
+    <table class="compromissos-table">
+        <thead>
+            <tr>
+                <th>Nome do Compromisso</th>
+                <th>Data</th>
+                <th>Hora</th>
+                <th>Observações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for compromisso in compromissos %}
+            <tr>
+                <td>{{ compromisso.nome_compromisso }}</td>
+                <td>{{ compromisso.data.strftime('%d/%m/%Y') }}</td>
+                <td>{{ compromisso.hora.strftime('%H:%M') }}</td>
+                <td>{{ compromisso.observacoes or 'Nenhuma observação' }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4" class="text-center">Nenhum compromisso agendado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
 {% endblock %}

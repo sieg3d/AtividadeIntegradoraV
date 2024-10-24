@@ -283,6 +283,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+
 document.addEventListener('DOMContentLoaded', function () {
     var agendarCompromissoForm = document.getElementById('agendarCompromissoForm');
     if (agendarCompromissoForm) {
