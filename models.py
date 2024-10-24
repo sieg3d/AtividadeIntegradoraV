@@ -16,15 +16,15 @@ class Projeto(db.Model):
     responsavel = db.Column(db.String(100), nullable=False)
     status = db.Column(db.String(50), nullable=False)
     orcamento = db.Column(db.Float, nullable=True)
-    data_criacao = db.Column(db.DateTime, default=datetime.now(tz))  # Adiciona a data de criação com o fuso horário correto
+    data_criacao = db.Column(db.DateTime, default=lambda: datetime.now(tz))  # Usa lambda para fuso horário correto
 
 class Comentario(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     projeto_id = db.Column(db.Integer, db.ForeignKey('projeto.id'), nullable=False)
     conteudo = db.Column(db.Text, nullable=False)
-    data_comentario = db.Column(db.DateTime, default=datetime.now(tz))  # Ajuste de fuso horário no comentário
+    data_comentario = db.Column(db.DateTime, default=lambda: datetime.now(tz))  # Usa lambda para fuso horário correto
 
-    # Modelos de estoque
+# Modelos de estoque
 class Item(db.Model):
     __table_args__ = {'extend_existing': True}  # Estende a tabela existente ao invés de tentar recriá-la
     id = db.Column(db.Integer, primary_key=True)
@@ -34,37 +34,16 @@ class Item(db.Model):
     quantidade = db.Column(db.Integer, nullable=False, default=0)
     preco = db.Column(db.Float, nullable=False)
 
-
-# class MovimentacaoEstoque(db.Model):
-#     __table_args__ = {'extend_existing': True}
-#     id = db.Column(db.Integer, primary_key=True)
-#     item_id = db.Column(db.Integer, db.ForeignKey('item.id'), nullable=False)
-#     tipo_movimentacao = db.Column(db.String(10), nullable=False)  # 'entrada' ou 'saida'
-#     quantidade = db.Column(db.Integer, nullable=False)
-#     data_hora = db.Column(db.DateTime, default=datetime.utcnow)
-#     item = db.relationship('Item', backref=db.backref('movimentacoes', lazy=True))
-
-# class MovimentacaoEstoque(db.Model):
-#     __table_args__ = {'extend_existing': True}
-#     id = db.Column(db.Integer, primary_key=True)
-#     item_id = db.Column(db.Integer, db.ForeignKey('item.id'), nullable=False)
-#     tipo_movimentacao = db.Column(db.String(10), nullable=False)  # 'entrada' ou 'saida'
-#     quantidade = db.Column(db.Integer, nullable=False)
-#     data_hora = db.Column(db.DateTime, default=datetime.utcnow)
-#     justificativa = db.Column(db.String(255), nullable=True)  # Novo campo para justificativa
-#     item = db.relationship('Item', backref=db.backref('movimentacoes', lazy=True))
-
 class MovimentacaoEstoque(db.Model):
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
     item_id = db.Column(db.Integer, db.ForeignKey('item.id'), nullable=False)
     tipo_movimentacao = db.Column(db.String(10), nullable=False)  # 'entrada' ou 'saida'
     quantidade = db.Column(db.Integer, nullable=False)
-    data_hora = db.Column(db.DateTime, default=datetime.utcnow)
+    data_hora = db.Column(db.DateTime, default=datetime.utcnow)  # Mantém em UTC para operações globais
     justificativa = db.Column(db.String(255), nullable=True, default='')  # Define string vazia como padrão
     saldo_atual = db.Column(db.Integer, nullable=False)  # Adiciona o campo saldo atual
     item = db.relationship('Item', backref=db.backref('movimentacoes', lazy=True))
-
 
 class Morador(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -73,3 +52,14 @@ class Morador(db.Model):
     apelido = db.Column(db.String(50), nullable=True)
     endereco = db.Column(db.String(200), nullable=False)
     beneficio = db.Column(db.Boolean, default=False)  # True para 'Sim', False para 'Não'
+
+
+
+class Compromisso(db.Model):
+    __tablename__ = 'compromissos'
+    id = db.Column(db.Integer, primary_key=True)
+    nome_compromisso = db.Column(db.String(100), nullable=False)
+    data = db.Column(db.Date, nullable=False)
+    hora = db.Column(db.Time, nullable=False)
+    observacoes = db.Column(db.Text, nullable=True)
+    data_criacao = db.Column(db.DateTime, default=datetime.utcnow)

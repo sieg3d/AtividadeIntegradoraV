@@ -282,3 +282,23 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    var agendarCompromissoForm = document.getElementById('agendarCompromissoForm');
+    if (agendarCompromissoForm) {
+        agendarCompromissoForm.addEventListener('submit', function (event) {
+            var data = document.getElementById('data').value;
+            var hora = document.getElementById('hora').value;
+
+            // Lógica simples para impedir agendamentos no passado
+            var agora = new Date();
+            var dataCompromisso = new Date(`${data}T${hora}`);
+
+            if (dataCompromisso < agora) {
+                alert('Não é possível agendar um compromisso no passado.');
+                event.preventDefault(); // Cancela o envio do formulário
+            }
+        });
+    }
+});
+

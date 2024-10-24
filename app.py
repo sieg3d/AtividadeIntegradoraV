@@ -8,7 +8,7 @@ from flask import (
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
-from models import db, Item, MovimentacaoEstoque, Projeto, Comentario, Morador  # Importe os modelos necessários
+from models import db, Item, MovimentacaoEstoque, Projeto, Comentario, Morador, Compromisso  # Importe os modelos necessários
 
 # Configurações globais
 app = Flask(__name__)
@@ -51,6 +51,19 @@ def home():
     concluidos = Projeto.query.filter_by(status='Concluído').count()
     cancelados = Projeto.query.filter_by(status='Cancelado').count()
 
+ # Obter a data atual e o final da semana
+    hoje = datetime.now().date()  # Data de hoje
+    semana_futura = hoje + timedelta(days=7)  # Fim da semana (7 dias a partir de hoje)
+
+    # Buscar compromissos de hoje
+    compromissos_hoje = Compromisso.query.filter(Compromisso.data == hoje).order_by(Compromisso.hora).all()
+
+    # Buscar compromissos da semana (excluindo os de hoje)
+    compromissos_semana = Compromisso.query.filter(Compromisso.data > hoje, Compromisso.data <= semana_futura).order_by(Compromisso.data, Compromisso.hora).all()
+
+    
+    
+
     return render_template(
         'index.html',
         nao_iniciados=nao_iniciados,
@@ -58,7 +71,9 @@ def home():
         pendentes=pendentes,
         em_andamento=em_andamento,
         concluidos=concluidos,
-        cancelados=cancelados
+        cancelados=cancelados,
+        compromissos_hoje=compromissos_hoje,
+        compromissos_semana=compromissos_semana
     )
 
 # --------------------------- Estoque ---------------------------------
@@ -754,6 +769,52 @@ def remover_morador(morador_id):
     flash("Morador removido com sucesso!", "success")
     return redirect(url_for('listar_moradores'))
 
+@app.route('/agendar', methods=['GET', 'POST'])
+def agendar_compromisso():
+    """Rota para agendar compromissos."""
+    if request.method == 'POST':
+        nome_compromisso = request.form['nome_compromisso']
+        data = request.form['data']
+        hora = request.form['hora']
+        observacoes = request.form.get('observacoes', '')  # Observações são opcionais
+
+        # Validação da data e hora
+        try:
+            data_formatada = datetime.strptime(data, '%Y-%m-%d').date()
+            hora_formatada = datetime.strptime(hora, '%H:%M').time()
+        except ValueError:
+            flash('Data ou hora inválida. Por favor, insira corretamente.', 'danger')
+            return redirect(url_for('agendar_compromisso'))
+
+        # Verifica se a data/hora está no passado
+        agora = datetime.now()
+        data_hora_compromisso = datetime.combine(data_formatada, hora_formatada)
+        if data_hora_compromisso < agora:
+            flash('Não é possível agendar um compromisso no passado.', 'danger')
+            return redirect(url_for('agendar_compromisso'))
+
+        # Criando um novo compromisso
+        novo_compromisso = Compromisso(
+            nome_compromisso=nome_compromisso,
+            data=data_formatada,
+            hora=hora_formatada,
+            observacoes=observacoes
+        )
+
+        # Salvando no banco de dados
+        db.session.add(novo_compromisso)
+        db.session.commit()
+
+        flash('Compromisso agendado com sucesso!', 'success')
+        return redirect(url_for('agendar_compromisso'))
+
+    return render_template('agendar_compromisso.html')
+
+@app.route('/compromissos', methods=['GET'])
+def listar_compromissos():
+    """Rota para listar compromissos agendados."""
+    compromissos = Compromisso.query.order_by(Compromisso.data, Compromisso.hora).all()
+    return render_template('listar_compromissos.html', compromissos=compromissos)
 
 
 # ---------------------------------------------------------------------

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Agendar Compromisso{% endblock %}
+
+{% block content %}
+<div class="pagina-compromissos">
+<div class="form-container">
+    <h1>Agendar Compromisso</h1>
+    <form method="POST" id="agendarCompromissoForm">
+        <div class="form-group">
+            <label for="nome_compromisso">Nome do Compromisso:</label>
+            <input type="text" id="nome_compromisso" name="nome_compromisso" placeholder="Digite o nome do compromisso" required>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="data">Data:</label>
+                <input type="date" id="data" name="data" required>
+            </div>
+            <div class="form-group">
+                <label for="hora">Hora:</label>
+                <input type="time" id="hora" name="hora" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="observacoes">Observações:</label>
+            <textarea id="observacoes" name="observacoes" placeholder="Escreva suas observações (opcional)" rows="4"></textarea>
+        </div>
+
+        <button type="submit" class="btn-cadastrar">Agendar</button>
+    </form>
+</div>
+</div>
+{% endblock %}

@@ -4,8 +4,8 @@
 
 {% block content %}
 <div id="home-page" class="home-page">
-    <!-- Conteúdo da home -->
     <div class="container">
+        <!-- Primeira Coluna: Projetos e Reclamações -->
         <div class="column">
             <div class="status-container">
                 <h3>Quantidade de Projetos</h3>
@@ -28,22 +28,54 @@
             </div>
         </div>
 
+        <!-- Segunda Coluna: Moradores e Beneficiados -->
         <div class="column">
-            <div class="status-container">
-                <h3>Agenda de Compromissos</h3>
-                <!-- Adicione aqui os dados da Agenda -->
-            </div>
-
             <div class="status-container">
                 <h3>Moradores e Beneficiados</h3>
                 <!-- Adicione aqui os dados de Moradores e Beneficiados -->
             </div>
-        </div>
 
-        <div class="column">
             <div class="status-container">
                 <h3>Eventos</h3>
                 <!-- Adicione aqui os dados de Eventos -->
+            </div>
+        </div>
+
+        <!-- Terceira Coluna: Agenda de Compromissos (última coluna) -->
+        <div class="column agenda-column">
+            <div class="status-container">
+                <h3>Agenda de Compromissos</h3>
+
+                <!-- Compromissos de Hoje -->
+                <h4>Compromissos de Hoje</h4>
+                <div class="agenda-container">
+                    {% if compromissos_hoje %}
+                        {% for compromisso in compromissos_hoje %}
+                        <div class="agenda-card">
+                            <h5>{{ compromisso.nome_compromisso }}</h5>
+                            <p>Horário: {{ compromisso.hora.strftime('%H:%M') }}</p>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                    <p class="no-compromissos">Nenhum compromisso para hoje.</p>
+                    {% endif %}
+                </div>
+
+                <!-- Compromissos da Semana -->
+                <h4>Compromissos da Semana</h4>
+                <div class="agenda-container">
+                    {% if compromissos_semana %}
+                        {% for compromisso in compromissos_semana %}
+                        <div class="agenda-card">
+                            <h5>{{ compromisso.nome_compromisso }}</h5>
+                            <p>Data: {{ compromisso.data.strftime('%d/%m/%Y') }}</p>
+                            <p>Horário: {{ compromisso.hora.strftime('%H:%M') }}</p>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                    <p class="no-compromissos">Nenhum compromisso para esta semana.</p>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
