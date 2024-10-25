@@ -1540,3 +1540,29 @@ form table td:nth-child(4) {
         padding: 12px;
     }
 }
+
+.itens-faltando-container {
+    margin-top: 20px;
+}
+
+.itens-faltando-container h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #a94442;
+}
+
+.itens-faltando-container ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.itens-faltando-container li {
+    font-size: 16px;
+    color: #a94442;
+    margin-bottom: 5px;
+}
+
+.itens-faltando-container li::before {
+    content: '• ';
+    color: #a94442;
+}
