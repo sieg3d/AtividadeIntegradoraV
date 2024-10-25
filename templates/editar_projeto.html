@@ -1,61 +1,62 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 
-{% block title %}Editar Projeto{% endblock %} 
+{% block title %}Editar Projeto: {{ projeto.nome }}{% endblock %}
 
 {% block content %}
-        <h1>Editar Projeto: {{ projeto.nome }}</h1> 
+<div class="projeto-container">
+    <h1>Editar Projeto: {{ projeto.nome }}</h1>
 
-        <!-- Verifica se há uma mensagem de erro e a exibe -->
-        {% if error %}
-        <div class="error">{{ error }}</div> <!-- Exibe a mensagem de erro caso exista -->
-        {% endif %}
+    <!-- Verifica se há uma mensagem de erro e a exibe -->
+    {% if error %}
+    <div class="alert alert-danger">{{ error }}</div> <!-- Exibe a mensagem de erro caso exista -->
+    {% endif %}
 
-        <!-- Formulário de edição do projeto -->
-        <form method="POST">
-            <!-- Campo de seleção para alterar a prioridade do projeto -->
+    <!-- Formulário de edição do projeto -->
+    <form method="POST" class="form-editar-projeto">
+        <div class="form-group">
             <label for="prioridade">Prioridade:</label>
-            <select name="prioridade" required>
-                <!-- Verifica a prioridade atual do projeto e a marca como 'selected' -->
+            <select name="prioridade" class="form-control" required>
                 <option value="Baixa" {% if projeto.prioridade == 'Baixa' %}selected{% endif %}>Baixa</option>
                 <option value="Média" {% if projeto.prioridade == 'Média' %}selected{% endif %}>Média</option>
                 <option value="Alta" {% if projeto.prioridade == 'Alta' %}selected{% endif %}>Alta</option>
                 <option value="Crítica" {% if projeto.prioridade == 'Crítica' %}selected{% endif %}>Crítica</option>
-            </select><br>
+            </select>
+        </div>
 
-            <!-- Campo de seleção para alterar o status do projeto -->
+        <div class="form-group">
             <label for="status">Status:</label>
-            <select name="status" required>
-                <!-- Verifica o status atual do projeto e o marca como 'selected' -->
+            <select name="status" class="form-control" required>
                 <option value="Em andamento" {% if projeto.status == 'Em andamento' %}selected{% endif %}>Em andamento</option>
                 <option value="Concluído" {% if projeto.status == 'Concluído' %}selected{% endif %}>Concluído</option>
                 <option value="Pendente" {% if projeto.status == 'Pendente' %}selected{% endif %}>Pendente</option>
                 <option value="Atrasado" {% if projeto.status == 'Atrasado' %}selected{% endif %}>Atrasado</option>
-                <option value="Cancelado" {% if projeto.status == 'Cancelado' %}selected{% endif %}>Cancelado</option> 
-            </select><br>
+                <option value="Cancelado" {% if projeto.status == 'Cancelado' %}selected{% endif %}>Cancelado</option>
+            </select>
+        </div>
 
-            <!-- Campo para adicionar um novo comentário ao projeto -->
-            <label for="comentario">Comentário (mínimo 10 caracteres):</label><br>
-            <textarea name="comentario" rows="4" cols="50" required></textarea><br> <!-- O comentário é obrigatório e deve ter no mínimo 10 caracteres -->
+        <div class="form-group">
+            <label for="comentario">Comentário (mínimo 10 caracteres):</label>
+            <textarea name="comentario" rows="4" class="form-control" required></textarea>
+        </div>
 
-            <!-- Botão para salvar as alterações feitas no projeto -->
-            <button type="submit">Salvar Alterações</button>
-        </form>
+        <button type="submit" class="btn btn-success">Salvar Alterações</button>
+    </form>
+</div>
 
-        <!-- Exibição dos comentários existentes associados ao projeto -->
-        <h2>Comentários</h2>
+<div class="comentarios-container">
+    <h2>Comentários</h2>
 
-        <!-- Verifica se há comentários para o projeto e exibe a lista -->
-        {% if comentarios %}
-            <ul> <!-- Lista de comentários -->
-                {% for comentario in comentarios %} <!-- Itera sobre cada comentário -->
-                    <li>
-                        <p>{{ comentario.conteudo }}</p> <!-- Exibe o conteúdo do comentário -->
-                        <small>Comentado em: {{ comentario.data_comentario }}</small> <!-- Exibe a data do comentário -->
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <!-- Exibe uma mensagem caso o projeto ainda não tenha comentários -->
-            <p>Não há comentários para este projeto ainda.</p>
-        {% endif %}
+    {% if comentarios %}
+    <div class="comentarios-list">
+        {% for comentario in comentarios %}
+        <div class="comentario-item">
+            <p class="comentario-conteudo">{{ comentario.conteudo }}</p> <!-- Exibe o conteúdo do comentário -->
+            <small class="comentario-data">Comentado em: {{ comentario.data_comentario.strftime('%d/%m/%Y %H:%M') }}</small> <!-- Exibe a data do comentário -->
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+        <p class="sem-comentarios">Não há comentários para este projeto ainda.</p>
+    {% endif %}
+</div>
 {% endblock %}

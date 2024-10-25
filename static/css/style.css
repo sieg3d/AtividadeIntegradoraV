@@ -1566,3 +1566,236 @@ form table td:nth-child(4) {
     content: '• ';
     color: #a94442;
 }
+
+.comentarios-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.comentarios-container h1 {
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.comentarios-list {
+    list-style: none;
+    padding: 0;
+}
+
+.comentario-item {
+    background-color: #fff;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.comentario-item:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.comentario-conteudo {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.comentario-data {
+    font-size: 12px;
+    color: #999;
+}
+
+.sem-comentarios {
+    text-align: center;
+    font-size: 16px;
+    color: #777;
+    margin-top: 20px;
+}
+
+.voltar-btn {
+    display: block;
+    width: 100px;
+    margin: 20px auto 0;
+    text-align: center;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.voltar-btn:hover {
+    background-color: #0056b3;
+}
+
+
+.projeto-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.projeto-container h1 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-editar-projeto .form-group {
+    margin-bottom: 15px;
+}
+
+.form-editar-projeto label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.form-editar-projeto select,
+.form-editar-projeto textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.btn.btn-success {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn.btn-success:hover {
+    background-color: #218838;
+}
+
+.comentarios-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+.comentarios-container h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+.comentarios-list {
+    list-style: none;
+    padding: 0;
+}
+
+.comentario-item {
+    background-color: #f1f1f1;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.comentario-item:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.comentario-conteudo {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.comentario-data {
+    font-size: 12px;
+    color: #999;
+}
+
+.sem-comentarios {
+    text-align: center;
+    font-size: 16px;
+    color: #777;
+    margin-top: 20px;
+}
+
+.entrada-page-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.entrada-form-container h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.form-entrada-itens .form-group {
+    margin-bottom: 15px;
+}
+
+.form-entrada-itens label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.form-entrada-itens select,
+.form-entrada-itens input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.btn.btn-primary {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+}
+
+.btn.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+#mensagens {
+    margin-top: 20px;
+}
+
+.alert {
+    padding: 10px;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}

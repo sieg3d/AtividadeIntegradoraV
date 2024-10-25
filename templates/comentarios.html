@@ -1,25 +1,27 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 
-{% block title %}Comentários do Projeto{% endblock %} 
+{% block title %}Comentários do Projeto{% endblock %}
 
 {% block content %}
-        <h1>Comentários para o projeto: {{ projeto.nome }}</h1> <!-- Título da página exibindo o nome do projeto -->
+<div class="comentarios-container">
+    <h1>Comentários para o projeto: <strong>{{ projeto.nome }}</strong></h1> <!-- Título da página exibindo o nome do projeto -->
 
-        <!-- Verifica se há comentários e exibe a lista -->
-        {% if comentarios %}
-            <ul> <!-- Lista não ordenada de comentários -->
-                {% for comentario in comentarios %} <!-- Itera sobre a lista de comentários -->
-                    <li>
-                        <p>{{ comentario.conteudo }}</p> <!-- Exibe o conteúdo do comentário -->
-                        <small>Comentado em: {{ comentario.data_comentario }}</small> <!-- Exibe a data do comentário -->
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <!-- Exibe mensagem se não houver comentários -->
-            <p>Não há comentários para este projeto.</p>
-        {% endif %}
+    <!-- Verifica se há comentários e exibe a lista -->
+    {% if comentarios %}
+        <div class="comentarios-list">
+            {% for comentario in comentarios %}
+            <div class="comentario-item">
+                <p class="comentario-conteudo">{{ comentario.conteudo }}</p> <!-- Exibe o conteúdo do comentário -->
+                <small class="comentario-data">Comentado em: {{ comentario.data_comentario.strftime('%d/%m/%Y %H:%M') }}</small> <!-- Exibe a data do comentário -->
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <!-- Exibe mensagem se não houver comentários -->
+        <p class="sem-comentarios">Não há comentários para este projeto.</p>
+    {% endif %}
 
-        <!-- Botão para voltar à página de acompanhamento de status -->
-        <a href="{{ url_for('acompanhar_status') }}" class="btn btn-secondary">Voltar</a> <!-- Redireciona para a página de status dos projetos -->
+    <!-- Botão para voltar à página de acompanhamento de status -->
+    <a href="{{ url_for('acompanhar_status') }}" class="btn btn-primary voltar-btn">Voltar</a> <!-- Redireciona para a página de status dos projetos -->
+</div>
 {% endblock %}

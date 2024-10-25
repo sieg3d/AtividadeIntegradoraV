@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Estoque e Projetos</title> 
-    
+    <title>Sistema de Estoque e Projetos</title>
+
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
+
 <body>
     <nav class="navbar">
         <ul class="main-menu"> <!-- Menu principal -->
@@ -21,8 +23,10 @@
                 <a href="javascript:void(0)" class="dropbtn">Projetos</a>
                 <!-- Itens do dropdown para Projetos -->
                 <ul class="dropdown-content">
-                    <li><a href="{{ url_for('cadastrar_projeto') }}">Cadastrar Projeto</a></li> <!-- Link para cadastrar projeto -->
-                    <li><a href="{{ url_for('acompanhar_status') }}">Acompanhar Projetos</a></li> <!-- Link para acompanhar projetos -->
+                    <li><a href="{{ url_for('cadastrar_projeto') }}">Cadastrar Projeto</a></li>
+                    <!-- Link para cadastrar projeto -->
+                    <li><a href="{{ url_for('acompanhar_status') }}">Acompanhar Projetos</a></li>
+                    <!-- Link para acompanhar projetos -->
                 </ul>
             </li>
 
@@ -38,7 +42,7 @@
                     <li><a href="{{ url_for('estoque_atual') }}">Estoque Atual</a></li>
                     <li><a href="{{ url_for('movimentacoes_estoque') }}">Movimentações</a></li>
                     <li><a href="{{ url_for('cestas') }}">Gerar Cesta Básica</a></li>
-                    <li><a href="{{ url_for('cestas_personalizadas') }}">Gerar Cesta Básica Personalizada</a></li> 
+                    <li><a href="{{ url_for('cestas_personalizadas') }}">Gerar Cesta Básica Personalizada</a></li>
                 </ul>
             </li>
 
@@ -47,11 +51,23 @@
                 <a href="javascript:void(0)" class="dropbtn">Moradores</a>
                 <!-- Itens do dropdown para Moradores -->
                 <ul class="dropdown-content">
-                    <li><a href="{{ url_for('cadastrar_morador') }}">Cadastrar Morador</a></li> <!-- Link para cadastrar morador -->
-                    <li><a href="{{ url_for('listar_moradores') }}">Listar Moradores</a></li> <!-- Link para listar moradores -->
+                    <li><a href="{{ url_for('cadastrar_morador') }}">Cadastrar Morador</a></li>
+                    <!-- Link para cadastrar morador -->
+                    <li><a href="{{ url_for('listar_moradores') }}">Listar Moradores</a></li>
+                    <!-- Link para listar moradores -->
                 </ul>
             </li>
-            
+
+            <li class="dropdown">
+                <!-- Botão para abrir o dropdown de Moradores -->
+                <a href="javascript:void(0)" class="dropbtn">Agenda</a>
+                <!-- Itens do dropdown para Moradores -->
+                <ul class="dropdown-content">
+                    <li><a href="{{ url_for('agendar_compromisso') }}">Agendamento</a></li> <!-- Link para cadastrar morador -->
+                    <li><a href="{{ url_for('listar_compromissos') }}">Compromissos</a></li> <!-- Link para listar moradores -->
+                </ul>
+            </li>
+
         </ul>
     </nav>
 
@@ -60,7 +76,8 @@
         {% block content %}{% endblock %} <!-- Bloco que será preenchido com conteúdo específico de cada página -->
     </div>
 
-    
+
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
+
 </html>
