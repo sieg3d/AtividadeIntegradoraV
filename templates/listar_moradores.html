@@ -5,7 +5,7 @@
 {% block content %}
     <h1>Lista de Moradores</h1>
 
-    <form method="GET" action="{{ url_for('listar_moradores') }}">
+    <form method="GET"  id="formmoradores">
         <label>Filtrar por Benefício:</label>
     
         <div class="filter-buttons">
@@ -20,14 +20,14 @@
         </div>
     
         <!-- Campo de busca -->
-        <div class="search-bar">
+        <div class="search-bar_moradores">
             <input type="text" name="busca" placeholder="Pesquisar por Nome, Apelido ou CPF" value="{{ request.args.get('busca', '') }}">
         </div>
     
         <button type="submit" class="filter-button">Filtrar</button>
     </form>
     
-    
+
     
     
     <!-- Tabela de Moradores -->
