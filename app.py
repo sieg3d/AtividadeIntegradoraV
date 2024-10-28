@@ -42,8 +42,7 @@ def remover_acentos(texto):
 
 @app.route('/')
 def home():
-    """Rota para a página inicial."""
-    # Contagens de status
+    # Contagens de status dos projetos
     total_projetos = Projeto.query.count()
     nao_iniciados = Projeto.query.filter_by(status='Não iniciado').count()
     pendentes = Projeto.query.filter_by(status='Pendente').count()
@@ -51,18 +50,15 @@ def home():
     concluidos = Projeto.query.filter_by(status='Concluído').count()
     cancelados = Projeto.query.filter_by(status='Cancelado').count()
 
- # Obter a data atual e o final da semana
-    hoje = datetime.now().date()  # Data de hoje
-    semana_futura = hoje + timedelta(days=7)  # Fim da semana (7 dias a partir de hoje)
+    # Contagem de moradores e beneficiados
+    total_moradores = Morador.query.count()
+    moradores_beneficiados = Morador.query.filter_by(beneficio=True).count()
 
-    # Buscar compromissos de hoje
+    # Compromissos de hoje e da semana
+    hoje = datetime.now().date()
+    semana_futura = hoje + timedelta(days=7)
     compromissos_hoje = Compromisso.query.filter(Compromisso.data == hoje).order_by(Compromisso.hora).all()
-
-    # Buscar compromissos da semana (excluindo os de hoje)
     compromissos_semana = Compromisso.query.filter(Compromisso.data > hoje, Compromisso.data <= semana_futura).order_by(Compromisso.data, Compromisso.hora).all()
-
-    
-    
 
     return render_template(
         'index.html',
@@ -72,9 +68,12 @@ def home():
         em_andamento=em_andamento,
         concluidos=concluidos,
         cancelados=cancelados,
+        total_moradores=total_moradores,
+        moradores_beneficiados=moradores_beneficiados,
         compromissos_hoje=compromissos_hoje,
         compromissos_semana=compromissos_semana
     )
+
 
 # --------------------------- Estoque ---------------------------------
 

@@ -11,27 +11,40 @@ function togglePeriodoPersonalizado(value) {
 // Função para formatar o CPF no formato xxx.xxx.xxx-xx
 function formatCPF(cpf) {
     cpf = cpf.replace(/\D/g, ""); // Remove tudo que não é dígito
-    cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2"); // Coloca o primeiro ponto
-    cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2"); // Coloca o segundo ponto
+
+    // Aplica a formatação
+    cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");       // Coloca o primeiro ponto
+    cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");       // Coloca o segundo ponto
     cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2"); // Coloca o traço
     return cpf;
 }
 
-// Função para validar o formulário de cadastro de projetos
-function validarFormulario() {
-    var orcamento = document.getElementById('orcamento').value;
-    if (orcamento) {
-        orcamento = parseFloat(orcamento.replace(',', '.').trim());
-        if (isNaN(orcamento)) {
-            alert('O orçamento deve ser um número válido.');
-            return false;
-        } else if (orcamento < 0) {
-            alert('O orçamento não pode ser negativo.');
-            return false;
-        }
+document.addEventListener('DOMContentLoaded', function () {
+    var cpfInput = document.getElementById('cpf');
+    if (cpfInput) {
+        cpfInput.addEventListener('input', function () {
+            this.value = formatCPF(this.value);
+
+            // Validação para garantir exatamente 11 dígitos
+            if (this.value.replace(/\D/g, "").length !== 11) {
+                this.setCustomValidity("O CPF deve conter exatamente 11 dígitos.");
+            } else {
+                this.setCustomValidity("");
+            }
+        });
     }
-    return true;
-}
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    var nomeInput = document.getElementById('nome');
+    if (nomeInput) {
+        nomeInput.addEventListener('input', function () {
+            // Remove qualquer número inserido
+            this.value = this.value.replace(/[0-9]/g, "");
+        });
+    }
+});
+
 
 // Evento DOMContentLoaded para garantir que o DOM esteja carregado
 document.addEventListener('DOMContentLoaded', function () {

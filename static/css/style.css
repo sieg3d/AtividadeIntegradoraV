@@ -672,10 +672,10 @@ input[type="radio"]:checked + .btn-filter {
     background-color: #f8f8f8;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s;
     text-align: center;
     margin-bottom: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 .home-page .status-container h3 {
@@ -696,9 +696,12 @@ input[type="radio"]:checked + .btn-filter {
     margin-bottom: 5px;
     font-weight: bold;
     text-align: left;
+    
 }
 
 .status-container .status-content {
+    border: rgba(214, 212, 212, 0.925) solid 1px;
+    border-radius: 5px;
     display: flex;
     align-items: flex-start;
     gap: 10px;
@@ -1179,7 +1182,7 @@ form table td:nth-child(4) {
 }
 
 .home-page .status-content img {
-    margin: 10px;
+    margin: 1px;
 }
 
 /* Estilos para a agenda */
@@ -1832,3 +1835,15 @@ form table td:nth-child(4) {
     margin-bottom: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
+
+/* Centralizar e alinhar as colunas */
+#home-page .container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 0 auto;
+}
+/*-----------------------------------------------------------------------------------------------------------------------------------------*/
+

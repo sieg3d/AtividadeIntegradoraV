@@ -37,9 +37,13 @@
                 <h3>Moradores e Beneficiados</h3>
                 <div class="status-content">
                     <img src="{{ url_for('static', filename='img/moradores.png') }}" alt="Ícone de moradores" width="100" height="100">
-                    <!-- Adicione aqui os dados de Moradores e Beneficiados -->
+                    <ul>
+                        <li>Total de Moradores: {{ total_moradores }}</li>
+                        <li>Moradores Beneficiados: {{ moradores_beneficiados }}</li>
+                    </ul>
                 </div>
             </div>
+            
 
             <div class="status-container">
                 <h3>Eventos</h3>
