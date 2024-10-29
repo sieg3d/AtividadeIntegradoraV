@@ -13,16 +13,16 @@
 <form id="search-form" method="GET" action="/estoque" class="search-form">
     <div class="form-group">
         <input type="text" name="busca" id="search" placeholder="🔍 Buscar item no estoque..." value="{{ request.args.get('busca', '') }}" >
-    </div>
-    <div class="form-group">
+    <!-- </div>
+    <div class="form-group"> -->
         <select name="categoria" id="categoria">
             <option value="todas">Todas as Categorias</option>
             {% for categoria in categorias %}
             <option value="{{ categoria }}" {% if request.args.get('categoria') == categoria %}selected{% endif %}>{{ categoria }}</option>
             {% endfor %}
         </select>
-    </div>
-    <div class="form-group">
+    <!-- </div>
+    <div class="form-group"> -->
         <button type="submit"><i class="fas fa-filter"></i> Filtrar</button>
     </div>
 </form>

@@ -1,80 +1,92 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 
-{% block title %}Movimentações de Estoque{% endblock %} 
+{% block title %}Movimentações de Estoque{% endblock %}
 
 {% block content %}
-    <h1>Movimentações de Estoque</h1> <!-- Título da página -->
+<h1>Movimentações de Estoque</h1> <!-- Título da página -->
 
-    <!-- Formulário para filtrar as movimentações de estoque -->
-    <form method="GET" action="{{ url_for('movimentacoes_estoque') }}">
-        <!-- Dropdown de Período -->
-        <label for="periodo">Período:</label>
-        <select name="periodo" id="periodo">
-            <option value="hoje" {% if request.args.get('periodo') == 'hoje' %}selected{% endif %}>Hoje</option>
-            <option value="semana" {% if request.args.get('periodo') == 'semana' %}selected{% endif %}>Esta semana</option>
-            <option value="mes" {% if request.args.get('periodo') == 'mes' %}selected{% endif %}>Este mês</option>
-            <option value="ano" {% if request.args.get('periodo') == 'ano' %}selected{% endif %}>Este ano</option>
-            <option value="ultimos_30_dias" {% if request.args.get('periodo') == 'ultimos_30_dias' %}selected{% endif %}>Últimos 30 dias</option>
-            <option value="ultimos_12_meses" {% if request.args.get('periodo') == 'ultimos_12_meses' %}selected{% endif %}>Últimos 12 meses</option>
-            <option value="todo" {% if request.args.get('periodo') == 'todo' %}selected{% endif %}>Todo o período</option>
-            <option value="personalizado" {% if request.args.get('periodo') == 'personalizado' %}selected{% endif %}>Período personalizado</option> <!-- Opção de período personalizado -->
-        </select>
+<!-- Formulário para filtrar as movimentações de estoque -->
+<form method="GET" action="{{ url_for('movimentacoes_estoque') }}">
 
-        <!-- Filtro por Período de Datas Personalizado (inicialmente escondido) -->
-        <div id="periodo-personalizado" style="display: none;">
-            <label for="data_inicio">Data Início:</label>
-            <input type="date" name="data_inicio" id="data_inicio" value="{{ request.args.get('data_inicio') }}"> <!-- Campo de data inicial personalizado -->
 
-            <label for="data_fim">Data Fim:</label>
-            <input type="date" name="data_fim" id="data_fim" value="{{ request.args.get('data_fim') }}"> <!-- Campo de data final personalizado -->
-        </div>
+    <!-- Campo de pesquisa por nome do item -->
+    <div class="search-bar">
+        <label for="nome_item">Nome do Item:</label>
+        <input type="text" name="nome_item" id="nome_item" placeholder="Digite o nome do item"
+            value="{{ request.args.get('nome_item', '') }}">
+    </div>
 
-        <!-- Filtro por tipo de movimentação com botões de rádio -->
-        <div class="radio-buttons">
-            <input type="radio" id="entrada" name="tipo_movimentacao" value="entrada" class="btn-radio" {% if request.args.get('tipo_movimentacao') == 'entrada' %}checked{% endif %}>
-            <label for="entrada" class="btn">Entrada</label> <!-- Botão de rádio para entradas -->
+    <!-- Dropdown de Período -->
+    <label for="periodo">Período:</label>
+    <select name="periodo" id="periodo">
+        <option value="hoje" {% if request.args.get('periodo')=='hoje' %}selected{% endif %}>Hoje</option>
+        <option value="semana" {% if request.args.get('periodo')=='semana' %}selected{% endif %}>Esta semana</option>
+        <option value="mes" {% if request.args.get('periodo')=='mes' %}selected{% endif %}>Este mês</option>
+        <option value="ano" {% if request.args.get('periodo')=='ano' %}selected{% endif %}>Este ano</option>
+        <option value="ultimos_30_dias" {% if request.args.get('periodo')=='ultimos_30_dias' %}selected{% endif %}>
+            Últimos 30 dias</option>
+        <option value="ultimos_12_meses" {% if request.args.get('periodo')=='ultimos_12_meses' %}selected{% endif %}>
+            Últimos 12 meses</option>
+        <option value="todo" {% if request.args.get('periodo')=='todo' %}selected{% endif %}>Todo o período</option>
+        <option value="personalizado" {% if request.args.get('periodo')=='personalizado' %}selected{% endif %}>Período
+            personalizado</option>
+    </select>
 
-            <input type="radio" id="saida" name="tipo_movimentacao" value="saida" class="btn-radio" {% if request.args.get('tipo_movimentacao') == 'saida' %}checked{% endif %}>
-            <label for="saida" class="btn">Saída</label> <!-- Botão de rádio para saídas -->
+    <!-- Filtro por Período de Datas Personalizado (inicialmente escondido) -->
+    <div id="periodo-personalizado" style="display: none;">
+        <label for="data_inicio">Data Início:</label>
+        <input type="date" name="data_inicio" id="data_inicio" value="{{ request.args.get('data_inicio') }}">
 
-            <input type="radio" id="todos" name="tipo_movimentacao" value="todos" class="btn-radio" {% if request.args.get('tipo_movimentacao') == 'todos' %}checked{% endif %}>
-            <label for="todos" class="btn">Todos</label> <!-- Botão de rádio para todas as movimentações -->
-        </div>
+        <label for="data_fim">Data Fim:</label>
+        <input type="date" name="data_fim" id="data_fim" value="{{ request.args.get('data_fim') }}">
+    </div>
 
-        <!-- Campo de pesquisa por nome do item -->
-        <div class="search-bar">
-            <label for="nome_item">Pesquisar Item:</label>
-            <input type="text" name="nome_item" id="nome_item" placeholder="Digite o nome do item" value="{{ request.args.get('nome_item', '') }}"> <!-- Campo de busca por nome do item -->
-        </div>
+    <!-- Filtro por tipo de movimentação com botões de rádio  -->
+    <div class="radio-buttons">
+        <input type="radio" id="todos" name="tipo_movimentacao" value="todos" class="btn-radio" {% if
+            request.args.get('tipo_movimentacao', 'todos' )=='todos' %}checked{% endif %}>
+        <label for="todos" class="btn-filter">Todos</label>
 
-        <!-- Botão para submeter o formulário de filtro -->
-        <button type="submit">Filtrar</button>
-    </form>
 
-    <!-- Tabela para exibir as movimentações filtradas -->
-    <table class="estoque-table">
-        <thead> <!-- Cabeçalho da tabela -->
-            <tr>
-                <th>Data da Movimentação</th>
-                <th>Entrada/Saída</th>
-                <th>Nome do Item</th>
-                <th>Quantidade Movimentada</th>
-                <th>Saldo Atual</th>
-                <th>Justificativa</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Itera sobre as movimentações de estoque filtradas -->
-            {% for movimentacao in movimentacoes %}
-            <tr>
-                <td>{{ movimentacao.data_hora.astimezone(tz).strftime('%d/%m/%Y %H:%M:%S') }}</td> <!-- Data e hora da movimentação -->
-                <td>{{ movimentacao.tipo_movimentacao | capitalize }}</td> <!-- Tipo de movimentação (Entrada/Saída) -->
-                <td>{{ movimentacao.item.nome }}</td> <!-- Nome do item movimentado -->
-                <td>{{ movimentacao.quantidade }}</td> <!-- Quantidade movimentada -->
-                <td>{{ movimentacao.saldo_atual }}</td> <!-- Saldo atual do item -->
-                <td>{{ movimentacao.justificativa }}</td> <!-- Justificativa da movimentação -->
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table> 
+        <input type="radio" id="entrada" name="tipo_movimentacao" value="entrada" class="btn-radio" {% if
+            request.args.get('tipo_movimentacao')=='entrada' %}checked{% endif %}>
+        <label for="entrada" class="btn-filter">Entrada</label>
+
+        <input type="radio" id="saida" name="tipo_movimentacao" value="saida" class="btn-radio" {% if
+            request.args.get('tipo_movimentacao')=='saida' %}checked{% endif %}>
+        <label for="saida" class="btn-filter">Saída</label>
+
+        <button type="submit" id="filtrar">Filtrar</button>
+    </div>
+
+    <!-- Botão para submeter o formulário de filtro -->
+
+</form>
+
+<!-- Tabela para exibir as movimentações filtradas -->
+<table class="estoque-table">
+    <thead> <!-- Cabeçalho da tabela -->
+        <tr>
+            <th>Data da Movimentação</th>
+            <th>Entrada/Saída</th>
+            <th>Nome do Item</th>
+            <th>Quantidade Movimentada</th>
+            <th>Saldo Atual</th>
+            <th>Justificativa</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Itera sobre as movimentações de estoque filtradas -->
+        {% for movimentacao in movimentacoes %}
+        <tr>
+            <td>{{ movimentacao.data_hora.astimezone(tz).strftime('%d/%m/%Y %H:%M:%S') }}</td>
+            <td>{{ movimentacao.tipo_movimentacao | capitalize }}</td>
+            <td>{{ movimentacao.item.nome }}</td>
+            <td>{{ movimentacao.quantidade }}</td>
+            <td>{{ movimentacao.saldo_atual }}</td>
+            <td>{{ movimentacao.justificativa }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}
