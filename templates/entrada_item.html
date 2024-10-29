@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
-{% block title %}Entrada de Itens{% endblock %} 
+{% block title %}Entrada de Itens{% endblock %}
 
 {% block content %}
 <div id="entrada-page">
     <div class="entrada-form-container">
-        <h1>Registrar Entrada de Itens</h1> 
+        <h1>Registrar Entrada de Itens</h1>
 
         <!-- Formulário para registrar a entrada de itens -->
         <form id="entradaForm" data-url="{{ url_for('entrada_item') }}">
@@ -15,7 +15,7 @@
                     {% for item in itens %}
                     <option value="{{ item.id }}">{{ item.nome }}</option>
                     {% endfor %}
-                </select>   
+                </select>
             </div>
 
             <div class="entrada-form-group">
@@ -29,9 +29,9 @@
         <div id="mensagens">
             <ul>
                 {% for entrada in entradas %}
-                    <li class="alert alert-success success">
-                        Entrada de {{ entrada.quantidade }} unidade(s) de {{ entrada.item }} realizada com sucesso!
-                    </li>
+                <li class="alert alert-success success">
+                    Entrada de {{ entrada.quantidade }} unidade(s) de {{ entrada.item }} realizada com sucesso!
+                </li>
                 {% endfor %}
             </ul>
         </div>

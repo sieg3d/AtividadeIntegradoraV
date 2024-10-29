@@ -1,16 +1,21 @@
 /* Estilo global do body da página */
 body {
-    font-family: 'Roboto', sans-serif; /* Fonte padrão */
-    background-color: #f4f7f6; /* Cor de fundo */
+    font-family: 'Roboto', sans-serif;
+    /* Fonte padrão */
+    background-color: #f4f7f6;
+    /* Cor de fundo */
     margin: 0;
     padding: 0;
-    color: #333; /* Cor do texto */
+    color: #333;
+    /* Cor do texto */
 }
 
 /* Estilos do cabeçalho (Header) */
 .site-header {
-    background-color: #444; /* Fundo do cabeçalho */
-    color: white; /* Texto do cabeçalho */
+    background-color: #444;
+    /* Fundo do cabeçalho */
+    color: white;
+    /* Texto do cabeçalho */
     padding: 20px 0;
     text-align: center;
 }
@@ -27,7 +32,8 @@ body {
 }
 
 /* Estilos para títulos */
-h1, h3 {
+h1,
+h3 {
     text-align: center;
     margin-top: 0;
 }
@@ -96,7 +102,8 @@ button,
 .btn {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #28a745; /* Cor padrão do botão */
+    background-color: #28a745;
+    /* Cor padrão do botão */
     color: white;
     border: none;
     border-radius: 5px;
@@ -156,7 +163,7 @@ input[type="radio"] {
     display: none;
 }
 
-input[type="radio"]:checked + .btn-filter {
+input[type="radio"]:checked+.btn-filter {
     background-color: #28a745;
     color: white;
     border-color: #28a745;
@@ -340,7 +347,8 @@ input[type="radio"]:checked + .btn-filter {
 
 .search-bar button {
     padding: 10px 20px;
-    background-color: #4CAF50; /* Cor do botão de busca */
+    background-color: #4CAF50;
+    /* Cor do botão de busca */
     color: white;
     border: none;
     border-radius: 5px;
@@ -397,7 +405,7 @@ input[type="radio"]:checked + .btn-filter {
     position: relative;
 }
 
-.navbar ul.main-menu > li > a {
+.navbar ul.main-menu>li>a {
     display: block;
     color: white;
     text-align: center;
@@ -406,7 +414,7 @@ input[type="radio"]:checked + .btn-filter {
     font-size: 18px;
 }
 
-.navbar ul.main-menu > li > a:hover {
+.navbar ul.main-menu>li>a:hover {
     background-color: #575757;
 }
 
@@ -422,7 +430,7 @@ input[type="radio"]:checked + .btn-filter {
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
 }
 
-.navbar ul.main-menu > li:hover .dropdown-content {
+.navbar ul.main-menu>li:hover .dropdown-content {
     display: block;
 }
 
@@ -444,11 +452,11 @@ input[type="radio"]:checked + .btn-filter {
         flex-direction: column;
     }
 
-    .navbar ul.main-menu > li {
+    .navbar ul.main-menu>li {
         width: 100%;
     }
 
-    .navbar ul.main-menu > li > a {
+    .navbar ul.main-menu>li>a {
         text-align: left;
         padding-left: 20px;
     }
@@ -492,31 +500,31 @@ input[type="radio"]:checked + .btn-filter {
     #search-form {
         display: flex;
         align-items: center;
-        gap: 5px; 
+        gap: 5px;
     }
-    
+
     #search-form .form-group {
         display: flex;
         align-items: center;
     }
-    
+
     #search-form input[type="text"] {
         padding: 5px;
-        width: 100%; 
-        flex-grow: 1; 
+        width: 100%;
+        flex-grow: 1;
     }
-    
+
     #search-form select {
         padding: 5px;
-        min-width: 150px; 
+        min-width: 150px;
     }
-    
+
     #search-form button {
         padding: 5px 10px;
         cursor: pointer;
         display: flex;
         align-items: center;
-        gap: 5px; 
+        gap: 5px;
     }
 }
 
@@ -599,37 +607,41 @@ input[type="radio"]:checked + .btn-filter {
     width: 50%;
 }
 
-.saida-form-group #quantidade{
-    width: 100%; 
-    max-width: 100px; 
+.saida-form-group #quantidade {
+    width: 100%;
+    max-width: 100px;
 }
 
-.entrada-form-group #quantidade{
-    width: 100%; 
-    max-width: 100px; 
+.entrada-form-group #quantidade {
+    width: 100%;
+    max-width: 100px;
 }
 
 
-.form-group #nome, #nome_compromisso, #search, #categoria{
+.form-group #nome,
+#nome_compromisso,
+#search,
+#categoria {
     width: 100%;
     max-width: 700px;
 }
-.form-group #categoria{
+
+.form-group #categoria {
     width: 100%;
     max-width: 300px;
 }
 
-.search-bar #nome_item{
+.search-bar #nome_item {
     width: 100%;
     max-width: 600px;
 }
 
-#periodo{
+#periodo {
     width: 50%;
     max-width: 200px;
 }
 
-#filtrar{
+#filtrar {
     margin-top: 10px;
 }
 
@@ -732,7 +744,7 @@ input[type="radio"]:checked + .btn-filter {
     margin-bottom: 5px;
     font-weight: bold;
     text-align: left;
-    
+
 }
 
 .status-container .status-content {
@@ -815,18 +827,19 @@ form table td:nth-child(4) {
     text-align: center;
 }
 
-#formmoradores{
+#formmoradores {
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
 }
 
-.search-bar_moradores{
+.search-bar_moradores {
     padding: 10px;
     width: 300px;
     margin-left: -20%;
 }
+
 /* Botões de filtro */
 .filter-buttons {
     display: flex;
@@ -1881,34 +1894,42 @@ form table td:nth-child(4) {
     flex-wrap: wrap;
     margin: 0 auto;
 }
+
 /*-----------------------------------------------------------------------------------------------------------------------------------------*/
 
 .status-container {
     background-color: #f8f8f8;
-    padding: 30px; /* Aumenta o espaço interno */
-    width: 100%; /* Define que cada card ocupe a largura total da coluna */
+    padding: 30px;
+    /* Aumenta o espaço interno */
+    width: 100%;
+    /* Define que cada card ocupe a largura total da coluna */
     border-radius: 8px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
     text-align: center;
-    margin-bottom: 30px; /* Aumenta o espaço entre os cards */
+    margin-bottom: 30px;
+    /* Aumenta o espaço entre os cards */
 }
 
 .status-content.dashboard {
     display: flex;
     align-items: center;
-    gap: 15px; /* Aumenta o espaço entre a imagem e o texto */
-    font-size: 18px; /* Aumenta o tamanho do texto */
+    gap: 15px;
+    /* Aumenta o espaço entre a imagem e o texto */
+    font-size: 18px;
+    /* Aumenta o tamanho do texto */
 }
 
 .status-content img {
-    width: 120px; /* Aumenta o tamanho da imagem */
+    width: 120px;
+    /* Aumenta o tamanho da imagem */
     height: 120px;
 }
 
 .home-page .container {
     display: flex;
-    justify-content: space-around; /* Mantém os cards distribuídos */
+    justify-content: space-around;
+    /* Mantém os cards distribuídos */
     flex-wrap: wrap;
     gap: 20px;
     margin: 20px 0;

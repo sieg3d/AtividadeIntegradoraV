@@ -16,7 +16,7 @@
                 <label for="quantidade">Quantidade de cestas:</label>
                 <input type="number" name="quantidade" id="quantidade" required>
             </div>
-            
+
             <button type="submit" class="btn-cadastrar">Gerar Cestas</button>
         </form>
 
@@ -25,13 +25,13 @@
             <ul>
                 {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
-                    <ul>
+                <ul>
                     {% for category, message in messages %}
-                        <li class="alert alert-{{ category }}">{{ message|safe }}</li> <!-- Uso de |safe -->
+                    <li class="alert alert-{{ category }}">{{ message|safe }}</li> <!-- Uso de |safe -->
                     {% endfor %}
-                    </ul>
+                </ul>
                 {% endif %}
-            {% endwith %}
+                {% endwith %}
             </ul>
         </div>
     </div>

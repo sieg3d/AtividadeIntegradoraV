@@ -9,13 +9,13 @@
 
         <!-- Mensagens de sucesso ou erro -->
         {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <div id="mensagens">
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category }}">{{ message|safe }}</div>
-                    {% endfor %}
-                </div>
-            {% endif %}
+        {% if messages %}
+        <div id="mensagens">
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message|safe }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
         {% endwith %}
 
         <!-- Formulário para selecionar itens e gerar cestas básicas -->
@@ -36,7 +36,8 @@
                     {% for item in itens %}
                     <tr>
                         <td>
-                            <input type="checkbox" name="itens_selecionados" value="{{ item.id }}" class="item-checkbox" checked>
+                            <input type="checkbox" name="itens_selecionados" value="{{ item.id }}" class="item-checkbox"
+                                checked>
                         </td>
                         <td>{{ item.nome }}</td>
                         <td>{{ item.categoria }}</td>

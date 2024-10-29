@@ -4,24 +4,27 @@
 
 {% block content %}
 <div class="comentarios-container">
-    <h1>Comentários para o projeto: <strong>{{ projeto.nome }}</strong></h1> <!-- Título da página exibindo o nome do projeto -->
+    <h1>Comentários para o projeto: <strong>{{ projeto.nome }}</strong></h1>
+    <!-- Título da página exibindo o nome do projeto -->
 
     <!-- Verifica se há comentários e exibe a lista -->
     {% if comentarios %}
-        <div class="comentarios-list">
-            {% for comentario in comentarios %}
-            <div class="comentario-item">
-                <p class="comentario-conteudo">{{ comentario.conteudo }}</p> <!-- Exibe o conteúdo do comentário -->
-                <small class="comentario-data">Comentado em: {{ comentario.data_comentario.strftime('%d/%m/%Y %H:%M') }}</small> <!-- Exibe a data do comentário -->
-            </div>
-            {% endfor %}
+    <div class="comentarios-list">
+        {% for comentario in comentarios %}
+        <div class="comentario-item">
+            <p class="comentario-conteudo">{{ comentario.conteudo }}</p> <!-- Exibe o conteúdo do comentário -->
+            <small class="comentario-data">Comentado em: {{ comentario.data_comentario.strftime('%d/%m/%Y %H:%M')
+                }}</small> <!-- Exibe a data do comentário -->
         </div>
+        {% endfor %}
+    </div>
     {% else %}
-        <!-- Exibe mensagem se não houver comentários -->
-        <p class="sem-comentarios">Não há comentários para este projeto.</p>
+    <!-- Exibe mensagem se não houver comentários -->
+    <p class="sem-comentarios">Não há comentários para este projeto.</p>
     {% endif %}
 
     <!-- Botão para voltar à página de acompanhamento de status -->
-    <a href="{{ url_for('acompanhar_status') }}" class="btn btn-primary voltar-btn">Voltar</a> <!-- Redireciona para a página de status dos projetos -->
+    <a href="{{ url_for('acompanhar_status') }}" class="btn btn-primary voltar-btn">Voltar</a>
+    <!-- Redireciona para a página de status dos projetos -->
 </div>
 {% endblock %}

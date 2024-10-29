@@ -38,12 +38,12 @@
                 <label for="categoria">Categoria:</label>
                 <select name="categoria" id="categoria" required>
                     <option value="" disabled selected>Selecione uma categoria</option>
-                    <option value="Alimento" {% if categoria == 'Alimento' %}selected{% endif %}>Alimento</option>
-                    <option value="Higiene" {% if categoria == 'Higiene' %}selected{% endif %}>Higiene</option>
-                    <option value="Limpeza" {% if categoria == 'Limpeza' %}selected{% endif %}>Limpeza</option>
-                    <option value="Escritorio" {% if categoria == 'Escritorio' %}selected{% endif %}>Escritório</option>
-                    <option value="Manutencao" {% if categoria == 'Manutencao' %}selected{% endif %}>Manutenção</option>
-                    <option value="Outros" {% if categoria == 'Outros' %}selected{% endif %}>Outros</option>
+                    <option value="Alimento" {% if categoria=='Alimento' %}selected{% endif %}>Alimento</option>
+                    <option value="Higiene" {% if categoria=='Higiene' %}selected{% endif %}>Higiene</option>
+                    <option value="Limpeza" {% if categoria=='Limpeza' %}selected{% endif %}>Limpeza</option>
+                    <option value="Escritorio" {% if categoria=='Escritorio' %}selected{% endif %}>Escritório</option>
+                    <option value="Manutencao" {% if categoria=='Manutencao' %}selected{% endif %}>Manutenção</option>
+                    <option value="Outros" {% if categoria=='Outros' %}selected{% endif %}>Outros</option>
                 </select>
             </div>
 

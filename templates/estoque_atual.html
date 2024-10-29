@@ -3,8 +3,8 @@
 {% block title %}Estoque Atual{% endblock %}
 
 {% block head %}
-    <!-- Link para o arquivo CSS externo -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+<!-- Link para o arquivo CSS externo -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -12,16 +12,18 @@
 
 <form id="search-form" method="GET" action="/estoque" class="search-form">
     <div class="form-group">
-        <input type="text" name="busca" id="search" placeholder="🔍 Buscar item no estoque..." value="{{ request.args.get('busca', '') }}" >
-    <!-- </div>
+        <input type="text" name="busca" id="search" placeholder="🔍 Buscar item no estoque..."
+            value="{{ request.args.get('busca', '') }}">
+        <!-- </div>
     <div class="form-group"> -->
         <select name="categoria" id="categoria">
             <option value="todas">Todas as Categorias</option>
             {% for categoria in categorias %}
-            <option value="{{ categoria }}" {% if request.args.get('categoria') == categoria %}selected{% endif %}>{{ categoria }}</option>
+            <option value="{{ categoria }}" {% if request.args.get('categoria')==categoria %}selected{% endif %}>{{
+                categoria }}</option>
             {% endfor %}
         </select>
-    <!-- </div>
+        <!-- </div>
     <div class="form-group"> -->
         <button type="submit"><i class="fas fa-filter"></i> Filtrar</button>
     </div>
@@ -49,7 +51,6 @@
     </tbody>
 </table>
 {% else %}
-    <p class="mensagens danger">Nenhum item encontrado.</p>
+<p class="mensagens danger">Nenhum item encontrado.</p>
 {% endif %}
 {% endblock %}
-

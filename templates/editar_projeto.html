@@ -16,21 +16,22 @@
         <div class="form-group">
             <label for="prioridade">Prioridade:</label>
             <select name="prioridade" class="form-control" required>
-                <option value="Baixa" {% if projeto.prioridade == 'Baixa' %}selected{% endif %}>Baixa</option>
-                <option value="Média" {% if projeto.prioridade == 'Média' %}selected{% endif %}>Média</option>
-                <option value="Alta" {% if projeto.prioridade == 'Alta' %}selected{% endif %}>Alta</option>
-                <option value="Crítica" {% if projeto.prioridade == 'Crítica' %}selected{% endif %}>Crítica</option>
+                <option value="Baixa" {% if projeto.prioridade=='Baixa' %}selected{% endif %}>Baixa</option>
+                <option value="Média" {% if projeto.prioridade=='Média' %}selected{% endif %}>Média</option>
+                <option value="Alta" {% if projeto.prioridade=='Alta' %}selected{% endif %}>Alta</option>
+                <option value="Crítica" {% if projeto.prioridade=='Crítica' %}selected{% endif %}>Crítica</option>
             </select>
         </div>
 
         <div class="form-group">
             <label for="status">Status:</label>
             <select name="status" class="form-control" required>
-                <option value="Em andamento" {% if projeto.status == 'Em andamento' %}selected{% endif %}>Em andamento</option>
-                <option value="Concluído" {% if projeto.status == 'Concluído' %}selected{% endif %}>Concluído</option>
-                <option value="Pendente" {% if projeto.status == 'Pendente' %}selected{% endif %}>Pendente</option>
-                <option value="Atrasado" {% if projeto.status == 'Atrasado' %}selected{% endif %}>Atrasado</option>
-                <option value="Cancelado" {% if projeto.status == 'Cancelado' %}selected{% endif %}>Cancelado</option>
+                <option value="Em andamento" {% if projeto.status=='Em andamento' %}selected{% endif %}>Em andamento
+                </option>
+                <option value="Concluído" {% if projeto.status=='Concluído' %}selected{% endif %}>Concluído</option>
+                <option value="Pendente" {% if projeto.status=='Pendente' %}selected{% endif %}>Pendente</option>
+                <option value="Atrasado" {% if projeto.status=='Atrasado' %}selected{% endif %}>Atrasado</option>
+                <option value="Cancelado" {% if projeto.status=='Cancelado' %}selected{% endif %}>Cancelado</option>
             </select>
         </div>
 
@@ -51,12 +52,13 @@
         {% for comentario in comentarios %}
         <div class="comentario-item">
             <p class="comentario-conteudo">{{ comentario.conteudo }}</p> <!-- Exibe o conteúdo do comentário -->
-            <small class="comentario-data">Comentado em: {{ comentario.data_comentario.strftime('%d/%m/%Y %H:%M') }}</small> <!-- Exibe a data do comentário -->
+            <small class="comentario-data">Comentado em: {{ comentario.data_comentario.strftime('%d/%m/%Y %H:%M')
+                }}</small> <!-- Exibe a data do comentário -->
         </div>
         {% endfor %}
     </div>
     {% else %}
-        <p class="sem-comentarios">Não há comentários para este projeto ainda.</p>
+    <p class="sem-comentarios">Não há comentários para este projeto ainda.</p>
     {% endif %}
 </div>
 {% endblock %}
