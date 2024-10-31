@@ -1,4 +1,7 @@
 import unicodedata  # Importa módulo para remover acentos
+import os
+secret_key = os.urandom(24)
+print(secret_key)
 from datetime import datetime, date, timedelta
 
 import pytz
@@ -12,7 +15,7 @@ from models import db, Item, MovimentacaoEstoque, Projeto, Comentario, Morador, 
 
 # Configurações globais
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'xablau'
+app.config['SECRET_KEY'] = secret_key
 
 # Configurações do banco de dados
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///projetos.db'  # Define o banco de dados SQLite
