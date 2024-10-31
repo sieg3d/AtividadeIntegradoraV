@@ -127,7 +127,8 @@ def cadastrar_item():
         db.session.commit()
 
         # Exibe uma mensagem de sucesso
-        flash("Item cadastrado com sucesso!", "success")
+        # flash("Item cadastrado com sucesso!", "success")
+        flash("Item cadastrado com sucesso!", "item_sucesso")
 
         # Retorna para a página de cadastro com os campos limpos
         return render_template('cadastrar_item.html')

@@ -10,13 +10,15 @@
         <!-- Mensagens de sucesso ou erro -->
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-        <div id="mensagens">
-            {% for category, message in messages %}
-            <div class="alert alert-{{ category }}">{{ message }}</div>
-            {% endfor %}
-        </div>
+            <div id="mensagens">
+                {% for category, message in messages %}
+                    {% if category == 'item_sucesso' %}
+                        <div class="alert alert-success">{{ message }}</div>
+                    {% endif %}
+                {% endfor %}
+            </div>
         {% endif %}
-        {% endwith %}
+    {% endwith %}
 
         {% if error %}
         <div class="alert alert-danger">{{ error }}</div>
