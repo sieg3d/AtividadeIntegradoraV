@@ -9,11 +9,11 @@
     <div class="form-row">
         <div class="form-group">
             <label for="nome">Nome:</label>
-            <input type="text" name="nome" value="{{ morador.nome }}" required class="form-control">
+            <input type="text" name="nome" id="nome" value="{{ morador.nome }}" required class="form-control" pattern="[A-Za-zÀ-ÿ\s]+" title="O nome deve conter apenas letras e espaços">
         </div>
         <div class="form-group">
             <label for="cpf">CPF:</label>
-            <input type="text" name="cpf" value="{{ morador.cpf }}" required class="form-control">
+            <input type="text" name="cpf" id="cpf" value="{{ morador.cpf }}" required class="form-control" maxlength="14" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" title="CPF no formato xxx.xxx.xxx-xx">
         </div>
     </div>
     <div class="form-row">
@@ -40,4 +40,18 @@
         <button type="submit" class="filter-button btn-lg">Atualizar</button>
     </div>
 </form>
+
+<script>
+    function formatCPF(cpf) {
+        cpf = cpf.replace(/\D/g, ""); // Remove tudo que não é dígito
+        cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2"); // Coloca o primeiro ponto
+        cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2"); // Coloca o segundo ponto
+        cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2"); // Coloca o traço
+        return cpf;
+    }
+
+    document.getElementById('cpf').addEventListener('input', function(e) {
+        e.target.value = formatCPF(e.target.value);
+    });
+</script>
 {% endblock %}
