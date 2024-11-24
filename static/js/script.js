@@ -35,15 +35,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    var nomeInput = document.getElementById('nome');
-    if (nomeInput) {
-        nomeInput.addEventListener('input', function () {
-            // Remove qualquer número inserido
-            this.value = this.value.replace(/[0-9]/g, "");
-        });
-    }
-});
+// document.addEventListener('DOMContentLoaded', function () {
+//     var nomeInput = document.getElementById('nome');
+//     if (nomeInput) {
+//         nomeInput.addEventListener('input', function () {
+//             // Remove qualquer número inserido
+//             this.value = this.value.replace(/[0-9]/g, "");
+//         });
+//     }
+// });
 
 
 // Evento DOMContentLoaded para garantir que o DOM esteja carregado
